@@ -12,6 +12,8 @@
 		86E955281ABC6F370006057C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E955271ABC6F370006057C /* Images.xcassets */; };
 		86E9552B1ABC6F370006057C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86E955291ABC6F370006057C /* Main.storyboard */; };
 		86E955371ABC6F370006057C /* SwifterLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955361ABC6F370006057C /* SwifterLogTests.swift */; };
+		86E955431ABC6F520006057C /* asl-bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 86E955421ABC6F520006057C /* asl-bridge.m */; };
+		86E955451ABC6F5E0006057C /* SwifterLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955441ABC6F5E0006057C /* SwifterLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,10 @@
 		86E955301ABC6F370006057C /* SwifterLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwifterLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E955351ABC6F370006057C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86E955361ABC6F370006057C /* SwifterLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLogTests.swift; sourceTree = "<group>"; };
+		86E955401ABC6F510006057C /* SwifterLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwifterLog-Bridging-Header.h"; sourceTree = "<group>"; };
+		86E955411ABC6F520006057C /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
+		86E955421ABC6F520006057C /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
+		86E955441ABC6F5E0006057C /* SwifterLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +83,13 @@
 			children = (
 				86E955231ABC6F370006057C /* AppDelegate.swift */,
 				86E955251ABC6F370006057C /* ViewController.swift */,
+				86E955411ABC6F520006057C /* asl-bridge.h */,
+				86E955421ABC6F520006057C /* asl-bridge.m */,
+				86E955441ABC6F5E0006057C /* SwifterLog.swift */,
 				86E955271ABC6F370006057C /* Images.xcassets */,
 				86E955291ABC6F370006057C /* Main.storyboard */,
 				86E955211ABC6F370006057C /* Supporting Files */,
+				86E955401ABC6F510006057C /* SwifterLog-Bridging-Header.h */,
 			);
 			path = SwifterLog;
 			sourceTree = "<group>";
@@ -208,6 +218,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86E955431ABC6F520006057C /* asl-bridge.m in Sources */,
+				86E955451ABC6F5E0006057C /* SwifterLog.swift in Sources */,
 				86E955261ABC6F370006057C /* ViewController.swift in Sources */,
 				86E955241ABC6F370006057C /* AppDelegate.swift in Sources */,
 			);
@@ -327,10 +339,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SwifterLog/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwifterLog/SwifterLog-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -338,10 +353,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SwifterLog/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwifterLog/SwifterLog-Bridging-Header.h";
 			};
 			name = Release;
 		};
