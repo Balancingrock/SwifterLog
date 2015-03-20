@@ -1,0 +1,415 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		86E955241ABC6F370006057C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955231ABC6F370006057C /* AppDelegate.swift */; };
+		86E955261ABC6F370006057C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955251ABC6F370006057C /* ViewController.swift */; };
+		86E955281ABC6F370006057C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E955271ABC6F370006057C /* Images.xcassets */; };
+		86E9552B1ABC6F370006057C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86E955291ABC6F370006057C /* Main.storyboard */; };
+		86E955371ABC6F370006057C /* SwifterLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955361ABC6F370006057C /* SwifterLogTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		86E955311ABC6F370006057C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86E955161ABC6F370006057C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 86E9551D1ABC6F370006057C;
+			remoteInfo = SwifterLog;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		86E9551E1ABC6F370006057C /* SwifterLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwifterLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		86E955221ABC6F370006057C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		86E955231ABC6F370006057C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		86E955251ABC6F370006057C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		86E955271ABC6F370006057C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		86E9552A1ABC6F370006057C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		86E955301ABC6F370006057C /* SwifterLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwifterLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		86E955351ABC6F370006057C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		86E955361ABC6F370006057C /* SwifterLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLogTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		86E9551B1ABC6F370006057C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86E9552D1ABC6F370006057C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		86E955151ABC6F370006057C = {
+			isa = PBXGroup;
+			children = (
+				86E955201ABC6F370006057C /* SwifterLog */,
+				86E955331ABC6F370006057C /* SwifterLogTests */,
+				86E9551F1ABC6F370006057C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		86E9551F1ABC6F370006057C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				86E9551E1ABC6F370006057C /* SwifterLog.app */,
+				86E955301ABC6F370006057C /* SwifterLogTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		86E955201ABC6F370006057C /* SwifterLog */ = {
+			isa = PBXGroup;
+			children = (
+				86E955231ABC6F370006057C /* AppDelegate.swift */,
+				86E955251ABC6F370006057C /* ViewController.swift */,
+				86E955271ABC6F370006057C /* Images.xcassets */,
+				86E955291ABC6F370006057C /* Main.storyboard */,
+				86E955211ABC6F370006057C /* Supporting Files */,
+			);
+			path = SwifterLog;
+			sourceTree = "<group>";
+		};
+		86E955211ABC6F370006057C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86E955221ABC6F370006057C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		86E955331ABC6F370006057C /* SwifterLogTests */ = {
+			isa = PBXGroup;
+			children = (
+				86E955361ABC6F370006057C /* SwifterLogTests.swift */,
+				86E955341ABC6F370006057C /* Supporting Files */,
+			);
+			path = SwifterLogTests;
+			sourceTree = "<group>";
+		};
+		86E955341ABC6F370006057C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				86E955351ABC6F370006057C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		86E9551D1ABC6F370006057C /* SwifterLog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86E9553A1ABC6F370006057C /* Build configuration list for PBXNativeTarget "SwifterLog" */;
+			buildPhases = (
+				86E9551A1ABC6F370006057C /* Sources */,
+				86E9551B1ABC6F370006057C /* Frameworks */,
+				86E9551C1ABC6F370006057C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwifterLog;
+			productName = SwifterLog;
+			productReference = 86E9551E1ABC6F370006057C /* SwifterLog.app */;
+			productType = "com.apple.product-type.application";
+		};
+		86E9552F1ABC6F370006057C /* SwifterLogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86E9553D1ABC6F370006057C /* Build configuration list for PBXNativeTarget "SwifterLogTests" */;
+			buildPhases = (
+				86E9552C1ABC6F370006057C /* Sources */,
+				86E9552D1ABC6F370006057C /* Frameworks */,
+				86E9552E1ABC6F370006057C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86E955321ABC6F370006057C /* PBXTargetDependency */,
+			);
+			name = SwifterLogTests;
+			productName = SwifterLogTests;
+			productReference = 86E955301ABC6F370006057C /* SwifterLogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		86E955161ABC6F370006057C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Marinus van der Lugt";
+				TargetAttributes = {
+					86E9551D1ABC6F370006057C = {
+						CreatedOnToolsVersion = 6.3;
+					};
+					86E9552F1ABC6F370006057C = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = 86E9551D1ABC6F370006057C;
+					};
+				};
+			};
+			buildConfigurationList = 86E955191ABC6F370006057C /* Build configuration list for PBXProject "SwifterLog" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 86E955151ABC6F370006057C;
+			productRefGroup = 86E9551F1ABC6F370006057C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				86E9551D1ABC6F370006057C /* SwifterLog */,
+				86E9552F1ABC6F370006057C /* SwifterLogTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		86E9551C1ABC6F370006057C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86E955281ABC6F370006057C /* Images.xcassets in Resources */,
+				86E9552B1ABC6F370006057C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86E9552E1ABC6F370006057C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		86E9551A1ABC6F370006057C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86E955261ABC6F370006057C /* ViewController.swift in Sources */,
+				86E955241ABC6F370006057C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		86E9552C1ABC6F370006057C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86E955371ABC6F370006057C /* SwifterLogTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		86E955321ABC6F370006057C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 86E9551D1ABC6F370006057C /* SwifterLog */;
+			targetProxy = 86E955311ABC6F370006057C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		86E955291ABC6F370006057C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				86E9552A1ABC6F370006057C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		86E955381ABC6F370006057C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		86E955391ABC6F370006057C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		86E9553B1ABC6F370006057C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SwifterLog/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		86E9553C1ABC6F370006057C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SwifterLog/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		86E9553E1ABC6F370006057C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwifterLogTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwifterLog.app/Contents/MacOS/SwifterLog";
+			};
+			name = Debug;
+		};
+		86E9553F1ABC6F370006057C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwifterLogTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwifterLog.app/Contents/MacOS/SwifterLog";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		86E955191ABC6F370006057C /* Build configuration list for PBXProject "SwifterLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86E955381ABC6F370006057C /* Debug */,
+				86E955391ABC6F370006057C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		86E9553A1ABC6F370006057C /* Build configuration list for PBXNativeTarget "SwifterLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86E9553B1ABC6F370006057C /* Debug */,
+				86E9553C1ABC6F370006057C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		86E9553D1ABC6F370006057C /* Build configuration list for PBXNativeTarget "SwifterLogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86E9553E1ABC6F370006057C /* Debug */,
+				86E9553F1ABC6F370006057C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 86E955161ABC6F370006057C /* Project object */;
+}
