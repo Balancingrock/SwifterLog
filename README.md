@@ -5,3 +5,5 @@ The main class in this project is used internally for our logging needs. It can 
 It uses the level approach as defined in ASL to differentiate between logging levels.
 
 Simply drop the file into your project, add the asl-bridge files, configure your app's bridge-headers and log away. More details are in the main class.
+
+V0.9.3: UPdated for Swift 2.0
