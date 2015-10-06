@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.1
+//  Version:    0.9.3
 //
 //  Author:     Marinus van der Lugt
 //  Website:    http://www.balancingrock.nl/swifterlog
@@ -43,7 +43,7 @@
 // =====================================================================================================================
 //
 // This file needs two assist files:
-//
+// 
 // asl-bridge.h which should contain:
 // ----------------------------------
 //
@@ -174,13 +174,21 @@
 // is a last ditch attempt to generate some information that gives a clue to the cause of the problem.
 //
 // =====================================================================================================================
+//
+// History:
+// v0.9.3   Changed syntax to Swift 2.0
+// v0.9.2   Removed the 'ID' parameter from the logging calls
+//          Added the "consoleSeparatorLine" function to create separators in the xcode or console output
+// v0.9.1   Initial release
+//
+// =====================================================================================================================
 
 import Foundation
 
 
 // Note: This could also have been implemented as a set of functions instead of a class.
-// However creating the class and subsequent singleton gives us a minor ease of use: code completion
-// Typing "log." will instantly reveal all options availabe for logging.
+// However creating the class and subsequent singleton gives us a minor ease of use: code completion.
+// Typing "log." where you need logging will instantly reveal all available options.
 
 
 let log = SwifterLog() // Since SwifterLog.init is private, this is the only instance ever created
@@ -199,7 +207,7 @@ class SwifterLog {
     
     /// The available levels to cut-off
     
-    enum Level: Int, Printable {
+    enum Level: Int, CustomStringConvertible {
         case DEBUG      = 0
         case INFO       = 1
         case NOTICE     = 2
@@ -209,6 +217,7 @@ class SwifterLog {
         case ALERT      = 6
         case EMERGENCY  = 7
         case NONE       = 8
+        case SEPARATOR  = 9
         var description: String {
             switch self {
             case .DEBUG:     return "DEBUG    "
@@ -220,6 +229,7 @@ class SwifterLog {
             case .ALERT:     return "ALERT    "
             case .EMERGENCY: return "EMERGENCY"
             case .NONE:      return "NONE     "
+            case .SEPARATOR: return "SEPARATOR"
             }
         }
         func toAslLevel() -> Int32 {
@@ -233,6 +243,7 @@ class SwifterLog {
             case .ALERT:     return 1
             case .EMERGENCY: return 0
             case .NONE:      return -1
+            case .SEPARATOR: return -2
             }
         }
     }
@@ -253,7 +264,7 @@ class SwifterLog {
     /// As soon as an entry in the current logfile grows the logfile beyond this limit, the logfile will be closed and a new logfile will be started. The default is 1 MB. Also see "logfileMaxNumberOfFiles".
     
     var logfileMaxSizeInBytes: UInt64 = 1 * 1024 * 1024
-    
+
     
     /// The maximum number of logfiles kept in the logfile directory. As soon as there are more than this number of logfiles, the oldest logfile will be removed. Must be >= 2.
     
@@ -270,65 +281,77 @@ class SwifterLog {
     
     
     /// Only messages with a level at or above the level specified in this variable will be recorded in the logfile. Set to "SwifterLog.Level.NONE" to suppress all messages to the logfile.
-    
+
     var logfileRecordAtAndAboveLevel: Level = .NONE  { didSet { self.setOverallThreshold() } }
-    
+
     
     /// Only messages with a level at or above the level specified in this variable will be recorded by the Apple System Log Facility. Set to "SwifterLog.Level.NONE" to suppress all messages to the ASL(F).
     ///
     /// Note 1: The ASL log entries can be viewed with the "System Information.app" that is available in the "Applications/Utilities" folder. Do note that the configuration file at "/etc/asl.conf" suppresses all messages at levels DEBUG and INFO by default irrespective of the value of this variable.
     ///
     /// Note 2: SwifterLog will write messages to the ASL at level ERROR if necessary. If the threshold is set higher than ERROR SwifterLog will fail silently.
-    
+
     var aslFacilityRecordAtAndAboveLevel: Level = .NONE  {
         didSet {
             self.setOverallThreshold()
             if (oldValue == .NONE) && (aslFacilityRecordAtAndAboveLevel != .NONE)
             {
                 dispatch_once(&aslInitialised, {
-                    let dummy = asl_add_log_file(nil, STDERR_FILENO)
+                    _ = asl_add_log_file(nil, STDERR_FILENO)
                 } )
             }
         }
     }
+
     
-    
-    func atLevel(level: Level, id: Int32, source: String, message: String) {
-        putOnLoggingQueue(level, id: id, source: source, message: message)
+    func atLevel(level: Level, source: String, message: String) {
+        putOnLoggingQueue(level, source: source, message: message)
+    }
+
+    func atLevelDebug(source source: String, message: String) {
+        putOnLoggingQueue(.DEBUG, source: source, message: message)
     }
     
-    func atLevelDebug(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.DEBUG, id: id, source: source, message: message)
+    func atLevelInfo(source source: String, message: String) {
+        putOnLoggingQueue(.INFO, source: source, message: message)
     }
     
-    func atLevelInfo(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.INFO, id: id, source: source, message: message)
+    func atLevelNotice(source source: String, message: String) {
+        putOnLoggingQueue(.NOTICE, source: source, message: message)
+    }
+
+    func atLevelWarning(source source: String, message: String) {
+        putOnLoggingQueue(.WARNING, source: source, message: message)
     }
     
-    func atLevelNotice(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.NOTICE, id: id, source: source, message: message)
+    func atLevelError(source source: String, message: String) {
+        putOnLoggingQueue(.ERROR, source: source, message: message)
     }
     
-    func atLevelWarning(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.WARNING, id: id, source: source, message: message)
+    func atLevelCritical(source source: String, message: String) {
+        putOnLoggingQueue(.CRITICAL, source: source, message: message)
     }
     
-    func atLevelError(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.ERROR, id: id, source: source, message: message)
+    func atLevelAlert(source source: String, message: String) {
+        putOnLoggingQueue(.ALERT, source: source, message: message)
     }
     
-    func atLevelCritical(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.CRITICAL, id: id, source: source, message: message)
+    func atLevelEmergency(source source: String, message: String) {
+        putOnLoggingQueue(.EMERGENCY, source: source, message: message)
     }
+
     
-    func atLevelAlert(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.ALERT, id: id, source: source, message: message)
+    /// Prints a line with the specified character for the specified times to the console
+    
+    func consoleSeperatorLine(char: Character, times: Int) {
+        guard times >= 0 else { return }
+        var separator = ""
+        for _ in 0 ..< times {
+            separator.append(char)
+        }
+        putOnLoggingQueue(.SEPARATOR, source: separator, message: "")
     }
-    
-    func atLevelEmergency(#id: Int32, source: String, message: String) {
-        putOnLoggingQueue(.EMERGENCY, id: id, source: source, message: message)
-    }
-    
+
     
     // MARK: All private from here on
     
@@ -338,7 +361,7 @@ class SwifterLog {
         
         if  let infoPlist = NSBundle.mainBundle().infoDictionary,
             let swifterLogOptions = infoPlist["SwifterLog"] as? Dictionary<String, AnyObject> {
-                
+            
                 if let alsThreshold = swifterLogOptions["aslFacilityRecordAtAndAboveLevel"] as? NSNumber {
                     if alsThreshold.integerValue >= Level.DEBUG.rawValue && alsThreshold.integerValue <= Level.NONE.rawValue {
                         aslFacilityRecordAtAndAboveLevel = Level(rawValue: alsThreshold.integerValue)!
@@ -346,7 +369,7 @@ class SwifterLog {
                         logAslErrorOverride("Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
                     }
                 }
-                
+                    
                 if let stdoutThreshold = swifterLogOptions["stdoutPrintAtAndAboveLevel"] as? NSNumber {
                     if stdoutThreshold.integerValue >= Level.DEBUG.rawValue && stdoutThreshold.integerValue <= Level.NONE.rawValue {
                         stdoutPrintAtAndAboveLevel = Level(rawValue: stdoutThreshold.integerValue)!
@@ -380,33 +403,28 @@ class SwifterLog {
                 }
                 
                 if let logfileDirPath = swifterLogOptions["logfileDirectoryPath"] as? String {
-                    if NSURL(fileURLWithPath: logfileDirPath) != nil {
-                        logfileDirectoryPath = logfileDirPath
-                    } else {
-                        logAslErrorOverride("Info.plist value for logfileDirectoryPath is not RFC 2396 compliant")
-                    }
+                    logfileDirectoryPath = logfileDirPath
                 }
         }
     }
     
     
     // This function writes error messages to the ASL irrespective of the level settings. For internal use only.
-    
+
     private func logAslErrorOverride(message: String) {
         dispatch_async(loggingQueue, { asl_bridge_log_message(Level.ERROR.toAslLevel(), message) } )
     }
     
     // The main purpose of this intermediate is to create a timestamp. The isolation of the rest is just bonus.
     
-    private func putOnLoggingQueue(level: Level, id: Int32, source: String, message: String, time: NSDate = NSDate()) {
+    private func putOnLoggingQueue(level: Level, source: String, message: String, time: NSDate = NSDate()) {
         if level == .NONE { return }
-        if overallThreshold <= level {
-            let systemPrintEnabled = stdoutPrintAtAndAboveLevel <= level
+        if (overallThreshold <= level) || (level == .SEPARATOR) {
+            let systemPrintEnabled = (stdoutPrintAtAndAboveLevel <= level) || (level == .SEPARATOR)
             let aslFacilityEnabled = aslFacilityRecordAtAndAboveLevel <= level
             let fileLoggingEnabled = logfileRecordAtAndAboveLevel <= level
             dispatch_async(loggingQueue, {
                 self.log(time,
-                    id: id,
                     source: source,
                     logLevel: level,
                     message: message,
@@ -424,7 +442,7 @@ class SwifterLog {
         }()
     
     private var aslInitialised: dispatch_once_t = 0
-    
+
     
     // Used to suppress multiple error messages for the failure to create a directory for the logfiles
     
@@ -435,7 +453,7 @@ class SwifterLog {
     // For a slight performance gain
     
     private var overallThreshold = SwifterLog.Level.DEBUG
-    
+
     
     // Should be called on every update to any of the three thresholds.
     
@@ -456,20 +474,15 @@ class SwifterLog {
     
     private func log(
         time: NSDate,
-        id: Int32,
         source: String,
         logLevel: Level,
         message: String,
         destinationSystemPrint: Bool,
         destinationAslFacility: Bool,
         destinationFileLogging: Bool) {
-            
-            let logstr =
-            logTimeFormatter.stringFromDate(time) + ", " +
-                logLevel.description + ": " +
-                id.description + ", " +
-                source + ", " +
-            message
+
+            let sourceMessage = message.isEmpty ? source : source + ", " + message
+            let logstr = logTimeFormatter.stringFromDate(time) + ", " + logLevel.description + ": " + sourceMessage
             
             if destinationSystemPrint { logSystemPrint(logstr) }
             if destinationFileLogging { logFileLogging(logstr) }
@@ -484,7 +497,7 @@ class SwifterLog {
         
         if let file = logfile {
             
-            let size = file.seekToEndOfFile()
+            _ = file.seekToEndOfFile()
             if let data = (message + "\r\n").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
                 file.writeData(data)
                 file.synchronizeFile()
@@ -498,7 +511,7 @@ class SwifterLog {
     }
     
     private func logSystemPrint(message: String) {
-        println(message)
+        print(message)
     }
     
     
@@ -509,29 +522,33 @@ class SwifterLog {
     
     lazy private var logfile: NSFileHandle? = { self.createLogfile() }()
     
-    
+
     // We use the /Library/Application Support/<<<application>>>/Logfiles directory if no logfile directory is specified
-    
+
     lazy private var applicationSupportLogfileDirectory: String? = {
-        
-        
+
+
         let fileManager = NSFileManager.defaultManager()
         
-        var error: NSError?
-        
-        if let applicationSupportDirectory = fileManager.URLForDirectory(NSSearchPathDirectory.ApplicationSupportDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: true, error: &error)?.path {
-            
+        do {
+            let applicationSupportDirectory =
+                try fileManager.URLForDirectory(
+                    NSSearchPathDirectory.ApplicationSupportDirectory,
+                    inDomain: NSSearchPathDomainMask.UserDomainMask,
+                    appropriateForURL: nil,
+                    create: true).path!
+                
             let appName = NSProcessInfo.processInfo().processName
-            let dirName = applicationSupportDirectory.stringByAppendingPathComponent(appName)
-            return dirName.stringByAppendingPathComponent("Logfiles")
-            
-        } else {
-            
-            let message: String = "Could not get application support directory, error = " + (error?.localizedDescription ?? "Unknown reason")
+            let dirUrl = NSURL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).URLByAppendingPathComponent(appName)
+            return dirUrl.URLByAppendingPathComponent("Logfiles").path
+
+        } catch let error as NSError {
+        
+            let message: String = "Could not get application support directory, error = " + (error.localizedDescription ?? "Unknown reason")
             self.logAslFacility(Level.ERROR, message: message)
             return nil
         }
-        }()
+    }()
     
     
     // Will be set to the URL of the logfile if the directory for the logfiles is available.
@@ -548,32 +565,35 @@ class SwifterLog {
         
         if let logdir = (logfileDirectoryPath ?? applicationSupportLogfileDirectory) as? String {
             
-            
-            // Make sure the logfile directory exists
-            
-            var error: NSError?
-            if NSFileManager.defaultManager().createDirectoryAtPath(logdir, withIntermediateDirectories: true, attributes: nil, error: &error) {
+            do {
                 
+                // Make sure the logfile directory exists
+
+                try NSFileManager.defaultManager().createDirectoryAtPath(logdir, withIntermediateDirectories: true, attributes: nil)
+            
                 logfileDirectoryURL = NSURL(fileURLWithPath: logdir, isDirectory: true) // For the logfile services
-                
+        
                 let filename = "Log_" + logTimeFormatter.stringFromDate(NSDate()) + ".txt"
                 
-                let logfilePath = logdir.stringByAppendingPathComponent(filename)
+                let logfileUrl = NSURL(fileURLWithPath: logdir).URLByAppendingPathComponent(filename)
                 
-                if NSFileManager.defaultManager().createFileAtPath(logfilePath, contents: nil, attributes: [NSFilePosixPermissions : NSNumber(int: 0o640)]) {
-                    return NSFileHandle(forUpdatingAtPath: logfilePath)
+                if NSFileManager.defaultManager().createFileAtPath(logfileUrl.path!, contents: nil, attributes: [NSFilePosixPermissions : NSNumber(int: 0o640)]) {
+                    
+                    return NSFileHandle(forUpdatingAtPath: logfileUrl.path!)
+
                 } else {
+                    
                     if !logfileErrorMessageGenerated {
-                        let message = "Could not create logfile \(logfilePath)"
+                        let message = "Could not create logfile \(logfileUrl.path)"
                         logAslFacility(.ERROR, message: message)
                         logfileErrorMessageGenerated = true
                     }
                 }
                 
-            } else {
+            } catch let error as NSError {
                 
                 if !logdirErrorMessageGenerated {
-                    let message = "Could not create logfile directory \(logdir), error = " + (error?.localizedDescription ?? "Unknown reason")
+                    let message = "Could not create logfile directory \(logdir), error = " + (error.localizedDescription ?? "Unknown reason")
                     logAslFacility(.ERROR, message: message)
                     logdirErrorMessageGenerated = true
                 }
@@ -595,7 +615,7 @@ class SwifterLog {
         // There should be a logfile, if there is'nt, then something is wrong
         
         if let file = logfile {
-            
+        
             
             // If the file size is larger than the specified maximum, close the existing logfile and create a new one
             
@@ -605,22 +625,22 @@ class SwifterLog {
                 
                 logfile = createLogfile()
             }
-            
+        
             
             // Check if there are more than 20 files in the logfile directory, if so, remove the oldest
             
-            var error: NSError?
+            do {
             
-            if let files = NSFileManager.defaultManager().contentsOfDirectoryAtURL(
-                logfileDirectoryURL!,
-                includingPropertiesForKeys: nil,
-                options: NSDirectoryEnumerationOptions.SkipsHiddenFiles,
-                error: &error) as? [NSURL] {
-                    
-                    if files.count > logfileMaxNumberOfFiles {
-                        let sortedFiles = files.sorted({ $0.lastPathComponent < $1.lastPathComponent })
-                        NSFileManager.defaultManager().removeItemAtURL(sortedFiles.first!, error: &error)
-                    }
+                let files = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(
+                    logfileDirectoryURL!,
+                    includingPropertiesForKeys: nil,
+                    options: NSDirectoryEnumerationOptions.SkipsHiddenFiles)
+                
+                if files.count > logfileMaxNumberOfFiles {
+                    let sortedFiles = files.sort({ $0.lastPathComponent < $1.lastPathComponent })
+                    try NSFileManager.defaultManager().removeItemAtURL(sortedFiles.first!)
+                }
+            } catch {
             }
         }
     }
