@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		865AFCB21C871147006CCAD8 /* SwifterLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865AFCB11C871147006CCAD8 /* SwifterLog.swift */; };
 		86E955241ABC6F370006057C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955231ABC6F370006057C /* AppDelegate.swift */; };
 		86E955261ABC6F370006057C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955251ABC6F370006057C /* ViewController.swift */; };
 		86E955281ABC6F370006057C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E955271ABC6F370006057C /* Images.xcassets */; };
 		86E9552B1ABC6F370006057C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86E955291ABC6F370006057C /* Main.storyboard */; };
 		86E955371ABC6F370006057C /* SwifterLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955361ABC6F370006057C /* SwifterLogTests.swift */; };
 		86E955431ABC6F520006057C /* asl-bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 86E955421ABC6F520006057C /* asl-bridge.m */; };
-		86E955451ABC6F5E0006057C /* SwifterLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955441ABC6F5E0006057C /* SwifterLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		865AFCB11C871147006CCAD8 /* SwifterLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
 		86E9551E1ABC6F370006057C /* SwifterLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwifterLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E955221ABC6F370006057C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86E955231ABC6F370006057C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,7 +40,6 @@
 		86E955401ABC6F510006057C /* SwifterLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwifterLog-Bridging-Header.h"; sourceTree = "<group>"; };
 		86E955411ABC6F520006057C /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
 		86E955421ABC6F520006057C /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
-		86E955441ABC6F5E0006057C /* SwifterLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +85,7 @@
 				86E955251ABC6F370006057C /* ViewController.swift */,
 				86E955411ABC6F520006057C /* asl-bridge.h */,
 				86E955421ABC6F520006057C /* asl-bridge.m */,
-				86E955441ABC6F5E0006057C /* SwifterLog.swift */,
+				865AFCB11C871147006CCAD8 /* SwifterLog.swift */,
 				86E955271ABC6F370006057C /* Images.xcassets */,
 				86E955291ABC6F370006057C /* Main.storyboard */,
 				86E955211ABC6F370006057C /* Supporting Files */,
@@ -220,7 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86E955431ABC6F520006057C /* asl-bridge.m in Sources */,
-				86E955451ABC6F5E0006057C /* SwifterLog.swift in Sources */,
+				865AFCB21C871147006CCAD8 /* SwifterLog.swift in Sources */,
 				86E955261ABC6F370006057C /* ViewController.swift in Sources */,
 				86E955241ABC6F370006057C /* AppDelegate.swift in Sources */,
 			);

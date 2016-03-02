@@ -19,7 +19,7 @@ class ViewController: NSViewController {
         log.logfileMaxNumberOfFiles = 5
         
         log.aslFacilityRecordAtAndAboveLevel = SwifterLog.Level.DEBUG
-        log.logfileRecordAtAndAboveLevel = SwifterLog.Level.DEBUG
+        log.fileRecordAtAndAboveLevel = SwifterLog.Level.DEBUG
         log.stdoutPrintAtAndAboveLevel = SwifterLog.Level.DEBUG
         
         log.atLevelDebug(source: "SwifterLog", message: "message debug")
@@ -32,7 +32,7 @@ class ViewController: NSViewController {
         log.atLevelEmergency(source: "SwifterLog", message: "message emergency")
         
         log.aslFacilityRecordAtAndAboveLevel = SwifterLog.Level.WARNING
-        log.logfileRecordAtAndAboveLevel = SwifterLog.Level.WARNING
+        log.fileRecordAtAndAboveLevel = SwifterLog.Level.WARNING
         log.stdoutPrintAtAndAboveLevel = SwifterLog.Level.WARNING
         
         log.atLevelDebug(source: "SwifterLog", message: "should not see this: message debug")
@@ -46,7 +46,7 @@ class ViewController: NSViewController {
         
         log.aslFacilityRecordAtAndAboveLevel = SwifterLog.Level.NONE
         log.stdoutPrintAtAndAboveLevel = SwifterLog.Level.NONE
-        log.logfileRecordAtAndAboveLevel = SwifterLog.Level.DEBUG
+        log.fileRecordAtAndAboveLevel = SwifterLog.Level.DEBUG
         
         for i in 1 ... 5000 {
             log.atLevelCritical(source: "SwifterLog", message: "message critical \(i)")
