@@ -1,7 +1,14 @@
 # SwifterLog
-A single class framework in Swift to create log entries in either/or the ASL, a logfile or stdout.
+A single class framework in Swift to create and manage log entries.
 
-The main class in this project is used internally for our logging needs. It can write to the Apple System Log facility, to a file or to STDOUT (println).
+The main class in this project is used internally for our logging needs. It can write to
+
+1. The Apple System Log facility
+2. A file
+3. STDOUT (println)
+4. A network destination (Needs [SwifterJSON](https://github.com/Swiftrien/SwifterJSON))
+5. A list of callback objects from the Application itself.
+
 It uses the level approach as defined in ASL to differentiate between logging levels.
 
 Simply drop the file into your project, add the asl-bridge files, configure your app's bridge-headers and log away. More details are in the main class.
