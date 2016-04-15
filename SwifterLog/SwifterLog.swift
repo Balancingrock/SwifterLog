@@ -3,12 +3,12 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.5
+//  Version:    0.9.6
 //
 //  Author:     Marinus van der Lugt
 //  Website:    http://www.balancingrock.nl/swifterlog
 //
-//  Copyright:  (c) 2014, 2015 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2014-2016 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -94,12 +94,26 @@
 //
 // 4) You can now add logging statements, just type "log." and the auto-completion in xcode will start suggesting the
 //    operations you need to log and configure this utility.
-//    Typicalle you would write something like:
+//    Typicalle you would write something like (either one of the following):
 //
-//    log.atLevelError(id: anyInt32, source: "MyClass.myOperation", message: "an error occured")
+//    a) log.atLevelError(id: logId, source: "My source identifier", message: "Error message")
+//    b) log.atLevelError(id: logId, source: #file.source(#function, #line), message: "Error message")
+//    c) private let SOURCE = ((#file as NSString).lastPathComponent as NSString).stringByDeletingPathExtension
+//       log.atLevelError(id: logId, source: SOURCE + ".\(#function).\(#line)", message: "Error message")
 //
-// Note: The id is intended to differentiate between sources. I.e. for example an object identifier, a thread
+// Note1: The id is intended to differentiate between sources. I.e. for example an object identifier, a thread
 // identifier, or a socket cq file descriptor.
+//
+// Note2: The source field is used to identify the spot where the log entry originated. The fastest way to do this is
+// by using a constant string (example a). However when the extra time consumption is not a problem it may also be done
+// automatically as in example (b). Example c is a compromise between a and b. I am not really sure, but these two
+// expressions can be evaluated at compile time and hopefully result -like a- in a fast call but with the added benefit
+// of auto-generated identifiers.
+//
+// PS: Note that the #file, #function and #line are determined at compile time and thus cannot be abstracted into a
+// subroutine.
+//
+// Configuration of SwifterLog is through:
 //
 // Configuration for ASL:
 //     aslFacilityRecordAtAndAboveLevel - Threshold for recording.
@@ -199,6 +213,10 @@
 // =====================================================================================================================
 //
 // History:
+// v0.9.6   - Included extension for String to easily create a SOURCE identifier from a #file string.
+//          - JSON code returned by 'json' changed from a value to a valid hierarchy.
+//          - Added ALL_NON_RECURSIVE target definition.
+//          - Updated for changes in SwifterSockets.Transmit
 // v0.9.5   Added transfer of log entries to a TCP/IP destination and targetting of error messages.
 //          Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
 //          Added call-back logging
@@ -246,6 +264,25 @@ func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
 func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue > right.rawValue
 }
+
+
+extension String {
+    
+    /**
+     Extension to create a SOURCE identifier from a #file identifier.
+     
+     Example usage: log.atLevelDebug(id: 0, source: #file.source(#function, #line), message: "My Message")
+     
+     - Note: This will increase the time needed to create the log entry, it is therefore not advised for time-critical entries. Suggested use is at level NOTICE and above only.
+     
+     - Parameter function: This should be the '#function' identifier.
+     - Parameter line: This should be the '#line' identifier.
+     */
+    func source(function: String, _ line: Int) -> String {
+        return ((self as NSString).lastPathComponent as NSString).stringByDeletingPathExtension + "." + function + "." + line.description
+    }
+}
+
 
 final class SwifterLog {
     
@@ -298,6 +335,7 @@ final class SwifterLog {
         static let ALL: Set<Target> = [STDOUT, FILE, ASL, NETWORK, CALLBACK]
         static let ALL_EXCEPT_CALLBACK: Set<Target> = [STDOUT, FILE, ASL, NETWORK]
         static let ALL_EXCEPT_ASL: Set<Target> = [STDOUT, FILE, NETWORK, CALLBACK]
+        static let ALL_NON_RECURSIVE: Set<Target> = [STDOUT, FILE, ASL] // the callback and network could generate an infinite recursion
     }
 
     
@@ -318,15 +356,15 @@ final class SwifterLog {
         let message: String
         
         /// The CustomStringConvertible protocol
-        var description: String { return SwifterLog.logTimeFormatter.stringFromDate(time) + ", " + level.description + ": " + source }
+        var description: String { return SwifterLog.logTimeFormatter.stringFromDate(time) + ", " + level.description + ": " + source + ", " + message }
 
         /// Creates the json representation of this struct
         var json: VJson {
-            let json = VJson.createObject(name: "LogLine")
-            json["Time"].stringValue = SwifterLog.logTimeFormatter.stringFromDate(time)
-            json["Level"].integerValue = level.rawValue
-            json["Source"].stringValue = source
-            json["Message"].stringValue = message
+            let json = VJson.createJsonHierarchy()
+            json["LogLine"]["Time"].stringValue = SwifterLog.logTimeFormatter.stringFromDate(time)
+            json["LogLine"]["Level"].integerValue = level.rawValue
+            json["LogLine"]["Source"].stringValue = source
+            json["LogLine"]["Message"].stringValue = message
             return json
         }
         
@@ -340,13 +378,15 @@ final class SwifterLog {
         
         /// Creates a new logline from the given JSON code, returns nil if this fails.
         init?(json: VJson) {
-            guard json.isObject else { return nil }
-            guard json.nameValue == "LogLine" else { return nil }
-            guard json.nofChildren == 4 else { return nil }
-            guard let jTime = json.objectOfType(VJson.JType.STRING, atPath: "Time")?.stringValue else { return nil }
-            guard let jLevel = json.objectOfType(VJson.JType.NUMBER, atPath: "Level")?.integerValue else { return nil }
-            guard let jSource = json.objectOfType(VJson.JType.STRING, atPath: "Source")?.stringValue else { return nil }
-            guard let jMessage = json.objectOfType(VJson.JType.STRING, atPath: "Message")?.stringValue else { return nil }
+            
+            // Prevent the creation of a "LogLine" object in the json input, first test if it exists
+            guard json.objectOfType(VJson.JType.OBJECT, atPath: ["LogLine"]) != nil else { return nil }
+            
+            guard let jTime = json["LogLine"]["Time"].stringValue else { return nil }
+            guard let jLevel = json["LogLine"]["Level"].integerValue else { return nil }
+            guard let jSource = json["LogLine"]["Source"].stringValue else { return nil }
+            guard let jMessage = json["LogLine"]["Message"].stringValue else { return nil }
+            
             guard let dTime = SwifterLog.logTimeFormatter.dateFromString(jTime) else { return nil }
             guard let lLevel = SwifterLog.Level(rawValue: jLevel) else { return nil }
             
@@ -991,12 +1031,10 @@ final class SwifterLog {
     
     private func closeNetworkConnection() {
         
-        if socket != nil {
-            close(socket!)
-            socket = nil
-            _networkTarget = nil
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Connection to network target closed", targets: [.STDOUT, .ASL, .FILE])
-        }
+        SwifterSockets.closeSocket(socket)
+        socket = nil
+        _networkTarget = nil
+        self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Network target logging stopped", targets: [.STDOUT, .ASL, .FILE])
     }
     
     
@@ -1033,6 +1071,12 @@ final class SwifterLog {
                 
                 
             case .READY: break
+                
+            case .CLIENT_CLOSED, .SERVER_CLOSED:
+                
+                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Connection to network target unexpectedly closed", targets: [.ASL, .FILE, .STDOUT])
+                self.closeNetworkConnection()
+
             }
         }
     }
