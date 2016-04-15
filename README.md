@@ -7,15 +7,15 @@ SwifterLog is part of the 5 packages that make up the Swiftfire webserver:
 
 An open source web server in Swift.
 
-####SwiftfireConsole
+#####SwiftfireConsole
 
 A GUI application for Swiftfire.
 
-####SwifterSockets
+#####SwifterSockets
 
 General purpose socket utilities.
 
-####SwifterJSON
+#####SwifterJSON
 
 General purpose JSON framework.
 
