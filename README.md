@@ -3,23 +3,23 @@ A single class framework in Swift to create and manage log entries.
 
 SwifterLog is part of the 5 packages that make up the Swiftfire webserver:
 
-#####Swiftfire
+#####[Swiftfire](https://github.com/Swiftrien/Swiftfire)
 
 An open source web server in Swift.
 
-#####SwiftfireConsole
+#####[SwiftfireConsole](https://github.com/Swiftrien/SwiftfireConsole)
 
 A GUI application for Swiftfire.
 
-#####SwifterSockets
+#####[SwifterSockets](https://github.com/Swiftrien/SwifterSockets)
 
 General purpose socket utilities.
 
-#####SwifterJSON
+#####[SwifterJSON](https://github.com/Swiftrien/SwifterJSON)
 
 General purpose JSON framework.
 
-There is a 6th package called SwiftfireTester that can be used to challenge a webserver (any webserver) and see/verify the response.
+There is a 6th package called [SwiftfireTester](https://github.com/Swiftrien/SwiftfireTester) that can be used to challenge a webserver (any webserver) and see/verify the response.
 
 #Features
 
@@ -45,22 +45,24 @@ There is a 6th package called SwiftfireTester that can be used to challenge a we
 Simply drop the file into your project, add the asl-bridge files, configure your app's bridge-headers and log away. More details are in the main class.
 
 #Version History
-V0.9.6:
+
+####V0.9.6:
 
 - Included extension for type String to easily create a SOURCE identifier from a #file string.
 - JSON code returned by 'json' changed from a value to a valid hierarchy.
 - Added ALL_NON_RECURSIVE target definition.
 - Updated for changes in SwifterSockets.Transmit
 
-V0.9.5:
+####V0.9.5:
 
 - Added transfer of log entries to a TCP/IP destination and targetting of error messages.
 - Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
 - Added call-back logging
 
-V0.9.4
+####V0.9.4
 
 - Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
 - Note: v0.9.4 was never released into the public.
 
-V0.9.3: Updated for Swift 2.0
+####V0.9.3:
+- Updated for Swift 2.0
