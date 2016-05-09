@@ -6,86 +6,19 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		863C1A0B1CC15C320076587F /* SwifterLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863C1A0A1CC15C320076587F /* SwifterLog.swift */; };
-		864C6F7A1CC28D8000C60220 /* ASCII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F781CC28D8000C60220 /* ASCII.swift */; };
-		864C6F7B1CC28D8000C60220 /* VJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F791CC28D8000C60220 /* VJson.swift */; };
-		864C6F901CC28DE200C60220 /* SwifterSockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F8A1CC28DE200C60220 /* SwifterSockets.swift */; };
-		864C6F911CC28DE200C60220 /* SwifterSockets.InitServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F8B1CC28DE200C60220 /* SwifterSockets.InitServer.swift */; };
-		864C6F921CC28DE200C60220 /* SwifterSockets.InitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F8C1CC28DE200C60220 /* SwifterSockets.InitClient.swift */; };
-		864C6F931CC28DE200C60220 /* SwifterSockets.Transmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F8D1CC28DE200C60220 /* SwifterSockets.Transmit.swift */; };
-		864C6F941CC28DE200C60220 /* SwifterSockets.Receive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F8E1CC28DE200C60220 /* SwifterSockets.Receive.swift */; };
-		864C6F951CC28DE200C60220 /* SwifterSockets.Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864C6F8F1CC28DE200C60220 /* SwifterSockets.Accept.swift */; };
-		86E955241ABC6F370006057C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955231ABC6F370006057C /* AppDelegate.swift */; };
-		86E955261ABC6F370006057C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E955251ABC6F370006057C /* ViewController.swift */; };
-		86E955281ABC6F370006057C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86E955271ABC6F370006057C /* Images.xcassets */; };
-		86E9552B1ABC6F370006057C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86E955291ABC6F370006057C /* Main.storyboard */; };
-		86E955431ABC6F520006057C /* asl-bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 86E955421ABC6F520006057C /* asl-bridge.m */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		863C1A0A1CC15C320076587F /* SwifterLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
-		864C6F781CC28D8000C60220 /* ASCII.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ASCII.swift; path = ../../SwifterJSON/SwifterJSON/SwifterJSON/ASCII.swift; sourceTree = "<group>"; };
-		864C6F791CC28D8000C60220 /* VJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VJson.swift; path = ../../SwifterJSON/SwifterJSON/SwifterJSON/VJson.swift; sourceTree = "<group>"; };
-		864C6F8A1CC28DE200C60220 /* SwifterSockets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.swift; sourceTree = "<group>"; };
-		864C6F8B1CC28DE200C60220 /* SwifterSockets.InitServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.InitServer.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.InitServer.swift; sourceTree = "<group>"; };
-		864C6F8C1CC28DE200C60220 /* SwifterSockets.InitClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.InitClient.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.InitClient.swift; sourceTree = "<group>"; };
-		864C6F8D1CC28DE200C60220 /* SwifterSockets.Transmit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Transmit.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Transmit.swift; sourceTree = "<group>"; };
-		864C6F8E1CC28DE200C60220 /* SwifterSockets.Receive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Receive.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Receive.swift; sourceTree = "<group>"; };
-		864C6F8F1CC28DE200C60220 /* SwifterSockets.Accept.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Accept.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Accept.swift; sourceTree = "<group>"; };
-		86E9551E1ABC6F370006057C /* SwifterLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwifterLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		86E955221ABC6F370006057C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		86E955231ABC6F370006057C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		86E955251ABC6F370006057C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		86E955271ABC6F370006057C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		86E9552A1ABC6F370006057C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		86E955351ABC6F370006057C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		86E955361ABC6F370006057C /* SwifterLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLogTests.swift; sourceTree = "<group>"; };
+		866F6C311CDC911100557ACE /* SwifterLogNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLogNetwork.swift; sourceTree = "<group>"; };
+		866F6CD11CDCECE300557ACE /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
+		866F6CD21CDCECE300557ACE /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
+		866F6CD51CDCECF200557ACE /* SwifterLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
 		86E955401ABC6F510006057C /* SwifterLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwifterLog-Bridging-Header.h"; sourceTree = "<group>"; };
-		86E955411ABC6F520006057C /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
-		86E955421ABC6F520006057C /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		86E9551B1ABC6F370006057C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
-		863C1A051CC15A180076587F /* SwifterJSON */ = {
-			isa = PBXGroup;
-			children = (
-				864C6F781CC28D8000C60220 /* ASCII.swift */,
-				864C6F791CC28D8000C60220 /* VJson.swift */,
-			);
-			name = SwifterJSON;
-			sourceTree = "<group>";
-		};
-		863C1A0D1CC15C4B0076587F /* SwifterSockets */ = {
-			isa = PBXGroup;
-			children = (
-				864C6F8A1CC28DE200C60220 /* SwifterSockets.swift */,
-				864C6F8B1CC28DE200C60220 /* SwifterSockets.InitServer.swift */,
-				864C6F8C1CC28DE200C60220 /* SwifterSockets.InitClient.swift */,
-				864C6F8D1CC28DE200C60220 /* SwifterSockets.Transmit.swift */,
-				864C6F8E1CC28DE200C60220 /* SwifterSockets.Receive.swift */,
-				864C6F8F1CC28DE200C60220 /* SwifterSockets.Accept.swift */,
-			);
-			name = SwifterSockets;
-			sourceTree = "<group>";
-		};
 		86E955151ABC6F370006057C = {
 			isa = PBXGroup;
 			children = (
-				863C1A0D1CC15C4B0076587F /* SwifterSockets */,
-				863C1A051CC15A180076587F /* SwifterJSON */,
 				86E955201ABC6F370006057C /* SwifterLog */,
-				86E955331ABC6F370006057C /* SwifterLogTests */,
 				86E9551F1ABC6F370006057C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,7 +26,6 @@
 		86E9551F1ABC6F370006057C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				86E9551E1ABC6F370006057C /* SwifterLog.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,78 +33,24 @@
 		86E955201ABC6F370006057C /* SwifterLog */ = {
 			isa = PBXGroup;
 			children = (
-				86E955231ABC6F370006057C /* AppDelegate.swift */,
-				86E955251ABC6F370006057C /* ViewController.swift */,
-				86E955411ABC6F520006057C /* asl-bridge.h */,
-				86E955421ABC6F520006057C /* asl-bridge.m */,
-				863C1A0A1CC15C320076587F /* SwifterLog.swift */,
-				86E955271ABC6F370006057C /* Images.xcassets */,
-				86E955291ABC6F370006057C /* Main.storyboard */,
-				86E955211ABC6F370006057C /* Supporting Files */,
+				866F6CD11CDCECE300557ACE /* asl-bridge.h */,
+				866F6CD21CDCECE300557ACE /* asl-bridge.m */,
+				866F6CD51CDCECF200557ACE /* SwifterLog.swift */,
+				866F6C311CDC911100557ACE /* SwifterLogNetwork.swift */,
 				86E955401ABC6F510006057C /* SwifterLog-Bridging-Header.h */,
 			);
 			path = SwifterLog;
 			sourceTree = "<group>";
 		};
-		86E955211ABC6F370006057C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				86E955221ABC6F370006057C /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		86E955331ABC6F370006057C /* SwifterLogTests */ = {
-			isa = PBXGroup;
-			children = (
-				86E955361ABC6F370006057C /* SwifterLogTests.swift */,
-				86E955341ABC6F370006057C /* Supporting Files */,
-			);
-			path = SwifterLogTests;
-			sourceTree = "<group>";
-		};
-		86E955341ABC6F370006057C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				86E955351ABC6F370006057C /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
-
-/* Begin PBXNativeTarget section */
-		86E9551D1ABC6F370006057C /* SwifterLog */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 86E9553A1ABC6F370006057C /* Build configuration list for PBXNativeTarget "SwifterLog" */;
-			buildPhases = (
-				86E9551A1ABC6F370006057C /* Sources */,
-				86E9551B1ABC6F370006057C /* Frameworks */,
-				86E9551C1ABC6F370006057C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SwifterLog;
-			productName = SwifterLog;
-			productReference = 86E9551E1ABC6F370006057C /* SwifterLog.app */;
-			productType = "com.apple.product-type.application";
-		};
-/* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		86E955161ABC6F370006057C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Marinus van der Lugt";
-				TargetAttributes = {
-					86E9551D1ABC6F370006057C = {
-						CreatedOnToolsVersion = 6.3;
-					};
-				};
 			};
 			buildConfigurationList = 86E955191ABC6F370006057C /* Build configuration list for PBXProject "SwifterLog" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -187,55 +65,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				86E9551D1ABC6F370006057C /* SwifterLog */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		86E9551C1ABC6F370006057C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86E955281ABC6F370006057C /* Images.xcassets in Resources */,
-				86E9552B1ABC6F370006057C /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		86E9551A1ABC6F370006057C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86E955431ABC6F520006057C /* asl-bridge.m in Sources */,
-				864C6F901CC28DE200C60220 /* SwifterSockets.swift in Sources */,
-				86E955261ABC6F370006057C /* ViewController.swift in Sources */,
-				864C6F911CC28DE200C60220 /* SwifterSockets.InitServer.swift in Sources */,
-				864C6F951CC28DE200C60220 /* SwifterSockets.Accept.swift in Sources */,
-				864C6F7A1CC28D8000C60220 /* ASCII.swift in Sources */,
-				864C6F7B1CC28D8000C60220 /* VJson.swift in Sources */,
-				864C6F941CC28DE200C60220 /* SwifterSockets.Receive.swift in Sources */,
-				864C6F931CC28DE200C60220 /* SwifterSockets.Transmit.swift in Sources */,
-				86E955241ABC6F370006057C /* AppDelegate.swift in Sources */,
-				864C6F921CC28DE200C60220 /* SwifterSockets.InitClient.swift in Sources */,
-				863C1A0B1CC15C320076587F /* SwifterLog.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		86E955291ABC6F370006057C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				86E9552A1ABC6F370006057C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		86E955381ABC6F370006057C /* Debug */ = {
@@ -279,6 +111,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -316,35 +149,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		86E9553B1ABC6F370006057C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwifterLog/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "nl.balancingrock.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SwifterLog/SwifterLog-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		86E9553C1ABC6F370006057C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwifterLog/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "nl.balancingrock.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SwifterLog/SwifterLog-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
@@ -356,15 +161,6 @@
 			buildConfigurations = (
 				86E955381ABC6F370006057C /* Debug */,
 				86E955391ABC6F370006057C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		86E9553A1ABC6F370006057C /* Build configuration list for PBXNativeTarget "SwifterLog" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				86E9553B1ABC6F370006057C /* Debug */,
-				86E9553C1ABC6F370006057C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

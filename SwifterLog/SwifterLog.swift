@@ -3,10 +3,12 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.6
+//  Version:    0.9.7
 //
 //  Author:     Marinus van der Lugt
 //  Website:    http://www.balancingrock.nl/swifterlog
+//  Blog:       http://swiftrien.blogspot.com
+//  Git:        https://github.com/Swiftrien/SwifterLog
 //
 //  Copyright:  (c) 2014-2016 Marinus van der Lugt, All rights reserved.
 //
@@ -19,9 +21,9 @@
 //
 //  I also ask you to please leave this header with the source code.
 //
-//  I strongly believe that NAP is the way for societies to function optimally. I thus reject the implicit use of force
-//  to extract payment. Since I cannot negotiate with you about the price of this code, I have choosen to leave it up to
-//  you to determine its price. You pay me whatever you think this code is worth to you.
+//  I strongly believe that the Non Agression Principle is the way for societies to function optimally. I thus reject
+//  the implicit use of force to extract payment. Since I cannot negotiate with you about the price of this code, I
+//  have choosen to leave it up to you to determine its price. You pay me whatever you think this code is worth to you.
 //
 //   - You can send payment via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
@@ -31,7 +33,7 @@
 //
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
 //
-//  (It is always a good idea to visit the website/google to ensure that you actually pay me and not some imposter)
+//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
 //
 //  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
 //  For commercial use the suggested price is the price of 1 good meal, say $20.
@@ -213,6 +215,7 @@
 // =====================================================================================================================
 //
 // History:
+// v0.9.7   - Split off the network related stuff into its own file (except for the property definitions)
 // v0.9.6   - Included extension for String to easily create a SOURCE identifier from a #file string.
 //          - JSON code returned by 'json' changed from a value to a valid hierarchy.
 //          - Added ALL_NON_RECURSIVE target definition.
@@ -236,12 +239,12 @@ import Foundation
 // Typing "log." where you need logging will instantly reveal all available options.
 
 
-let log = SwifterLog() // Since SwifterLog.init is private, this is the only instance ever created
+public let log = SwifterLog() // Since SwifterLog.init is private, this is the only instance ever created
 
 
 /// The protocol for callback receivers
 
-protocol SwifterlogCallbackProtocol: class {
+public protocol SwifterlogCallbackProtocol: class {
     
     /**
      The registered callback object must implement this function.
@@ -257,14 +260,13 @@ protocol SwifterlogCallbackProtocol: class {
     func logInfo(time: NSDate, level: SwifterLog.Level, source: String, message: String)
 }
 
-func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+public func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue <= right.rawValue
 }
 
-func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+public func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue > right.rawValue
 }
-
 
 extension String {
     
@@ -284,12 +286,12 @@ extension String {
 }
 
 
-final class SwifterLog {
+public final class SwifterLog {
     
     
     /// The available levels to cut-off
     
-    enum Level: Int, CustomStringConvertible {
+    public enum Level: Int, CustomStringConvertible {
         case DEBUG          = 0
         case INFO           = 1
         case NOTICE         = 2
@@ -299,7 +301,7 @@ final class SwifterLog {
         case ALERT          = 6
         case EMERGENCY      = 7
         case NONE           = 8
-        var description: String {
+        public var description: String {
             switch self {
             case .DEBUG:        return "DEBUG    "
             case .INFO:         return "INFO     "
@@ -312,7 +314,7 @@ final class SwifterLog {
             case .NONE:         return "NONE     "
             }
         }
-        func toAslLevel() -> Int32 {
+        public func toAslLevel() -> Int32 {
             switch self {
             case .DEBUG:        return 7
             case .INFO:         return 6
@@ -328,73 +330,16 @@ final class SwifterLog {
     }
     
     
+    // TODO: Consider removing the network target if it is not needed. Of course the rest of the code must be slimmed down if this is done. The compiler will identify the other places.
+    
     /// Available targets for error messages
     
-    enum Target {
+    public enum Target {
         case STDOUT, FILE, ASL, NETWORK, CALLBACK
-        static let ALL: Set<Target> = [STDOUT, FILE, ASL, NETWORK, CALLBACK]
-        static let ALL_EXCEPT_CALLBACK: Set<Target> = [STDOUT, FILE, ASL, NETWORK]
-        static let ALL_EXCEPT_ASL: Set<Target> = [STDOUT, FILE, NETWORK, CALLBACK]
-        static let ALL_NON_RECURSIVE: Set<Target> = [STDOUT, FILE, ASL] // the callback and network could generate an infinite recursion
-    }
-
-    
-    /// The logline as it will be transferred to the network destination
-    
-    struct LogLine: CustomStringConvertible {
-        
-        /// Timestamp of the log entry
-        let time: NSDate
-        
-        /// The loglevel of the log entry
-        let level: Level
-        
-        /// The source of the log entry
-        let source: String
-        
-        /// The message of the log entry
-        let message: String
-        
-        /// The CustomStringConvertible protocol
-        var description: String { return SwifterLog.logTimeFormatter.stringFromDate(time) + ", " + level.description + ": " + source + ", " + message }
-
-        /// Creates the json representation of this struct
-        var json: VJson {
-            let json = VJson.createJsonHierarchy()
-            json["LogLine"]["Time"].stringValue = SwifterLog.logTimeFormatter.stringFromDate(time)
-            json["LogLine"]["Level"].integerValue = level.rawValue
-            json["LogLine"]["Source"].stringValue = source
-            json["LogLine"]["Message"].stringValue = message
-            return json
-        }
-        
-        /// Creates a new logline
-        init(time: NSDate, level: Level, source: String, message: String) {
-            self.time = time
-            self.level = level
-            self.source = source
-            self.message = message
-        }
-        
-        /// Creates a new logline from the given JSON code, returns nil if this fails.
-        init?(json: VJson) {
-            
-            // Prevent the creation of a "LogLine" object in the json input, first test if it exists
-            guard json.objectOfType(VJson.JType.OBJECT, atPath: ["LogLine"]) != nil else { return nil }
-            
-            guard let jTime = json["LogLine"]["Time"].stringValue else { return nil }
-            guard let jLevel = json["LogLine"]["Level"].integerValue else { return nil }
-            guard let jSource = json["LogLine"]["Source"].stringValue else { return nil }
-            guard let jMessage = json["LogLine"]["Message"].stringValue else { return nil }
-            
-            guard let dTime = SwifterLog.logTimeFormatter.dateFromString(jTime) else { return nil }
-            guard let lLevel = SwifterLog.Level(rawValue: jLevel) else { return nil }
-            
-            self.time = dTime
-            self.level = lLevel
-            self.source = jSource
-            self.message = jMessage
-        }
+        public static let ALL: Set<Target> = [STDOUT, FILE, ASL, NETWORK, CALLBACK]
+        public static let ALL_EXCEPT_CALLBACK: Set<Target> = [STDOUT, FILE, ASL, NETWORK]
+        public static let ALL_EXCEPT_ASL: Set<Target> = [STDOUT, FILE, NETWORK, CALLBACK]
+        public static let ALL_NON_RECURSIVE: Set<Target> = [STDOUT, FILE, ASL] // the callback and network could generate an infinite recursion
     }
 
     
@@ -404,7 +349,7 @@ final class SwifterLog {
      - Note: When debugging in xcode, the app support directory is in /Library/Containers/<<<bundle identifier>>>/Data/Library/Application Support/<<<app name>>>/Logfiles.
      */
     
-    var logfileDirectoryPath: NSString? {
+    public var logfileDirectoryPath: NSString? {
         didSet {
             logdirErrorMessageGenerated = false
             logfileErrorMessageGenerated = false
@@ -414,21 +359,22 @@ final class SwifterLog {
     
     /// As soon as an entry in the current logfile grows the logfile beyond this limit, the logfile will be closed and a new logfile will be started. The default is 1 MB. Also see "logfileMaxNumberOfFiles".
     
-    var logfileMaxSizeInBytes: UInt64 = 1 * 1024 * 1024
+    public var logfileMaxSizeInBytes: UInt64 = 1 * 1024 * 1024
 
     
     /// The maximum number of logfiles kept in the logfile directory. As soon as there are more than this number of logfiles, the oldest logfile will be removed. Must be >= 2.
     
-    var logfileMaxNumberOfFiles: Int = 20 {
+    public var logfileMaxNumberOfFiles: Int = 20 {
         didSet {
             if logfileMaxNumberOfFiles < 2 { logfileMaxNumberOfFiles = 2 }
         }
     }
     
     
-    // For the network target.
+    // MARK: - For the network target.
+    // TODO: - The following 4 declarations can be removed if the network destination is not needed
     
-    typealias NetworkTarget = (address: String, port: String)
+    public typealias NetworkTarget = (address: String, port: String)
 
     
     /**
@@ -437,39 +383,28 @@ final class SwifterLog {
      - Note: There will be a delay between calling connectToNetworkTarget and closeNetworkTarget and the updating of this variable. Thus checking this variable immediately after a return from either function will most likely fail to deliver the actual status.
      */
     
-    var networkTarget: NetworkTarget? {
+    public var networkTarget: NetworkTarget? {
         return _networkTarget
     }
     
-    private var _networkTarget: NetworkTarget?
+    internal var _networkTarget: NetworkTarget?
     
     
-    /// Tries to opens a client connection to the target. Since the connection attempt will take place asynchronously, the feedback by way of the "networkTarget" variable will be delayed. Checking that variable immediately after a return from this function will most likely fail to deliver the actual status.
+    // The socket for the network target
     
-    func connectToNetworkTarget(target: NetworkTarget) {
-        if networkQueue == nil {
-            // Only create this queue if necessary, and then do it only once.
-            networkQueue = dispatch_queue_create("network-queue", DISPATCH_QUEUE_SERIAL)
-        }
-        dispatch_async(networkQueue!, { [unowned self] in self.openNetworkConnection(target.address, port: target.port)})
-    }
+    internal var socket: Int32?
+
     
-    
-    /// Closes the connection to the target if it was open. Since the closeing will take place asynchronously, the feedback by way of the "networkTarget" variable will be delayed. Checking that variable immediately after a return from this function will most likely fail to deliver the actual status.
-    
-    func closeNetworkTarget() {
-        dispatch_async(networkQueue!, { [unowned self] in self.closeNetworkConnection()})
-    }
-    
+    // MARK: - Loglevel control
     
     /// Only messages with a level at or above the level specified in this variable will be written to STDOUT. Set to "SwifterLog.Level.NONE" to suppress all messages to STDOUT.
     
-    var stdoutPrintAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
+    public var stdoutPrintAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
     
     
     /// Only messages with a level at or above the level specified in this variable will be recorded in the logfile. Set to "SwifterLog.Level.NONE" to suppress all messages to the logfile.
 
-    var fileRecordAtAndAboveLevel: Level = .NONE  { didSet { self.setOverallThreshold() } }
+    public var fileRecordAtAndAboveLevel: Level = .NONE  { didSet { self.setOverallThreshold() } }
 
     
     /**
@@ -480,7 +415,7 @@ final class SwifterLog {
      - Note: SwifterLog itself can write messages to the ASL at level ERROR if necessary. If the threshold is set higher than ERROR SwifterLog will fail silently.
      */
     
-    var aslFacilityRecordAtAndAboveLevel: Level = .NONE  {
+    public var aslFacilityRecordAtAndAboveLevel: Level = .NONE  {
         didSet {
             self.setOverallThreshold()
             if (oldValue == .NONE) && (aslFacilityRecordAtAndAboveLevel != .NONE)
@@ -495,12 +430,12 @@ final class SwifterLog {
     
     /// Only messages with a level at or above the level specified in this variable will be transferred to the TCP/IP destination. Set to "SwifterLog.Level.NONE" to suppress transmission of all messages to the TCP/IP destination.
     
-    var networkTransmitAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
+    public var networkTransmitAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
     
     
     /// Only messages with a level at or above the level specified in this variable will be transferred to the callback destination(s). Set to "SwifterLog.Level.NONE" to suppress transmission of all messages to the callback destination(s).
 
-    var callbackAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
+    public var callbackAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
     
     
     /**
@@ -509,7 +444,7 @@ final class SwifterLog {
      - Parameter target: The callback target to be added.
      */
     
-    func registerCallback(target: SwifterlogCallbackProtocol) {
+    public func registerCallback(target: SwifterlogCallbackProtocol) {
         for t in callbackTargets {
             if target === t { return }
         }
@@ -523,7 +458,7 @@ final class SwifterLog {
      - Parameter target: The callback target to be removed.
      */
 
-    func removeCallbackTarget(target: SwifterlogCallbackProtocol) {
+    public func removeCallbackTarget(target: SwifterlogCallbackProtocol) {
         for (index, t) in callbackTargets.enumerate() {
             if target === t { callbackTargets.removeAtIndex(index) }
         }
@@ -532,7 +467,7 @@ final class SwifterLog {
     
     /// Prints a line with the specified character for the specified times to the console
     
-    func consoleSeperatorLine(char: Character, times: Int) {
+    public func consoleSeperatorLine(char: Character, times: Int) {
         guard times >= 0 else { return }
         let time = NSDate()
         var separator = ""
@@ -549,75 +484,75 @@ final class SwifterLog {
     
     // MARK: - Logging functions
     
-    func atLevel(level: Level, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevel(level: Level, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: source, message: message, targets: targets)
     }
 
-    func atLevelDebug(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelDebug(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.DEBUG, source: source, message: message, targets: targets)
     }
     
-    func atLevelInfo(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelInfo(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.INFO, source: source, message: message, targets: targets)
     }
     
-    func atLevelNotice(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelNotice(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.NOTICE, source: source, message: message, targets: targets)
     }
     
-    func atLevelWarning(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelWarning(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.WARNING, source: source, message: message, targets: targets)
     }
     
-    func atLevelError(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelError(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ERROR, source: source, message: message, targets: targets)
     }
     
-    func atLevelCritical(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelCritical(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.CRITICAL, source: source, message: message, targets: targets)
     }
     
-    func atLevelAlert(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelAlert(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ALERT, source: source, message: message, targets: targets)
     }
     
-    func atLevelEmergency(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelEmergency(source source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.EMERGENCY, source: source, message: message, targets: targets)
     }
 
-    func atLevel(level: Level, id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevel(level: Level, id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: createSource(id, source), message: message, targets: targets)
     }
 
-    func atLevelDebug(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelDebug(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.DEBUG, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelInfo(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelInfo(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.INFO, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelNotice(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelNotice(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.NOTICE, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelWarning(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelWarning(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.WARNING, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelError(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelError(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ERROR, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelCritical(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelCritical(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.CRITICAL, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelAlert(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelAlert(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ALERT, source: createSource(id, source), message: message, targets: targets)
     }
     
-    func atLevelEmergency(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelEmergency(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.EMERGENCY, source: createSource(id, source), message: message, targets: targets)
     }
 
@@ -697,6 +632,7 @@ final class SwifterLog {
                     logfileDirectoryPath = logfileDirPath
                 }
                 
+                // TODO: Comment out the next line if the network destination is not needed
                 if let networkIpAddress = swifterLogOptions["networkIpAddress"] as? String {
                     if let networkPortNumber = swifterLogOptions["networkPortNumber"] as? String {
                         connectToNetworkTarget(NetworkTarget(networkIpAddress, networkPortNumber))
@@ -775,7 +711,7 @@ final class SwifterLog {
     
     // Send logging messages to a network destination using this. This decouples the log messages on this machine from the traffic conditions to another machine.
     
-    private var networkQueue: dispatch_queue_t?
+    internal var networkQueue: dispatch_queue_t?
     
     
     // Send logging messages to callbacks using this queue. This decouples the log messages on this machine from possible application errors.
@@ -802,6 +738,7 @@ final class SwifterLog {
         if destinationSTDOut { logToStdout(logstr) }
         if destinationFile { logToFile(logstr) }
         if destinationASL { logToASL(logLevel, message: logstr) }
+        // TODO: Comment out the next line if the network destination is not needed
         if destinationNetwork {
             if networkQueue != nil {
                 dispatch_async(networkQueue!, { [unowned self] in
@@ -981,106 +918,7 @@ final class SwifterLog {
             }
         }
     }
-    
 
-    // MARK: - Network Target
-    
-    // The socket to the TCP/IP destination
-    
-    private var socket: Int32?
-    
-    
-    // Open a network destination
-    
-    private func openNetworkConnection(ipAddress: String, port: String) {
-        
-        // If there is an open connection, close that first.
-        
-        if socket != nil {
-            close(socket!)
-            socket = nil
-            _networkTarget = nil
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Connection to network target closed", targets: [.STDOUT, .ASL, .FILE])
-        }
-        
-        
-        // Try to open a connection
-        
-        let result = SwifterSockets.initClient(address: ipAddress, port: port)
-        
-        switch result {
-            
-        case let .ERROR(msg):
-            
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", targets: [.STDOUT, .ASL, .FILE])
-            
-            
-        case let .SOCKET(num):
-            
-            socket = num
-            _networkTarget = (ipAddress, port)
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Openend connection to network target. Address = \(ipAddress), port = \(port)", targets: [.STDOUT, .ASL, .FILE])
-        }
-    }
-    
-    
-    // Close an existing network destination if there is one
-    //
-    // It is currently possible for the socket to be closed even if there are still messages beiing transferred.
-    // Most likely this is never of any real importance. If this ever becomes a problem, we deal with it then.
-    
-    private func closeNetworkConnection() {
-        
-        SwifterSockets.closeSocket(socket)
-        socket = nil
-        _networkTarget = nil
-        self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Network target logging stopped", targets: [.STDOUT, .ASL, .FILE])
-    }
-    
-    
-    // Log information to the network destination (or open cq close that connection)
-    
-    private func logToNetwork(time: NSDate, source: String, logLevel: Level, message: String) {
-    
-        
-        // Send the log information to a network destination (if there is one)
-            
-        if socket != nil {
-
-            
-            // JSON formatted message
-            
-            let logline = LogLine(time: time, level: logLevel, source: source, message: message)
-            
-                
-            // Try to transmit it. Use a very short timeout because there can be a lot of messages and the connection should be able to handle a fast succession of messages.
-            
-            let result = SwifterSockets.transmit(socket!, string: logline.json.description, timeout: 0.1, telemetry: nil)
-            
-            switch result {
-                
-            case .TIMEOUT:
-                
-                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Timeout on connection to network target", targets: [.ASL, .FILE, .STDOUT])
-                
-                
-            case let .ERROR(message: err):
-                
-                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Error on transfer to network target: \(err)", targets: [.ASL, .FILE, .STDOUT])
-                self.closeNetworkConnection()
-                
-                
-            case .READY: break
-                
-            case .CLIENT_CLOSED, .SERVER_CLOSED:
-                
-                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Connection to network target unexpectedly closed", targets: [.ASL, .FILE, .STDOUT])
-                self.closeNetworkConnection()
-
-            }
-        }
-    }
-    
     
     // MARK: - Callback targets
     

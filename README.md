@@ -1,8 +1,6 @@
 # SwifterLog
 A single class framework in Swift to create and manage log entries.
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-
 SwifterLog is part of the 5 packages that make up the Swiftfire webserver:
 
 #####[Swiftfire](https://github.com/Swiftrien/Swiftfire)
@@ -19,7 +17,7 @@ General purpose socket utilities.
 
 #####[SwifterJSON](https://github.com/Swiftrien/SwifterJSON)
 
-General purpose JSON framework.
+General purpose JSON utility.
 
 There is a 6th package called [SwiftfireTester](https://github.com/Swiftrien/SwiftfireTester) that can be used to challenge a webserver (any webserver) and see/verify the response.
 
@@ -44,23 +42,29 @@ There is a 6th package called [SwiftfireTester](https://github.com/Swiftrien/Swi
 - The file destination can be configured to store the log info in a predefined number of files of a predefined maximum size. When the maximum number of files is exceeded, the oldest file will automaticaly be removed.
 
 #Usage
-##As a Framework
-Do use [Chartage](https://github.com/Carthage/Carthage) for this. Note that due to bug 22492040 Apple says: "_Frameworks written in Swift should be compiled from source as part of the same project that depends on them to guarantee a single, consistent compilation environment._", hence you will need to rebuild the framework to be sure. [Chartage](https://github.com/Carthage/Carthage) can do this for you.
-If you use SwifterLog this way, you will also need the frameworks SwifterJSON and SwifterSockets.
 
-##As Sourcecode
+##Including the network destination
+If you need the network destination, or want to get goiing without making modifications:
 
-SwifterLog can be used in two ways: As a stand-alone framework and as a framework that is integrated with SwfterJSON and SwifterSockets.
 1. Drop the 4 files: SwifterLog.swift, SwifterLogNetwork.swift, asl-bridge.m & asl-bridge.h into your project.
 2. Configure your bridge file (or add one) like SwifterLog-Bridging-Header.h.
-3. If you do not want/need the network destination, remove
+3. Add the [SwifterSockets](https://github.com/Swiftrien/SwifterSockets) files to the project.
+
+##Excluding the network destination
+If you do not need the network destination or do not want to include SwifterSockets:
+
+1. Drop the 3 files: SwifterLog.swift, asl-bridge.m & asl-bridge.h into your project.
+2. Configure your bridge file (or add one) like SwifterLog-Bridging-Header.h.
+3. Remove the call's SwifterLogNetwork from SwifterLog.swift (there are 2 of them, marked with "TODO"). If you don't like compiler warnings, you can remove the network support properties from SwifterLog.swift as well.
 
 #Version History
 
 ####V0.9.7:
 
-- Changed target to a framework
-- Added support for [Chartage](https://github.com/Carthage/Carthage)
+- Removed all targets
+- Removed other unnecessary files
+- Moved the network support to its own file (as far as possible).
+- Added release tag
 
 ####V0.9.6:
 
