@@ -3,10 +3,11 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.7
+//  Version:    0.9.8
 //
 //  Author:     Marinus van der Lugt
-//  Website:    http://www.balancingrock.nl/swifterlog
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/pages/projects/swifterlog/
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Swiftrien/SwifterLog
 //
@@ -87,16 +88,19 @@
 //
 // Quick start:
 //
-// 1) Make sure that you have the above described two files (create them if necessary) and update the bridging header
-//    file.
+// 1) Add SwifterJSON and SwifterSockets to the project. (Not necessary if the TODO items are performed as detailed in
+//    the source code)
 //
-// 2) Add all 3 files to your project.
+// 2) Add all 4 files (asl-bridge.h, asl-bridge.m, SwifterLog.swift and SwifterLog.Network.swift) to the project. (Do
+//    not add SwifterLog.Network.swift if SwifterJSON and SwifterSockets are not present)
 //
-// 3) Make sure there is no global variable called "log" in your project, except for the one in this file.
+// 3) Update the bridging header (create one if necessary)
 //
-// 4) You can now add logging statements, just type "log." and the auto-completion in xcode will start suggesting the
-//    operations you need to log and configure this utility.
-//    Typicalle you would write something like (either one of the following):
+// 4) Make sure there is no global variable called "log" in the project, except for the one in this file.
+//
+// 5) That is all. Now add logging statements, just type "log." and the auto-completion in xcode will start suggesting
+//    the operations necessary to log and configure this utility.
+//    Typical is as follows:
 //
 //    a) log.atLevelError(id: logId, source: "My source identifier", message: "Error message")
 //    b) log.atLevelError(id: logId, source: #file.source(#function, #line), message: "Error message")
@@ -153,7 +157,7 @@
 // Note: Without code signing a user can change the Info.plist, but then you cannot use the App-store for distribution.
 //
 // In order to set them in the Info.plist add a dictionary item with the key value "SwifterLog". In this directory add
-// as many of the configuration items as you like. Use the full name of the configuration items for the key's and
+// as many of the configuration items as necessary. Use the full name of the configuration items for the key's and
 // numbers for their values except for the logfileDirectoryPath which is a string. SwifterLog will guard against values
 // that are invalid or out-of-bounds, in that case the default values as in this code will be used.
 //
@@ -175,7 +179,7 @@
 //
 // =====================================================================================================================
 //
-// And don't forget: Before creating the final release version of your software, make sure to set the correct loglevels!
+// Don't forget: Before creating the final release version of the software, make sure to set the correct loglevels!
 //
 // =====================================================================================================================
 //
@@ -215,6 +219,7 @@
 // =====================================================================================================================
 //
 // History:
+// v0.9.8   - Header update
 // v0.9.7   - Split off the network related stuff into its own file (except for the property definitions)
 // v0.9.6   - Included extension for String to easily create a SOURCE identifier from a #file string.
 //          - JSON code returned by 'json' changed from a value to a valid hierarchy.

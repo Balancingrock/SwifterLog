@@ -1,12 +1,13 @@
 // =====================================================================================================================
 //
-//  File:       SwifterLogNetwork.swift
+//  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.7
+//  Version:    0.9.8
 //
 //  Author:     Marinus van der Lugt
-//  Website:    http://www.balancingrock.nl/swifterlog
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/pages/projects/swifterlog/
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Swiftrien/SwifterLog
 //
@@ -55,6 +56,8 @@
 //
 // History:
 //
+// v0.9.8 - Header update
+//        - Renamed to SwifterLog.Network.swift
 // v0.9.7   Initial release
 //
 // =====================================================================================================================

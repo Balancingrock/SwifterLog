@@ -1,7 +1,7 @@
 # SwifterLog
 A single class framework in Swift to create and manage log entries.
 
-SwifterLog is part of the 5 packages that make up the Swiftfire webserver:
+SwifterLog is part of the 5 packages that make up the [Swiftfire](http://swiftfire.nl) webserver:
 
 #####[Swiftfire](https://github.com/Swiftrien/Swiftfire)
 
