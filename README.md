@@ -59,6 +59,11 @@ If you do not need the network destination or do not want to include SwifterSock
 
 #Version History
 
+####v0.9.8:
+
+- Header update to include new website: [swiftfire.nl](http://swiftfire.nl)
+- Renamed SwifterLogNetwork.swift to SwifterLog.Network.swift
+
 ####V0.9.7:
 
 - Removed all targets
