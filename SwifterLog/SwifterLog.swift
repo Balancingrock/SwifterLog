@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.8
+//  Version:    0.9.9
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -116,6 +116,13 @@
 // expressions can be evaluated at compile time and hopefully result -like a- in a fast call but with the added benefit
 // of auto-generated identifiers.
 //
+// Note3: Since version 0.9.9 the message parameter has changed to "Any". Extend classes with the
+// ReflectedStringConvertible protocol to gain easy access to debug information:
+//
+//    class MyClass: ReflectedStringConvertible { ... }
+//    var myInstance = MyClass()
+//    log.atLevelDebug(id: logId, source: #file.source(#function, #line), message: myInstance)
+//
 // PS: Note that the #file, #function and #line are determined at compile time and thus cannot be abstracted into a
 // subroutine.
 //
@@ -219,6 +226,11 @@
 // =====================================================================================================================
 //
 // History:
+// v0.9.9   - Added 'public' to the string extensions
+//          - Added 'ReflectedStringConvertible' (idea from Matt Comi, https://github.com/mattcomi )
+//          - Changed message parameter from 'String' to 'Any' on all logging calls
+//            (Inspired by whitehat007, https://github.com/whitehat007 )
+//          - Fixed bug that would not call the callback destination for the very first logging message
 // v0.9.8   - Header update
 // v0.9.7   - Split off the network related stuff into its own file (except for the property definitions)
 // v0.9.6   - Included extension for String to easily create a SOURCE identifier from a #file string.
@@ -265,6 +277,41 @@ public protocol SwifterlogCallbackProtocol: class {
     func logInfo(time: NSDate, level: SwifterLog.Level, source: String, message: String)
 }
 
+
+/// This protocol/extension combination allows classes to be printed like struct's.
+/// Add ReflectedStringConvertible to any class definition and the extension will do the rest.
+/// Credit: Matt Comi
+/// - Note: This will override the default 'description'
+
+public protocol ReflectedStringConvertible: CustomStringConvertible {}
+
+
+/// This protocol/extension combination allows classes to be printed like struct's.
+/// Add ReflectedStringConvertible to any class definition and the extension will do the rest.
+/// Credit: Matt Comi
+/// - Note: This will override the default 'description'
+
+public extension ReflectedStringConvertible {
+    public var description: String {
+        let mirror = Mirror(reflecting: self)
+        var result = "\(mirror.subjectType)("
+        var first = true
+        for (label, value) in mirror.children {
+            if let label = label {
+                if first {
+                    first = false
+                } else {
+                    result += ", "
+                }
+                result += "\(label): \(value)"
+            }
+        }
+        result += ")"
+        return result
+    }
+}
+
+
 public func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue <= right.rawValue
 }
@@ -273,7 +320,7 @@ public func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue > right.rawValue
 }
 
-extension String {
+public extension String {
     
     /**
      Extension to create a SOURCE identifier from a #file identifier.
@@ -285,11 +332,10 @@ extension String {
      - Parameter function: This should be the '#function' identifier.
      - Parameter line: This should be the '#line' identifier.
      */
-    func source(function: String, _ line: Int) -> String {
+    public func source(function: String, _ line: Int) -> String {
         return ((self as NSString).lastPathComponent as NSString).stringByDeletingPathExtension + "." + function + "." + line.description
     }
 }
-
 
 public final class SwifterLog {
     
@@ -489,75 +535,75 @@ public final class SwifterLog {
     
     // MARK: - Logging functions
     
-    public func atLevel(level: Level, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevel(level: Level, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: source, message: message, targets: targets)
     }
 
-    public func atLevelDebug(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelDebug(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.DEBUG, source: source, message: message, targets: targets)
     }
     
-    public func atLevelInfo(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelInfo(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.INFO, source: source, message: message, targets: targets)
     }
     
-    public func atLevelNotice(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelNotice(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.NOTICE, source: source, message: message, targets: targets)
     }
     
-    public func atLevelWarning(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelWarning(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.WARNING, source: source, message: message, targets: targets)
     }
     
-    public func atLevelError(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelError(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ERROR, source: source, message: message, targets: targets)
     }
     
-    public func atLevelCritical(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelCritical(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.CRITICAL, source: source, message: message, targets: targets)
     }
     
-    public func atLevelAlert(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelAlert(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ALERT, source: source, message: message, targets: targets)
     }
     
-    public func atLevelEmergency(source source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelEmergency(source source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.EMERGENCY, source: source, message: message, targets: targets)
     }
 
-    public func atLevel(level: Level, id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevel(level: Level, id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: createSource(id, source), message: message, targets: targets)
     }
 
-    public func atLevelDebug(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelDebug(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.DEBUG, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelInfo(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelInfo(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.INFO, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelNotice(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelNotice(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.NOTICE, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelWarning(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelWarning(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.WARNING, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelError(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelError(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ERROR, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelCritical(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelCritical(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.CRITICAL, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelAlert(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelAlert(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.ALERT, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelEmergency(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
+    public func atLevelEmergency(id id: Int32, source: String, message: Any, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.EMERGENCY, source: createSource(id, source), message: message, targets: targets)
     }
 
@@ -570,7 +616,7 @@ public final class SwifterLog {
         return String(format: "%08x, %@", id, source)
     }
 
-    private init() { // Gurantee a singleton usage of the logger
+    private init() { // Guarantee a singleton usage of the logger
         
         // Try to read the settings from the app's Info.plist
         
@@ -653,7 +699,7 @@ public final class SwifterLog {
         dispatch_async(loggingQueue, { asl_bridge_log_message(Level.ERROR.toAslLevel(), message) } )
     }
     
-    private func putOnLoggingQueue(level: Level, source: String, message: String, targets: Set<Target>) {
+    private func putOnLoggingQueue(level: Level, source: String, message: Any, targets: Set<Target>) {
         if level == .NONE { return }
         if overallThreshold > level { return }
         let stdoutEnabled   = targets.contains(.STDOUT)   && (stdoutPrintAtAndAboveLevel <= level)
@@ -661,13 +707,14 @@ public final class SwifterLog {
         let fileEnabled     = targets.contains(.FILE)     && (fileRecordAtAndAboveLevel <= level)
         let networkEnabled  = targets.contains(.NETWORK)  && (networkTransmitAtAndAboveLevel <= level)
         let callbackEnabled = targets.contains(.CALLBACK) && (callbackAtAndAboveLevel <= level)
+        let stringMessage = "\(message)"
         dispatch_async(loggingQueue, {
             [unowned self] in
             self.log(
                 NSDate(),
                 source: source,
                 logLevel: level,
-                message: message,
+                message: stringMessage,
                 destinationSTDOut: stdoutEnabled,
                 destinationASL: aslEnabled,
                 destinationFile: fileEnabled,
@@ -754,11 +801,10 @@ public final class SwifterLog {
         if destinationCallback {
             if callbackQueue == nil {
                 callbackQueue = dispatch_queue_create("callback-queue", DISPATCH_QUEUE_SERIAL)
-            } else {
-                dispatch_async(callbackQueue!, { [unowned self] in
-                    self.logToCallback(time, source: source, logLevel: logLevel, message: message)
-                    })
             }
+            dispatch_async(callbackQueue!, { [unowned self] in
+                self.logToCallback(time, source: source, logLevel: logLevel, message: message)
+                })
         }
     }
     

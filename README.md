@@ -43,6 +43,43 @@ There is a 6th package called [SwiftfireTester](https://github.com/Swiftrien/Swi
 
 #Usage
 
+Once SwifterLog has been installed, there is a global variable 'log' available on which all logging calls will be performed.
+Example:
+
+    log.atLevel(level: .DEBUG, id: logId, source: "My source identifier", message: "Error message", target: Target.ALL_NON_RECURSIVE)
+
+The above is the full-monty, oftentimes it will be possible to use much shorter variants like:
+
+    log.atLevelError(source: #function, message: self)
+
+If 'self' is an object, then it is advantageous to let the class of 'self' implement the ReflectedStringConvertible protocol. This is a functionless protocol that will override the 'description' (CustomStringConvertible) with a much more meaningfull message than the default.
+
+    class TestClass: ReflectedStringConvertible {
+        var a: Int = 5
+        var b: String = "B"
+    }
+    let c = TestClass()   
+    log.atLevelInfo(source: "MyFunc", message: c)
+
+The above will log the message:
+
+    2016-05-29T12:56:30.072+0200, INFO     : MyFunc, (TestClass #1)(a: 5, b: B)
+
+Setup of the logger is controlled through a couple of properties:
+
+- __logfileDirectoryPath__: The path of the directory that will be used to store the logfiles.
+- __logfileMaxSizeInBytes__: The maximum size of a logfile, once this size is exceeded, a new file will be started.
+- __logfileMaxNumberOfFiles__: The maximum number of logfiles that will be created. The oldest logfile will automatically discarded when necessary.
+- __fileRecordAtAndAboveLevel__: The minimum level which an entry should have to be stored in a logfile.
+- __stdoutPrintAtAndAboveLevel__: The minimum level which an entry should have to send to the stdout destination.
+- __aslFacilityRecordAtAndAboveLevel__: The minimum level which an entry should have to be be sent to the ASL Facility.
+- __networkTransmitAtAndAboveLevel__: The minimum level which an entry should have to be transmitted to the network logging destination.
+- __callbackAtAndAboveLevel__: The minimum level which an entry should have to be sent to the callback destinations.
+
+These properties can be set through the application's plist or can be written to directly. Any change takes effect immediately.
+    
+#Installation
+
 ##Including the network destination
 If you need the network destination, or want to get goiing without making modifications:
 
@@ -58,6 +95,14 @@ If you do not need the network destination or do not want to include SwifterSock
 3. Remove the call's SwifterLogNetwork from SwifterLog.swift (there are 2 of them, marked with "TODO"). If you don't like compiler warnings, you can remove the network support properties from SwifterLog.swift as well.
 
 #Version History
+
+####v0.9.9
+
+- Added 'public' to the string extensions
+- Added 'ReflectedStringConvertible' (Idea from [Matt Comi](https://github.com/mattcomi))
+- Changed message parameter from 'String' to 'Any' on all logging calls (Inspired by [whitehat007](https://github.com/whitehat007))
+- Fixed bug that would not call the callback destination for the very first logging message
+- Added a few unit tests
 
 ####v0.9.8:
 
