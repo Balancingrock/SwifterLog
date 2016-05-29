@@ -489,76 +489,148 @@ public final class SwifterLog {
     
     // MARK: - Logging functions
     
-    public func atLevel(level: Level, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(level, source: source, message: message, targets: targets)
+    public func atLevel(level: Level, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(level, source: source, message: m, targets: targets)
     }
 
-    public func atLevelDebug(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.DEBUG, source: source, message: message, targets: targets)
+    public func atLevelDebug(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.DEBUG, source: source, message: m, targets: targets)
     }
     
-    public func atLevelInfo(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.INFO, source: source, message: message, targets: targets)
+    public func atLevelInfo(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.INFO, source: source, message: m, targets: targets)
     }
     
-    public func atLevelNotice(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.NOTICE, source: source, message: message, targets: targets)
+    public func atLevelNotice(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.NOTICE, source: source, message: m, targets: targets)
     }
     
-    public func atLevelWarning(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.WARNING, source: source, message: message, targets: targets)
+    public func atLevelWarning(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.WARNING, source: source, message: m, targets: targets)
     }
     
-    public func atLevelError(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ERROR, source: source, message: message, targets: targets)
+    public func atLevelError(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.ERROR, source: source, message: m, targets: targets)
     }
     
-    public func atLevelCritical(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.CRITICAL, source: source, message: message, targets: targets)
+    public func atLevelCritical(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.CRITICAL, source: source, message: m, targets: targets)
     }
     
-    public func atLevelAlert(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ALERT, source: source, message: message, targets: targets)
+    public func atLevelAlert(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.ALERT, source: source, message: m, targets: targets)
     }
     
-    public func atLevelEmergency(source source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.EMERGENCY, source: source, message: message, targets: targets)
+    public func atLevelEmergency(source source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.EMERGENCY, source: source, message: m, targets: targets)
     }
 
-    public func atLevel(level: Level, id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(level, source: createSource(id, source), message: message, targets: targets)
+    public func atLevel(level: Level, id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(level, source: createSource(id, source), message: m, targets: targets)
     }
 
-    public func atLevelDebug(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.DEBUG, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelDebug(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.DEBUG, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelInfo(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.INFO, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelInfo(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.INFO, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelNotice(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.NOTICE, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelNotice(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.NOTICE, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelWarning(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.WARNING, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelWarning(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.WARNING, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelError(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ERROR, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelError(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.ERROR, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelCritical(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.CRITICAL, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelCritical(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.CRITICAL, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelAlert(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ALERT, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelAlert(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.ALERT, source: createSource(id, source), message: m, targets: targets)
     }
     
-    public func atLevelEmergency(id id: Int32, source: String, message: String, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.EMERGENCY, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelEmergency(id id: Int32, source: String, message: AnyObject?, targets: Set<Target> = Target.ALL) {
+		var m: String = "nil"
+		if message != nil {
+			m = String(message!)
+		}
+        putOnLoggingQueue(.EMERGENCY, source: createSource(id, source), message: m, targets: targets)
     }
 
     
