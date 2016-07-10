@@ -3,7 +3,7 @@
 //  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.8
+//  Version:    0.9.11
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -56,9 +56,11 @@
 //
 // History:
 //
-// v0.9.8 - Header update
-//        - Renamed to SwifterLog.Network.swift
-// v0.9.7   Initial release
+// v0.9.11 - Updated for VJson 0.9.8
+// v0.9.10 - Small update to accomodate VJson updates
+// v0.9.8  - Header update
+//         - Renamed to SwifterLog.Network.swift
+// v0.9.7  - Initial release
 //
 // =====================================================================================================================
 
@@ -86,7 +88,7 @@ public struct LogLine: CustomStringConvertible {
     
     /// Creates a json representation of this struct
     var json: VJson {
-        let json = VJson.createJsonHierarchy()
+        let json = VJson()
         json["LogLine"]["Time"].stringValue = SwifterLog.logTimeFormatter.stringFromDate(time)
         json["LogLine"]["Level"].integerValue = level.rawValue
         json["LogLine"]["Source"].stringValue = source
@@ -106,12 +108,12 @@ public struct LogLine: CustomStringConvertible {
     init?(json: VJson) {
         
         // Prevent the creation of a "LogLine" object in the json input, first test if it exists
-        guard json.objectOfType(VJson.JType.OBJECT, atPath: ["LogLine"]) != nil else { return nil }
+        guard json|"LogLine" != nil else { return nil }
         
-        guard let jTime = json["LogLine"]["Time"].stringValue else { return nil }
-        guard let jLevel = json["LogLine"]["Level"].integerValue else { return nil }
-        guard let jSource = json["LogLine"]["Source"].stringValue else { return nil }
-        guard let jMessage = json["LogLine"]["Message"].stringValue else { return nil }
+        guard let jTime = (json|"LogLine"|"Time")?.stringValue else { return nil }
+        guard let jLevel = (json|"LogLine"|"Level")?.integerValue else { return nil }
+        guard let jSource = (json|"LogLine"|"Source")?.stringValue else { return nil }
+        guard let jMessage = (json|"LogLine"|"Message")?.stringValue else { return nil }
         
         guard let dTime = SwifterLog.logTimeFormatter.dateFromString(jTime) else { return nil }
         guard let lLevel = SwifterLog.Level(rawValue: jLevel) else { return nil }

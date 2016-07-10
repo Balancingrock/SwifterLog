@@ -1,15 +1,11 @@
 # SwifterLog
 A single class framework in Swift to create and manage log entries.
 
-SwifterLog is part of the 5 packages that make up the [Swiftfire](http://swiftfire.nl) webserver:
+SwifterLog is part of the 4 packages that make up the [Swiftfire](http://swiftfire.nl) webserver:
 
 #####[Swiftfire](https://github.com/Swiftrien/Swiftfire)
 
 An open source web server in Swift.
-
-#####[SwiftfireConsole](https://github.com/Swiftrien/SwiftfireConsole)
-
-A GUI application for Swiftfire.
 
 #####[SwifterSockets](https://github.com/Swiftrien/SwifterSockets)
 
@@ -19,7 +15,7 @@ General purpose socket utilities.
 
 General purpose JSON utility.
 
-There is a 6th package called [SwiftfireTester](https://github.com/Swiftrien/SwiftfireTester) that can be used to challenge a webserver (any webserver) and see/verify the response.
+There is a 5th package called [SwiftfireTester](https://github.com/Swiftrien/SwiftfireTester) that can be used to challenge a webserver (any webserver) and see/verify the response.
 
 #Features
 
@@ -95,6 +91,20 @@ If you do not need the network destination or do not want to include SwifterSock
 3. Remove the call's SwifterLogNetwork from SwifterLog.swift (there are 2 of them, marked with "TODO"). If you don't like compiler warnings, you can remove the network support properties from SwifterLog.swift as well.
 
 #Version History
+
+Note: Planned releases are for information only, they are subject to change without notice.
+
+####v1.0.0 (Planned)
+
+- Upgrade to Swift 3
+
+####v0.9.11 (Current)
+
+- Update to accomodate VJson v0.9.8
+
+####v0.9.10
+
+- Update to accomodate VJson updates
 
 ####v0.9.9
 
