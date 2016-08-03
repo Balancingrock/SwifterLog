@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.9
+//  Version:    0.9.10
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -226,6 +226,7 @@
 // =====================================================================================================================
 //
 // History:
+// v0.9.10  - Upgraded to Swift 3
 // v0.9.9   - Added 'public' to the string extensions
 //          - Added 'ReflectedStringConvertible' (idea from Matt Comi, https://github.com/mattcomi )
 //          - Changed message parameter from 'String' to optinal 'Any?' on all logging calls
@@ -274,7 +275,7 @@ public protocol SwifterlogCallbackProtocol: class {
      - Note: DO NOT CALL A LOGGING FUNCTION WITHIN A CALLBACK WITH A TARGET INCLUDING THE CALLBACK ITSELF. This would create an endless loop.
      */
     
-    func logInfo(time: NSDate, level: SwifterLog.Level, source: String, message: String)
+    func logInfo(_ time: Date, level: SwifterLog.Level, source: String, message: String)
 }
 
 
@@ -332,50 +333,53 @@ public extension String {
      - Parameter function: This should be the '#function' identifier.
      - Parameter line: This should be the '#line' identifier.
      */
-    public func source(function: String, _ line: Int) -> String {
-        return ((self as NSString).lastPathComponent as NSString).stringByDeletingPathExtension + "." + function + "." + line.description
+    public func source(_ function: String, _ line: Int) -> String {
+        return ((self as NSString).lastPathComponent as NSString).deletingPathExtension + "." + function + "." + line.description
     }
 }
 
 public final class SwifterLog {
     
     
+    private lazy var __once: () = { _ = asl_add_log_file(nil, STDERR_FILENO) }()
+    
+    
     /// The available levels to cut-off
     
     public enum Level: Int, CustomStringConvertible {
-        case DEBUG          = 0
-        case INFO           = 1
-        case NOTICE         = 2
-        case WARNING        = 3
-        case ERROR          = 4
-        case CRITICAL       = 5
-        case ALERT          = 6
-        case EMERGENCY      = 7
-        case NONE           = 8
+        case debug          = 0
+        case info           = 1
+        case notice         = 2
+        case warning        = 3
+        case error          = 4
+        case critical       = 5
+        case alert          = 6
+        case emergency      = 7
+        case none           = 8
         public var description: String {
             switch self {
-            case .DEBUG:        return "DEBUG    "
-            case .INFO:         return "INFO     "
-            case .NOTICE:       return "NOTICE   "
-            case .WARNING:      return "WARNING  "
-            case .ERROR:        return "ERROR    "
-            case .CRITICAL:     return "CRITICAL "
-            case .ALERT:        return "ALERT    "
-            case .EMERGENCY:    return "EMERGENCY"
-            case .NONE:         return "NONE     "
+            case .debug:        return "DEBUG    "
+            case .info:         return "INFO     "
+            case .notice:       return "NOTICE   "
+            case .warning:      return "WARNING  "
+            case .error:        return "ERROR    "
+            case .critical:     return "CRITICAL "
+            case .alert:        return "ALERT    "
+            case .emergency:    return "EMERGENCY"
+            case .none:         return "NONE     "
             }
         }
         public func toAslLevel() -> Int32 {
             switch self {
-            case .DEBUG:        return 7
-            case .INFO:         return 6
-            case .NOTICE:       return 5
-            case .WARNING:      return 4
-            case .ERROR:        return 3
-            case .CRITICAL:     return 2
-            case .ALERT:        return 1
-            case .EMERGENCY:    return 0
-            case .NONE:         return -1
+            case .debug:        return 7
+            case .info:         return 6
+            case .notice:       return 5
+            case .warning:      return 4
+            case .error:        return 3
+            case .critical:     return 2
+            case .alert:        return 1
+            case .emergency:    return 0
+            case .none:         return -1
             }
         }
     }
@@ -386,11 +390,11 @@ public final class SwifterLog {
     /// Available targets for error messages
     
     public enum Target {
-        case STDOUT, FILE, ASL, NETWORK, CALLBACK
-        public static let ALL: Set<Target> = [STDOUT, FILE, ASL, NETWORK, CALLBACK]
-        public static let ALL_EXCEPT_CALLBACK: Set<Target> = [STDOUT, FILE, ASL, NETWORK]
-        public static let ALL_EXCEPT_ASL: Set<Target> = [STDOUT, FILE, NETWORK, CALLBACK]
-        public static let ALL_NON_RECURSIVE: Set<Target> = [STDOUT, FILE, ASL] // the callback and network could generate an infinite recursion
+        case stdout, file, asl, network, callback
+        public static let ALL: Set<Target> = [stdout, file, asl, network, callback]
+        public static let ALL_EXCEPT_CALLBACK: Set<Target> = [stdout, file, asl, network]
+        public static let ALL_EXCEPT_ASL: Set<Target> = [stdout, file, network, callback]
+        public static let ALL_NON_RECURSIVE: Set<Target> = [stdout, file, asl] // the callback and network could generate an infinite recursion
     }
 
     
@@ -450,12 +454,12 @@ public final class SwifterLog {
     
     /// Only messages with a level at or above the level specified in this variable will be written to STDOUT. Set to "SwifterLog.Level.NONE" to suppress all messages to STDOUT.
     
-    public var stdoutPrintAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
+    public var stdoutPrintAtAndAboveLevel: Level = .none { didSet { self.setOverallThreshold() } }
     
     
     /// Only messages with a level at or above the level specified in this variable will be recorded in the logfile. Set to "SwifterLog.Level.NONE" to suppress all messages to the logfile.
 
-    public var fileRecordAtAndAboveLevel: Level = .NONE  { didSet { self.setOverallThreshold() } }
+    public var fileRecordAtAndAboveLevel: Level = .none  { didSet { self.setOverallThreshold() } }
 
     
     /**
@@ -466,14 +470,12 @@ public final class SwifterLog {
      - Note: SwifterLog itself can write messages to the ASL at level ERROR if necessary. If the threshold is set higher than ERROR SwifterLog will fail silently.
      */
     
-    public var aslFacilityRecordAtAndAboveLevel: Level = .NONE  {
+    public var aslFacilityRecordAtAndAboveLevel: Level = .none  {
         didSet {
             self.setOverallThreshold()
-            if (oldValue == .NONE) && (aslFacilityRecordAtAndAboveLevel != .NONE)
+            if (oldValue == .none) && (aslFacilityRecordAtAndAboveLevel != .none)
             {
-                dispatch_once(&aslInitialised, {
-                    _ = asl_add_log_file(nil, STDERR_FILENO)
-                } )
+                _ = self.__once
             }
         }
     }
@@ -481,12 +483,12 @@ public final class SwifterLog {
     
     /// Only messages with a level at or above the level specified in this variable will be transferred to the TCP/IP destination. Set to "SwifterLog.Level.NONE" to suppress transmission of all messages to the TCP/IP destination.
     
-    public var networkTransmitAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
+    public var networkTransmitAtAndAboveLevel: Level = .none { didSet { self.setOverallThreshold() } }
     
     
     /// Only messages with a level at or above the level specified in this variable will be transferred to the callback destination(s). Set to "SwifterLog.Level.NONE" to suppress transmission of all messages to the callback destination(s).
 
-    public var callbackAtAndAboveLevel: Level = .NONE { didSet { self.setOverallThreshold() } }
+    public var callbackAtAndAboveLevel: Level = .none { didSet { self.setOverallThreshold() } }
     
     
     /**
@@ -495,7 +497,7 @@ public final class SwifterLog {
      - Parameter target: The callback target to be added.
      */
     
-    public func registerCallback(target: SwifterlogCallbackProtocol) {
+    public func registerCallback(_ target: SwifterlogCallbackProtocol) {
         for t in callbackTargets {
             if target === t { return }
         }
@@ -509,25 +511,25 @@ public final class SwifterLog {
      - Parameter target: The callback target to be removed.
      */
 
-    public func removeCallbackTarget(target: SwifterlogCallbackProtocol) {
-        for (index, t) in callbackTargets.enumerate() {
-            if target === t { callbackTargets.removeAtIndex(index) }
+    public func removeCallbackTarget(_ target: SwifterlogCallbackProtocol) {
+        for (index, t) in callbackTargets.enumerated() {
+            if target === t { callbackTargets.remove(at: index) }
         }
     }
     
     
     /// Prints a line with the specified character for the specified times to the console
     
-    public func consoleSeperatorLine(char: Character, times: Int) {
+    public func consoleSeperatorLine(_ char: Character, times: Int) {
         guard times >= 0 else { return }
-        let time = NSDate()
+        let time = Date()
         var separator = ""
         for _ in 0 ..< times {
             separator.append(char)
         }
-        dispatch_async(loggingQueue, {
+        loggingQueue.async(execute: {
             [unowned self] in
-            let logstr = SwifterLog.logTimeFormatter.stringFromDate(time) + ", SEPARATOR: " + separator
+            let logstr = SwifterLog.logTimeFormatter.string(from: time) + ", SEPARATOR: " + separator
             self.logToStdout(logstr)
             })
     }
@@ -535,76 +537,76 @@ public final class SwifterLog {
     
     // MARK: - Logging functions
     
-    public func atLevel(level: Level, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+    public func atLevel(_ level: Level, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: source, message: message, targets: targets)
     }
 
-    public func atLevelDebug(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.DEBUG, source: source, message: message, targets: targets)
+    public func atLevelDebug(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.debug, source: source, message: message, targets: targets)
     }
     
-    public func atLevelInfo(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.INFO, source: source, message: message, targets: targets)
+    public func atLevelInfo(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.info, source: source, message: message, targets: targets)
     }
     
-    public func atLevelNotice(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.NOTICE, source: source, message: message, targets: targets)
+    public func atLevelNotice(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.notice, source: source, message: message, targets: targets)
     }
     
-    public func atLevelWarning(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.WARNING, source: source, message: message, targets: targets)
+    public func atLevelWarning(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.warning, source: source, message: message, targets: targets)
     }
     
-    public func atLevelError(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ERROR, source: source, message: message, targets: targets)
+    public func atLevelError(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.error, source: source, message: message, targets: targets)
     }
     
-    public func atLevelCritical(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.CRITICAL, source: source, message: message, targets: targets)
+    public func atLevelCritical(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.critical, source: source, message: message, targets: targets)
     }
     
-    public func atLevelAlert(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ALERT, source: source, message: message, targets: targets)
+    public func atLevelAlert(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.alert, source: source, message: message, targets: targets)
     }
     
-    public func atLevelEmergency(source source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.EMERGENCY, source: source, message: message, targets: targets)
+    public func atLevelEmergency(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.emergency, source: source, message: message, targets: targets)
     }
 
-    public func atLevel(level: Level, id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+    public func atLevel(_ level: Level, id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: createSource(id, source), message: message, targets: targets)
     }
 
-    public func atLevelDebug(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.DEBUG, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelDebug(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.debug, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelInfo(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.INFO, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelInfo(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.info, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelNotice(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.NOTICE, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelNotice(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.notice, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelWarning(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.WARNING, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelWarning(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.warning, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelError(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ERROR, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelError(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.error, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelCritical(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.CRITICAL, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelCritical(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.critical, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelAlert(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.ALERT, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelAlert(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.alert, source: createSource(id, source), message: message, targets: targets)
     }
     
-    public func atLevelEmergency(id id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
-        putOnLoggingQueue(.EMERGENCY, source: createSource(id, source), message: message, targets: targets)
+    public func atLevelEmergency(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
+        putOnLoggingQueue(.emergency, source: createSource(id, source), message: message, targets: targets)
     }
 
     
@@ -612,7 +614,7 @@ public final class SwifterLog {
     
     // Conveniance
     
-    private func createSource(id: Int32, _ source: String) -> String {
+    private func createSource(_ id: Int32, _ source: String) -> String {
         return String(format: "%08x, %@", id, source)
     }
 
@@ -620,60 +622,60 @@ public final class SwifterLog {
         
         // Try to read the settings from the app's Info.plist
         
-        if  let infoPlist = NSBundle.mainBundle().infoDictionary,
+        if  let infoPlist = Bundle.main.infoDictionary,
             let swifterLogOptions = infoPlist["SwifterLog"] as? Dictionary<String, AnyObject> {
             
                 if let alsThreshold = swifterLogOptions["aslFacilityRecordAtAndAboveLevel"] as? NSNumber {
-                    if alsThreshold.integerValue >= Level.DEBUG.rawValue && alsThreshold.integerValue <= Level.NONE.rawValue {
-                        aslFacilityRecordAtAndAboveLevel = Level(rawValue: alsThreshold.integerValue)!
+                    if alsThreshold.intValue >= Level.debug.rawValue && alsThreshold.intValue <= Level.none.rawValue {
+                        aslFacilityRecordAtAndAboveLevel = Level(rawValue: alsThreshold.intValue)!
                     } else {
                         logAslErrorOverride("Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
                     }
                 }
                     
                 if let stdoutThreshold = swifterLogOptions["stdoutPrintAtAndAboveLevel"] as? NSNumber {
-                    if stdoutThreshold.integerValue >= Level.DEBUG.rawValue && stdoutThreshold.integerValue <= Level.NONE.rawValue {
-                        stdoutPrintAtAndAboveLevel = Level(rawValue: stdoutThreshold.integerValue)!
+                    if stdoutThreshold.intValue >= Level.debug.rawValue && stdoutThreshold.intValue <= Level.none.rawValue {
+                        stdoutPrintAtAndAboveLevel = Level(rawValue: stdoutThreshold.intValue)!
                     } else {
                         logAslErrorOverride("Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
                     }
                 }
                 
                 if let logfileThreshold = swifterLogOptions["fileRecordAtAndAboveLevel"] as? NSNumber {
-                    if logfileThreshold.integerValue >= Level.DEBUG.rawValue && logfileThreshold.integerValue <= Level.NONE.rawValue {
-                        fileRecordAtAndAboveLevel = Level(rawValue: logfileThreshold.integerValue)!
+                    if logfileThreshold.intValue >= Level.debug.rawValue && logfileThreshold.intValue <= Level.none.rawValue {
+                        fileRecordAtAndAboveLevel = Level(rawValue: logfileThreshold.intValue)!
                     } else {
                         logAslErrorOverride("Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
                     }
                 }
                 
                 if let networkThreshold = swifterLogOptions["networkTransmitAtAndAboveLevel"] as? NSNumber {
-                    if networkThreshold.integerValue >= Level.DEBUG.rawValue && networkThreshold.integerValue <= Level.NONE.rawValue {
-                        networkTransmitAtAndAboveLevel = Level(rawValue: networkThreshold.integerValue)!
+                    if networkThreshold.intValue >= Level.debug.rawValue && networkThreshold.intValue <= Level.none.rawValue {
+                        networkTransmitAtAndAboveLevel = Level(rawValue: networkThreshold.intValue)!
                     } else {
                         logAslErrorOverride("Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
                     }
                 }
                 
                 if let callbackThreshold = swifterLogOptions["callbackAtAndAboveLevel"] as? NSNumber {
-                    if callbackThreshold.integerValue >= Level.DEBUG.rawValue && callbackThreshold.integerValue <= Level.NONE.rawValue {
-                        callbackAtAndAboveLevel = Level(rawValue: callbackThreshold.integerValue)!
+                    if callbackThreshold.intValue >= Level.debug.rawValue && callbackThreshold.intValue <= Level.none.rawValue {
+                        callbackAtAndAboveLevel = Level(rawValue: callbackThreshold.intValue)!
                     } else {
                         logAslErrorOverride("Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
                     }
                 }
                 
                 if let logfileMaxSize = swifterLogOptions["logfileMaxSizeInBytes"] as? NSNumber {
-                    if logfileMaxSize.integerValue >= 10 * 1024 && logfileMaxSize.integerValue <= 100 * 1024 * 1024 {
-                        logfileMaxSizeInBytes = UInt64(logfileMaxSize.integerValue)
+                    if logfileMaxSize.intValue >= 10 * 1024 && logfileMaxSize.intValue <= 100 * 1024 * 1024 {
+                        logfileMaxSizeInBytes = UInt64(logfileMaxSize.intValue)
                     } else {
                         logAslErrorOverride("Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)")
                     }
                 }
                 
                 if let logfileNofFiles = swifterLogOptions["logfileMaxNumberOfFiles"] as? NSNumber {
-                    if logfileNofFiles.integerValue >= 2 && logfileNofFiles.integerValue <= 1000 {
-                        logfileMaxNumberOfFiles = logfileNofFiles.integerValue
+                    if logfileNofFiles.intValue >= 2 && logfileNofFiles.intValue <= 1000 {
+                        logfileMaxNumberOfFiles = logfileNofFiles.intValue
                     } else {
                         logAslErrorOverride("Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)")
                     }
@@ -695,23 +697,23 @@ public final class SwifterLog {
     
     // This function writes error messages to the ASL irrespective of the level settings. For internal use only.
 
-    private func logAslErrorOverride(message: String) {
-        dispatch_async(loggingQueue, { asl_bridge_log_message(Level.ERROR.toAslLevel(), message) } )
+    private func logAslErrorOverride(_ message: String) {
+        loggingQueue.async(execute: { asl_bridge_log_message(Level.error.toAslLevel(), message) } )
     }
     
-    private func putOnLoggingQueue(level: Level, source: String, message: Any?, targets: Set<Target>) {
-        if level == .NONE { return }
+    private func putOnLoggingQueue(_ level: Level, source: String, message: Any?, targets: Set<Target>) {
+        if level == .none { return }
         if overallThreshold > level { return }
-        let stdoutEnabled   = targets.contains(.STDOUT)   && (stdoutPrintAtAndAboveLevel <= level)
-        let aslEnabled      = targets.contains(.ASL)      && (aslFacilityRecordAtAndAboveLevel <= level)
-        let fileEnabled     = targets.contains(.FILE)     && (fileRecordAtAndAboveLevel <= level)
-        let networkEnabled  = targets.contains(.NETWORK)  && (networkTransmitAtAndAboveLevel <= level)
-        let callbackEnabled = targets.contains(.CALLBACK) && (callbackAtAndAboveLevel <= level)
+        let stdoutEnabled   = targets.contains(.stdout)   && (stdoutPrintAtAndAboveLevel <= level)
+        let aslEnabled      = targets.contains(.asl)      && (aslFacilityRecordAtAndAboveLevel <= level)
+        let fileEnabled     = targets.contains(.file)     && (fileRecordAtAndAboveLevel <= level)
+        let networkEnabled  = targets.contains(.network)  && (networkTransmitAtAndAboveLevel <= level)
+        let callbackEnabled = targets.contains(.callback) && (callbackAtAndAboveLevel <= level)
         let stringMessage = "\(message ?? "")"
-        dispatch_async(loggingQueue, {
+        loggingQueue.async(execute: {
             [unowned self] in
             self.log(
-                NSDate(),
+                Date(),
                 source: source,
                 logLevel: level,
                 message: stringMessage,
@@ -724,13 +726,13 @@ public final class SwifterLog {
     }
 
 
-    static var logTimeFormatter: NSDateFormatter = {
-        let ltf = NSDateFormatter()
+    static var logTimeFormatter: DateFormatter = {
+        let ltf = DateFormatter()
         ltf.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         return ltf
         }()
     
-    private var aslInitialised: dispatch_once_t = 0
+    private var aslInitialised: Int = 0
 
     
     // Used to suppress multiple error messages for the failure to create a directory for the logfiles
@@ -741,7 +743,7 @@ public final class SwifterLog {
     
     // For a slight performance gain
     
-    private var overallThreshold = SwifterLog.Level.DEBUG
+    private var overallThreshold = SwifterLog.Level.debug
 
     
     // Should be called on every update to any of the three thresholds.
@@ -758,23 +760,23 @@ public final class SwifterLog {
     
     // Write log messages only from within this queue, that guarantees a non-overlapping behaviour even if multiple threads use the SwifterLog.
     
-    private let loggingQueue = dispatch_queue_create("logging-queue", DISPATCH_QUEUE_SERIAL)
+    private let loggingQueue = DispatchQueue(label: "logging-queue", attributes: DispatchQueueAttributes.serial)
     
     
     // Send logging messages to a network destination using this. This decouples the log messages on this machine from the traffic conditions to another machine.
     
-    internal var networkQueue: dispatch_queue_t?
+    internal var networkQueue: DispatchQueue?
     
     
     // Send logging messages to callbacks using this queue. This decouples the log messages on this machine from possible application errors.
     
-    private var callbackQueue: dispatch_queue_t?
+    private var callbackQueue: DispatchQueue?
 
     
     // This function creates the log message and controls distribution to the enabled destinations, it should be called from within the logginQueue only.
     
     private func log(
-        time: NSDate,
+        _ time: Date,
         source: String,
         logLevel: Level,
         message: String,
@@ -785,7 +787,7 @@ public final class SwifterLog {
         destinationCallback: Bool)
     {
         let sourceMessage = message.isEmpty ? source : source + ", " + message
-        let logstr = SwifterLog.logTimeFormatter.stringFromDate(time) + ", " + logLevel.description + ": " + sourceMessage
+        let logstr = SwifterLog.logTimeFormatter.string(from: time) + ", " + logLevel.description + ": " + sourceMessage
             
         if destinationSTDOut { logToStdout(logstr) }
         if destinationFile { logToFile(logstr) }
@@ -793,16 +795,16 @@ public final class SwifterLog {
         // TODO: Comment out the next line if the network destination is not needed
         if destinationNetwork {
             if networkQueue != nil {
-                dispatch_async(networkQueue!, { [unowned self] in
+                networkQueue!.async(execute: { [unowned self] in
                     self.logToNetwork(time, source: source, logLevel: logLevel, message: message)
                     })
             }
         }
         if destinationCallback {
             if callbackQueue == nil {
-                callbackQueue = dispatch_queue_create("callback-queue", DISPATCH_QUEUE_SERIAL)
+                callbackQueue = DispatchQueue(label: "callback-queue", attributes: DispatchQueueAttributes.serial)
             }
-            dispatch_async(callbackQueue!, { [unowned self] in
+            callbackQueue!.async(execute: { [unowned self] in
                 self.logToCallback(time, source: source, logLevel: logLevel, message: message)
                 })
         }
@@ -811,27 +813,27 @@ public final class SwifterLog {
     
     // MARK: - ASL target
     
-    private func logToASL(level: Level, message: String) {
+    private func logToASL(_ level: Level, message: String) {
         asl_bridge_log_message(level.toAslLevel(), message)
     }
     
     
     // MARK: - STDOUT target
     
-    private func logToStdout(message: String) {
+    private func logToStdout(_ message: String) {
         print(message)
     }
     
     
     // MARK: - FILE target
     
-    private func logToFile(message: String) {
+    private func logToFile(_ message: String) {
         
         if let file = logfile {
             
             _ = file.seekToEndOfFile()
-            if let data = (message + "\r\n").dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
-                file.writeData(data)
+            if let data = (message + "\r\n").data(using: String.Encoding.utf8, allowLossyConversion: true) {
+                file.write(data)
                 file.synchronizeFile()
             }
             
@@ -845,7 +847,7 @@ public final class SwifterLog {
 
     // Handle for the logfile
     
-    lazy private var logfile: NSFileHandle? = { self.createLogfile() }()
+    lazy private var logfile: FileHandle? = { self.createLogfile() }()
     
 
     // We use the /Library/Application Support/<<<application>>>/Logfiles directory if no logfile directory is specified
@@ -853,24 +855,24 @@ public final class SwifterLog {
     lazy private var applicationSupportLogfileDirectory: String? = {
 
 
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         
         do {
             let applicationSupportDirectory =
-                try fileManager.URLForDirectory(
-                    NSSearchPathDirectory.ApplicationSupportDirectory,
-                    inDomain: NSSearchPathDomainMask.UserDomainMask,
-                    appropriateForURL: nil,
+                try fileManager.urlForDirectory(
+                    FileManager.SearchPathDirectory.applicationSupportDirectory,
+                    in: FileManager.SearchPathDomainMask.userDomainMask,
+                    appropriateFor: nil,
                     create: true).path!
                 
-            let appName = NSProcessInfo.processInfo().processName
-            let dirUrl = NSURL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).URLByAppendingPathComponent(appName)
-            return dirUrl.URLByAppendingPathComponent("Logfiles").path
+            let appName = ProcessInfo.processInfo.processName
+            let dirUrl = try! URL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).appendingPathComponent(appName)
+            return try! dirUrl.appendingPathComponent("Logfiles").path
 
         } catch let error as NSError {
         
             let message: String = "Could not get application support directory, error = " + (error.localizedDescription ?? "Unknown reason")
-            self.logToASL(Level.ERROR, message: message)
+            self.logToASL(Level.error, message: message)
             return nil
         }
     }()
@@ -878,12 +880,12 @@ public final class SwifterLog {
     
     // Will be set to the URL of the logfile if the directory for the logfiles is available.
     
-    private var logfileDirectoryURL: NSURL?
+    private var logfileDirectoryURL: URL?
     
     
     // Creates a new logfile.
     
-    private func createLogfile() -> NSFileHandle? {
+    private func createLogfile() -> FileHandle? {
         
         
         // Get the logfile directory
@@ -894,23 +896,23 @@ public final class SwifterLog {
                 
                 // Make sure the logfile directory exists
 
-                try NSFileManager.defaultManager().createDirectoryAtPath(logdir, withIntermediateDirectories: true, attributes: nil)
+                try FileManager.default.createDirectory(atPath: logdir, withIntermediateDirectories: true, attributes: nil)
             
-                logfileDirectoryURL = NSURL(fileURLWithPath: logdir, isDirectory: true) // For the logfile services
+                logfileDirectoryURL = URL(fileURLWithPath: logdir, isDirectory: true) // For the logfile services
         
-                let filename = "Log_" + SwifterLog.logTimeFormatter.stringFromDate(NSDate()) + ".txt"
+                let filename = "Log_" + SwifterLog.logTimeFormatter.string(from: Date()) + ".txt"
                 
-                let logfileUrl = NSURL(fileURLWithPath: logdir).URLByAppendingPathComponent(filename)
+                let logfileUrl = try! URL(fileURLWithPath: logdir).appendingPathComponent(filename)
                 
-                if NSFileManager.defaultManager().createFileAtPath(logfileUrl.path!, contents: nil, attributes: [NSFilePosixPermissions : NSNumber(int: 0o640)]) {
+                if FileManager.default.createFile(atPath: logfileUrl.path!, contents: nil, attributes: [FileAttributeKey.posixPermissions.rawValue : NSNumber(value: 0o640)]) {
                     
-                    return NSFileHandle(forUpdatingAtPath: logfileUrl.path!)
+                    return FileHandle(forUpdatingAtPath: logfileUrl.path!)
 
                 } else {
                     
                     if !logfileErrorMessageGenerated {
                         let message = "Could not create logfile \(logfileUrl.path)"
-                        logToASL(.ERROR, message: message)
+                        logToASL(.error, message: message)
                         logfileErrorMessageGenerated = true
                     }
                 }
@@ -919,7 +921,7 @@ public final class SwifterLog {
                 
                 if !logdirErrorMessageGenerated {
                     let message = "Could not create logfile directory \(logdir), error = " + (error.localizedDescription ?? "Unknown reason")
-                    logToASL(.ERROR, message: message)
+                    logToASL(.error, message: message)
                     logdirErrorMessageGenerated = true
                 }
             }
@@ -956,14 +958,14 @@ public final class SwifterLog {
             
             do {
             
-                let files = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(
-                    logfileDirectoryURL!,
+                let files = try FileManager.default.contentsOfDirectory(
+                    at: logfileDirectoryURL!,
                     includingPropertiesForKeys: nil,
-                    options: NSDirectoryEnumerationOptions.SkipsHiddenFiles)
+                    options: FileManager.DirectoryEnumerationOptions.skipsHiddenFiles)
                 
                 if files.count > logfileMaxNumberOfFiles {
-                    let sortedFiles = files.sort({ $0.lastPathComponent < $1.lastPathComponent })
-                    try NSFileManager.defaultManager().removeItemAtURL(sortedFiles.first!)
+                    let sortedFiles = files.sorted(isOrderedBefore: { $0.lastPathComponent < $1.lastPathComponent })
+                    try FileManager.default.removeItem(at: sortedFiles.first!)
                 }
             } catch {
             }
@@ -975,7 +977,7 @@ public final class SwifterLog {
     
     private var callbackTargets: Array<SwifterlogCallbackProtocol> = []
     
-    private func logToCallback(time: NSDate, source: String, logLevel: Level, message: String) {
+    private func logToCallback(_ time: Date, source: String, logLevel: Level, message: String) {
         for target in callbackTargets {
             target.logInfo(time, level: logLevel, source: source, message: message)
         }

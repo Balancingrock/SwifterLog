@@ -14,11 +14,11 @@
 		8631E95D1CFAFD25000AE907 /* ASCII.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E95B1CFAFD25000AE907 /* ASCII.swift */; };
 		8631E95E1CFAFD25000AE907 /* VJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E95C1CFAFD25000AE907 /* VJson.swift */; };
 		8631E9661CFAFD3D000AE907 /* SwifterSockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E9601CFAFD3D000AE907 /* SwifterSockets.swift */; };
-		8631E9671CFAFD3D000AE907 /* SwifterSockets.InitServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E9611CFAFD3D000AE907 /* SwifterSockets.InitServer.swift */; };
-		8631E9681CFAFD3D000AE907 /* SwifterSockets.InitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E9621CFAFD3D000AE907 /* SwifterSockets.InitClient.swift */; };
 		8631E9691CFAFD3D000AE907 /* SwifterSockets.Transmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E9631CFAFD3D000AE907 /* SwifterSockets.Transmit.swift */; };
 		8631E96A1CFAFD3D000AE907 /* SwifterSockets.Receive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E9641CFAFD3D000AE907 /* SwifterSockets.Receive.swift */; };
 		8631E96B1CFAFD3D000AE907 /* SwifterSockets.Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8631E9651CFAFD3D000AE907 /* SwifterSockets.Accept.swift */; };
+		86A1BCEB1D50E45D002B5259 /* SwifterSockets.Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A1BCE91D50E45D002B5259 /* SwifterSockets.Server.swift */; };
+		86A1BCEC1D50E45D002B5259 /* SwifterSockets.Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A1BCEA1D50E45D002B5259 /* SwifterSockets.Client.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +28,6 @@
 		8631E95B1CFAFD25000AE907 /* ASCII.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ASCII.swift; path = ../../SwifterJSON/SwifterJSON/SwifterJSON/ASCII.swift; sourceTree = "<group>"; };
 		8631E95C1CFAFD25000AE907 /* VJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VJson.swift; path = ../../SwifterJSON/SwifterJSON/SwifterJSON/VJson.swift; sourceTree = "<group>"; };
 		8631E9601CFAFD3D000AE907 /* SwifterSockets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.swift; sourceTree = "<group>"; };
-		8631E9611CFAFD3D000AE907 /* SwifterSockets.InitServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.InitServer.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.InitServer.swift; sourceTree = "<group>"; };
-		8631E9621CFAFD3D000AE907 /* SwifterSockets.InitClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.InitClient.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.InitClient.swift; sourceTree = "<group>"; };
 		8631E9631CFAFD3D000AE907 /* SwifterSockets.Transmit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Transmit.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Transmit.swift; sourceTree = "<group>"; };
 		8631E9641CFAFD3D000AE907 /* SwifterSockets.Receive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Receive.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Receive.swift; sourceTree = "<group>"; };
 		8631E9651CFAFD3D000AE907 /* SwifterSockets.Accept.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Accept.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Accept.swift; sourceTree = "<group>"; };
@@ -37,6 +35,8 @@
 		866F6CD11CDCECE300557ACE /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
 		866F6CD21CDCECE300557ACE /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
 		866F6CD51CDCECF200557ACE /* SwifterLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
+		86A1BCE91D50E45D002B5259 /* SwifterSockets.Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Server.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Server.swift; sourceTree = "<group>"; };
+		86A1BCEA1D50E45D002B5259 /* SwifterSockets.Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwifterSockets.Client.swift; path = ../../SwifterSockets/SwifterSockets/SwifterSockets/SwifterSockets.Client.swift; sourceTree = "<group>"; };
 		86E955401ABC6F510006057C /* SwifterLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwifterLog-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,8 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				8631E9601CFAFD3D000AE907 /* SwifterSockets.swift */,
-				8631E9611CFAFD3D000AE907 /* SwifterSockets.InitServer.swift */,
-				8631E9621CFAFD3D000AE907 /* SwifterSockets.InitClient.swift */,
+				86A1BCE91D50E45D002B5259 /* SwifterSockets.Server.swift */,
+				86A1BCEA1D50E45D002B5259 /* SwifterSockets.Client.swift */,
 				8631E9631CFAFD3D000AE907 /* SwifterSockets.Transmit.swift */,
 				8631E9641CFAFD3D000AE907 /* SwifterSockets.Receive.swift */,
 				8631E9651CFAFD3D000AE907 /* SwifterSockets.Accept.swift */,
@@ -140,11 +140,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Marinus van der Lugt";
 				TargetAttributes = {
 					8631E94E1CFAFA95000AE907 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -184,15 +185,15 @@
 				8631E95E1CFAFD25000AE907 /* VJson.swift in Sources */,
 				8631E9661CFAFD3D000AE907 /* SwifterSockets.swift in Sources */,
 				8631E95D1CFAFD25000AE907 /* ASCII.swift in Sources */,
-				8631E9671CFAFD3D000AE907 /* SwifterSockets.InitServer.swift in Sources */,
+				86A1BCEC1D50E45D002B5259 /* SwifterSockets.Client.swift in Sources */,
 				8631E96B1CFAFD3D000AE907 /* SwifterSockets.Accept.swift in Sources */,
 				8631E9521CFAFA95000AE907 /* SwifterLogUnitTests.swift in Sources */,
 				8631E9591CFAFB04000AE907 /* asl-bridge.m in Sources */,
 				8631E96A1CFAFD3D000AE907 /* SwifterSockets.Receive.swift in Sources */,
 				8631E9691CFAFD3D000AE907 /* SwifterSockets.Transmit.swift in Sources */,
 				8631E9571CFAFAFB000AE907 /* SwifterLog.swift in Sources */,
-				8631E9681CFAFD3D000AE907 /* SwifterSockets.InitClient.swift in Sources */,
 				8631E9581CFAFB01000AE907 /* SwifterLog.Network.swift in Sources */,
+				86A1BCEB1D50E45D002B5259 /* SwifterSockets.Server.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +211,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.balancingrock.SwifterLogUnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwifterLog/SwifterLog-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -224,6 +226,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.balancingrock.SwifterLogUnitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwifterLog/SwifterLog-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -320,6 +324,7 @@
 				8631E9551CFAFA95000AE907 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86E955191ABC6F370006057C /* Build configuration list for PBXProject "SwifterLog" */ = {
 			isa = XCConfigurationList;

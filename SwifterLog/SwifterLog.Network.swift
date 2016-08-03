@@ -72,7 +72,7 @@ import Foundation
 public struct LogLine: CustomStringConvertible {
     
     /// Timestamp of the log entry
-    let time: NSDate
+    let time: Date
     
     /// The loglevel of the log entry
     let level: SwifterLog.Level
@@ -84,20 +84,20 @@ public struct LogLine: CustomStringConvertible {
     let message: String
     
     /// The CustomStringConvertible protocol
-    public var description: String { return SwifterLog.logTimeFormatter.stringFromDate(time) + ", " + level.description + ": " + source + ", " + message }
+    public var description: String { return SwifterLog.logTimeFormatter.string(from: time) + ", " + level.description + ": " + source + ", " + message }
     
     /// Creates a json representation of this struct
     var json: VJson {
         let json = VJson()
-        json["LogLine"]["Time"].stringValue = SwifterLog.logTimeFormatter.stringFromDate(time)
-        json["LogLine"]["Level"].integerValue = level.rawValue
+        json["LogLine"]["Time"].stringValue = SwifterLog.logTimeFormatter.string(from: time)
+        json["LogLine"]["Level"].intValue = level.rawValue
         json["LogLine"]["Source"].stringValue = source
         json["LogLine"]["Message"].stringValue = message
         return json
     }
     
     /// Creates a new logline
-    init(time: NSDate, level: SwifterLog.Level, source: String, message: String) {
+    init(time: Date, level: SwifterLog.Level, source: String, message: String) {
         self.time = time
         self.level = level
         self.source = source
@@ -111,11 +111,11 @@ public struct LogLine: CustomStringConvertible {
         guard json|"LogLine" != nil else { return nil }
         
         guard let jTime = (json|"LogLine"|"Time")?.stringValue else { return nil }
-        guard let jLevel = (json|"LogLine"|"Level")?.integerValue else { return nil }
+        guard let jLevel = (json|"LogLine"|"Level")?.intValue else { return nil }
         guard let jSource = (json|"LogLine"|"Source")?.stringValue else { return nil }
         guard let jMessage = (json|"LogLine"|"Message")?.stringValue else { return nil }
         
-        guard let dTime = SwifterLog.logTimeFormatter.dateFromString(jTime) else { return nil }
+        guard let dTime = SwifterLog.logTimeFormatter.date(from: jTime) else { return nil }
         guard let lLevel = SwifterLog.Level(rawValue: jLevel) else { return nil }
         
         self.time = dTime
@@ -131,24 +131,24 @@ public extension SwifterLog {
     
     /// Tries to opens a client connection to the target. Since the connection attempt will take place asynchronously, the feedback by way of the "networkTarget" variable will be delayed. Checking that variable immediately after a return from this function will most likely fail to deliver the actual status.
     
-    public func connectToNetworkTarget(target: NetworkTarget) {
+    public func connectToNetworkTarget(_ target: NetworkTarget) {
         if networkQueue == nil {
             // Only create this queue if necessary, and then do it only once.
-            networkQueue = dispatch_queue_create("network-queue", DISPATCH_QUEUE_SERIAL)
+            networkQueue = DispatchQueue(label: "network-queue", attributes: DispatchQueueAttributes.serial)
         }
-        dispatch_async(networkQueue!, { [unowned self] in self.openNetworkConnection(target.address, port: target.port)})
+        networkQueue!.async(execute: { [unowned self] in self.openNetworkConnection(target.address, port: target.port)})
     }
     
     
     /// Closes the connection to the target if it was open. Since the closeing will take place asynchronously, the feedback by way of the "networkTarget" variable will be delayed. Checking that variable immediately after a return from this function will most likely fail to deliver the actual status.
     
     public func closeNetworkTarget() {
-        dispatch_async(networkQueue!, { [unowned self] in self.closeNetworkConnection()})
+        networkQueue!.async(execute: { [unowned self] in self.closeNetworkConnection()})
     }
 
     // Open a network destination
     
-    private func openNetworkConnection(ipAddress: String, port: String) {
+    private func openNetworkConnection(_ ipAddress: String, port: String) {
         
         // If there is an open connection, close that first.
         
@@ -156,26 +156,26 @@ public extension SwifterLog {
             close(socket!)
             socket = nil
             _networkTarget = nil
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Connection to network target closed", targets: [.STDOUT, .ASL, .FILE])
+            self.atLevelNotice(source: ProcessInfo.processInfo.processName + ".Swifterlog", message: "Connection to network target closed", targets: [.stdout, .asl, .file])
         }
         
         
         // Try to open a connection
         
-        let result = SwifterSockets.initClient(address: ipAddress, port: port)
+        let result = SwifterSockets.connectToServer(atAddress: ipAddress, atPort: port)
         
         switch result {
             
-        case let .ERROR(msg):
+        case let .error(msg):
             
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", targets: [.STDOUT, .ASL, .FILE])
+            self.atLevelNotice(source: ProcessInfo.processInfo.processName + ".Swifterlog", message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", targets: [.stdout, .asl, .file])
             
             
-        case let .SOCKET(num):
+        case let .socket(num):
             
             socket = num
             _networkTarget = (ipAddress, port)
-            self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Openend connection to network target. Address = \(ipAddress), port = \(port)", targets: [.STDOUT, .ASL, .FILE])
+            self.atLevelNotice(source: ProcessInfo.processInfo.processName + ".Swifterlog", message: "Openend connection to network target. Address = \(ipAddress), port = \(port)", targets: [.stdout, .asl, .file])
         }
     }
     
@@ -190,13 +190,13 @@ public extension SwifterLog {
         SwifterSockets.closeSocket(socket)
         socket = nil
         _networkTarget = nil
-        self.atLevelNotice(source: NSProcessInfo.processInfo().processName + ".Swifterlog", message: "Network target logging stopped", targets: [.STDOUT, .ASL, .FILE])
+        self.atLevelNotice(source: ProcessInfo.processInfo.processName + ".Swifterlog", message: "Network target logging stopped", targets: [.stdout, .asl, .file])
     }
     
     
     // Log information to the network destination (or open cq close that connection)
     
-    internal func logToNetwork(time: NSDate, source: String, logLevel: Level, message: String) {
+    internal func logToNetwork(_ time: Date, source: String, logLevel: Level, message: String) {
         
         
         // Send the log information to a network destination (if there is one)
@@ -211,26 +211,26 @@ public extension SwifterLog {
             
             // Try to transmit it. Use a very short timeout because there can be a lot of messages and the connection should be able to handle a fast succession of messages.
             
-            let result = SwifterSockets.transmit(socket!, string: logline.json.description, timeout: 0.1, telemetry: nil)
+            let result = SwifterSockets.transmit(toSocket: socket!, string: logline.json.description, timeout: 0.1, telemetry: nil)
             
             switch result {
                 
-            case .TIMEOUT:
+            case .timeout:
                 
-                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Timeout on connection to network target", targets: [.ASL, .FILE, .STDOUT])
+                self.atLevelError(source: ProcessInfo.processInfo.processName + ".Swifterlog.logToNetwork", message: "Timeout on connection to network target", targets: [.asl, .file, .stdout])
                 
                 
-            case let .ERROR(message: err):
+            case let .error(message: err):
                 
-                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Error on transfer to network target: \(err)", targets: [.ASL, .FILE, .STDOUT])
+                self.atLevelError(source: ProcessInfo.processInfo.processName + ".Swifterlog.logToNetwork", message: "Error on transfer to network target: \(err)", targets: [.asl, .file, .stdout])
                 self.closeNetworkConnection()
                 
                 
-            case .READY: break
+            case .ready: break
                 
-            case .CLIENT_CLOSED, .SERVER_CLOSED:
+            case .clientClosed, .serverClosed:
                 
-                self.atLevelError(source: NSProcessInfo.processInfo().processName + ".Swifterlog.logToNetwork", message: "Connection to network target unexpectedly closed", targets: [.ASL, .FILE, .STDOUT])
+                self.atLevelError(source: ProcessInfo.processInfo.processName + ".Swifterlog.logToNetwork", message: "Connection to network target unexpectedly closed", targets: [.asl, .file, .stdout])
                 self.closeNetworkConnection()
                 
             }

@@ -58,11 +58,11 @@ class SwifterLogUnitTests: XCTestCase, SwifterlogCallbackProtocol {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        log.callbackAtAndAboveLevel = SwifterLog.Level.DEBUG
-        log.stdoutPrintAtAndAboveLevel = SwifterLog.Level.DEBUG
-        log.aslFacilityRecordAtAndAboveLevel = SwifterLog.Level.NONE
-        log.networkTransmitAtAndAboveLevel = SwifterLog.Level.NONE
-        log.fileRecordAtAndAboveLevel = SwifterLog.Level.NONE
+        log.callbackAtAndAboveLevel = SwifterLog.Level.debug
+        log.stdoutPrintAtAndAboveLevel = SwifterLog.Level.debug
+        log.aslFacilityRecordAtAndAboveLevel = SwifterLog.Level.none
+        log.networkTransmitAtAndAboveLevel = SwifterLog.Level.none
+        log.fileRecordAtAndAboveLevel = SwifterLog.Level.none
         log.registerCallback(self)
     }
     
@@ -89,7 +89,7 @@ class SwifterLogUnitTests: XCTestCase, SwifterlogCallbackProtocol {
     
     // Callback protocol
     
-    func logInfo(time: NSDate, level: SwifterLog.Level, source: String, message: String) {
+    func logInfo(_ time: Date, level: SwifterLog.Level, source: String, message: String) {
         resultLevel = level
         resultMessage = message
         resultSource = source
