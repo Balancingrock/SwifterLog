@@ -36,6 +36,7 @@ There is a 5th package called [SwiftfireTester](https://github.com/Swiftrien/Swi
 	8. EMERGENCY
 - Each logging destination can have its own cut-off level for the information that is logged.
 - The file destination can be configured to store the log info in a predefined number of files of a predefined maximum size. When the maximum number of files is exceeded, the oldest file will automaticaly be removed.
+- Build with Swift 3 beta (Xcode 8 beta)
 
 #Usage
 
@@ -94,11 +95,20 @@ If you do not need the network destination or do not want to include SwifterSock
 
 Note: Planned releases are for information only, they are subject to change without notice.
 
+####v1.1.0 (Open)
+
+- No new features planned. Features and bugfixes will be made on an ad-hoc basis as needed to support Swiftfire development.
+- For feature requests and bugfixes please contact rien@balancingrock.nl
+
 ####v1.0.0 (Planned)
 
 - Upgrade to Swift 3
 
-####v0.9.11 (Current)
+####v0.9.12 (Current)
+
+- Upgraded to Swift 3 beta (Xcode 8)
+
+####v0.9.11
 
 - Update to accomodate VJson v0.9.8
 

@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.10
+//  Version:    0.9.12
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -226,7 +226,7 @@
 // =====================================================================================================================
 //
 // History:
-// v0.9.10  - Upgraded to Swift 3
+// v0.9.12  - Upgraded to Swift 3 beta
 // v0.9.9   - Added 'public' to the string extensions
 //          - Added 'ReflectedStringConvertible' (idea from Matt Comi, https://github.com/mattcomi )
 //          - Changed message parameter from 'String' to optinal 'Any?' on all logging calls
@@ -473,8 +473,7 @@ public final class SwifterLog {
     public var aslFacilityRecordAtAndAboveLevel: Level = .none  {
         didSet {
             self.setOverallThreshold()
-            if (oldValue == .none) && (aslFacilityRecordAtAndAboveLevel != .none)
-            {
+            if (oldValue == .none) && (aslFacilityRecordAtAndAboveLevel != .none) {
                 _ = self.__once
             }
         }
@@ -511,7 +510,7 @@ public final class SwifterLog {
      - Parameter target: The callback target to be removed.
      */
 
-    public func removeCallbackTarget(_ target: SwifterlogCallbackProtocol) {
+    public func removeCallback(_ target: SwifterlogCallbackProtocol) {
         for (index, t) in callbackTargets.enumerated() {
             if target === t { callbackTargets.remove(at: index) }
         }

@@ -3,7 +3,7 @@
 //  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.11
+//  Version:    0.9.12
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -56,6 +56,7 @@
 //
 // History:
 //
+// v0.9.12 - Upgraded to Swift 3 beta
 // v0.9.11 - Updated for VJson 0.9.8
 // v0.9.10 - Small update to accomodate VJson updates
 // v0.9.8  - Header update
@@ -89,10 +90,10 @@ public struct LogLine: CustomStringConvertible {
     /// Creates a json representation of this struct
     var json: VJson {
         let json = VJson()
-        json["LogLine"]["Time"].stringValue = SwifterLog.logTimeFormatter.string(from: time)
-        json["LogLine"]["Level"].intValue = level.rawValue
-        json["LogLine"]["Source"].stringValue = source
-        json["LogLine"]["Message"].stringValue = message
+        json["LogLine"]["Time"] &= SwifterLog.logTimeFormatter.string(from: time)
+        json["LogLine"]["Level"] &= level.rawValue
+        json["LogLine"]["Source"] &= source
+        json["LogLine"]["Message"] &= message
         return json
     }
     
