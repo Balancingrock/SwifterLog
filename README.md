@@ -36,7 +36,7 @@ There is a 5th package called [SwiftfireTester](https://github.com/Swiftrien/Swi
 	8. EMERGENCY
 - Each logging destination can have its own cut-off level for the information that is logged.
 - The file destination can be configured to store the log info in a predefined number of files of a predefined maximum size. When the maximum number of files is exceeded, the oldest file will automaticaly be removed.
-- Build with Swift 3 beta (Xcode 8 beta)
+- Builds with Xcode 8 beta 6 (Swift 3)
 
 #Usage
 
@@ -104,9 +104,13 @@ Note: Planned releases are for information only, they are subject to change with
 
 - Upgrade to Swift 3
 
-####v0.9.12 (Current)
+####v0.9.13 (Current)
 
-- Upgraded to Swift 3 beta (Xcode 8)
+- Upgraded to Xcode 8 beta 6 (Swift 3)
+
+####v0.9.12
+
+- Upgraded to Xcode 8 beta 3 (Swift 3)
 
 ####v0.9.11
 

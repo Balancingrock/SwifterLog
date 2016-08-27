@@ -3,7 +3,7 @@
 //  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.12
+//  Version:    0.9.13
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -56,7 +56,8 @@
 //
 // History:
 //
-// v0.9.12 - Upgraded to Swift 3 beta
+// v0.9.13 - Upgraded to Xcode 8 beta 6 (Swift 3)
+// v0.9.12 - Upgraded to Xcode 8 beta 3 (Swift 3)
 // v0.9.11 - Updated for VJson 0.9.8
 // v0.9.10 - Small update to accomodate VJson updates
 // v0.9.8  - Header update
@@ -72,22 +73,34 @@ import Foundation
 
 public struct LogLine: CustomStringConvertible {
     
+    
     /// Timestamp of the log entry
+    
     let time: Date
     
+    
     /// The loglevel of the log entry
+    
     let level: SwifterLog.Level
     
+    
     /// The source of the log entry
+    
     let source: String
     
+    
     /// The message of the log entry
+    
     let message: String
     
+    
     /// The CustomStringConvertible protocol
+    
     public var description: String { return SwifterLog.logTimeFormatter.string(from: time) + ", " + level.description + ": " + source + ", " + message }
     
+    
     /// Creates a json representation of this struct
+    
     var json: VJson {
         let json = VJson()
         json["LogLine"]["Time"] &= SwifterLog.logTimeFormatter.string(from: time)
@@ -97,7 +110,9 @@ public struct LogLine: CustomStringConvertible {
         return json
     }
     
+    
     /// Creates a new logline
+    
     init(time: Date, level: SwifterLog.Level, source: String, message: String) {
         self.time = time
         self.level = level
@@ -105,11 +120,12 @@ public struct LogLine: CustomStringConvertible {
         self.message = message
     }
     
+    
     /// Creates a new logline from the given JSON code, returns nil if this fails.
-    init?(json: VJson) {
+    
+    init?(json: VJson?) {
         
-        // Prevent the creation of a "LogLine" object in the json input, first test if it exists
-        guard json|"LogLine" != nil else { return nil }
+        guard let json = json else { return nil }
         
         guard let jTime = (json|"LogLine"|"Time")?.stringValue else { return nil }
         guard let jLevel = (json|"LogLine"|"Level")?.intValue else { return nil }
@@ -135,7 +151,7 @@ public extension SwifterLog {
     public func connectToNetworkTarget(_ target: NetworkTarget) {
         if networkQueue == nil {
             // Only create this queue if necessary, and then do it only once.
-            networkQueue = DispatchQueue(label: "network-queue", attributes: DispatchQueueAttributes.serial)
+            networkQueue = DispatchQueue(label: "network-queue")
         }
         networkQueue!.async(execute: { [unowned self] in self.openNetworkConnection(target.address, port: target.port)})
     }
@@ -147,6 +163,7 @@ public extension SwifterLog {
         networkQueue!.async(execute: { [unowned self] in self.closeNetworkConnection()})
     }
 
+    
     // Open a network destination
     
     private func openNetworkConnection(_ ipAddress: String, port: String) {

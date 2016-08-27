@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.12
+//  Version:    0.9.13
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -29,7 +29,7 @@
 //   - You can send payment via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
 //
-//  I prefer the above two, but if these options don't suit you, you might also send me a gift from my amazon.co.uk
+//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
 //  whishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
 //
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
@@ -225,55 +225,61 @@
 //
 // =====================================================================================================================
 //
-// History:
-// v0.9.12  - Upgraded to Swift 3 beta
-// v0.9.9   - Added 'public' to the string extensions
-//          - Added 'ReflectedStringConvertible' (idea from Matt Comi, https://github.com/mattcomi )
-//          - Changed message parameter from 'String' to optinal 'Any?' on all logging calls
-//            (Inspired by whitehat007, https://github.com/whitehat007 )
-//          - Fixed bug that would not call the callback destination for the very first logging message
-// v0.9.8   - Header update
-// v0.9.7   - Split off the network related stuff into its own file (except for the property definitions)
-// v0.9.6   - Included extension for String to easily create a SOURCE identifier from a #file string.
-//          - JSON code returned by 'json' changed from a value to a valid hierarchy.
-//          - Added ALL_NON_RECURSIVE target definition.
-//          - Updated for changes in SwifterSockets.Transmit
-// v0.9.5   Added transfer of log entries to a TCP/IP destination and targetting of error messages.
-//          Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
-//          Added call-back logging
-// v0.9.4   Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
-// v0.9.3   Changed syntax to Swift 2.0
-// v0.9.2   Removed the 'ID' parameter from the logging calls
-//          Added the "consoleSeparatorLine" function to create separators in the xcode or console output
-// v0.9.1   Initial release
+// NOTES:
+//
+// In the update to Xcode 8 beta 6 the loggingQueue is created with AutoreleaseFrequency.inherit. This was done for
+// backwards compatibility to MacOS 10.11. If that is not needed, setting it to AutoreleaseFrequency.never would seem
+// more appropriate.
 //
 // =====================================================================================================================
+//
+// History:
+// v0.9.13 - Upgraded to Xcode 8 beta 6 (see "NOTES" above!)
+//         - Changed names of logfiles to use '.' instead of '/' as seperator between time components.
+// v0.9.12 - Upgraded to Swift 3 beta
+// v0.9.9  - Added 'public' to the string extensions
+//         - Added 'ReflectedStringConvertible' (idea from Matt Comi, https://github.com/mattcomi )
+//         - Changed message parameter from 'String' to optinal 'Any?' on all logging calls
+//           (Inspired by whitehat007, https://github.com/whitehat007 )
+//         - Fixed bug that would not call the callback destination for the very first logging message
+// v0.9.8  - Header update
+// v0.9.7  - Split off the network related stuff into its own file (except for the property definitions)
+// v0.9.6  - Included extension for String to easily create a SOURCE identifier from a #file string.
+//         - JSON code returned by 'json' changed from a value to a valid hierarchy.
+//         - Added ALL_NON_RECURSIVE target definition.
+//         - Updated for changes in SwifterSockets.Transmit
+// v0.9.5  Added transfer of log entries to a TCP/IP destination and targetting of error messages.
+//         Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
+//         Added call-back logging
+// v0.9.4  Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
+// v0.9.3  Changed syntax to Swift 2.0
+// v0.9.2  Removed the 'ID' parameter from the logging calls
+//         Added the "consoleSeparatorLine" function to create separators in the xcode or console output
+// v0.9.1  Initial release
+//
+// =====================================================================================================================
+
 
 import Foundation
 
 
-// Note: This could also have been implemented as a set of functions instead of a class.
-// However creating the class and subsequent singleton gives us a minor ease of use: code completion.
-// Typing "log." where you need logging will instantly reveal all available options.
+// Typing "log." where you need logging will instantly reveal most available options.
 
-
-public let log = SwifterLog() // Since SwifterLog.init is private, this is the only instance ever created
+public let log = SwifterLog() // Since SwifterLog.init is fileprivate, this is the only instance ever created
 
 
 /// The protocol for callback receivers
 
 public protocol SwifterlogCallbackProtocol: class {
     
-    /**
-     The registered callback object must implement this function.
-     
-     - Parameter time: The time of the logging event.
-     - Parameter level: The level of the logging event.
-     - Parameter source: The source of the logging event.
-     - Parameter message: The message of the logging event.
-     
-     - Note: DO NOT CALL A LOGGING FUNCTION WITHIN A CALLBACK WITH A TARGET INCLUDING THE CALLBACK ITSELF. This would create an endless loop.
-     */
+    /// The registered callback object must implement this function.
+    ///
+    /// - Parameter time: The time of the logging event.
+    /// - Parameter level: The level of the logging event.
+    /// - Parameter source: The source of the logging event.
+    /// - Parameter message: The message of the logging event.
+    ///
+    /// - Note: DO NOT CALL A LOGGING FUNCTION WITHIN A CALLBACK WITH A TARGET INCLUDING THE CALLBACK ITSELF. This would create an endless loop.
     
     func logInfo(_ time: Date, level: SwifterLog.Level, source: String, message: String)
 }
@@ -317,9 +323,22 @@ public func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue <= right.rawValue
 }
 
+public func >= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+    return left.rawValue >= right.rawValue
+}
+
 public func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
     return left.rawValue > right.rawValue
 }
+
+public func < (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+    return left.rawValue < right.rawValue
+}
+
+public func == (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+    return left.rawValue == right.rawValue
+}
+
 
 public extension String {
     
@@ -404,7 +423,7 @@ public final class SwifterLog {
      - Note: When debugging in xcode, the app support directory is in /Library/Containers/<<<bundle identifier>>>/Data/Library/Application Support/<<<app name>>>/Logfiles.
      */
     
-    public var logfileDirectoryPath: NSString? {
+    public var logfileDirectoryPath: String? {
         didSet {
             logdirErrorMessageGenerated = false
             logfileErrorMessageGenerated = false
@@ -432,11 +451,9 @@ public final class SwifterLog {
     public typealias NetworkTarget = (address: String, port: String)
 
     
-    /**
-     The most recent value of the network target that was set using the function "connectToNetworkTarget". If the target is unreachable or after a "closeNetworkTarget" was executed the value will be nil.
-    
-     - Note: There will be a delay between calling connectToNetworkTarget and closeNetworkTarget and the updating of this variable. Thus checking this variable immediately after a return from either function will most likely fail to deliver the actual status.
-     */
+    /// The most recent value of the network target that was set using the function "connectToNetworkTarget". If the target is unreachable or after a "closeNetworkTarget" was executed the value will be nil.
+    ///
+    /// - Note: There will be a delay between calling connectToNetworkTarget and closeNetworkTarget and the updating of this variable. Thus checking this variable immediately after a return from either function will most likely fail to deliver the actual status.
     
     public var networkTarget: NetworkTarget? {
         return _networkTarget
@@ -462,13 +479,11 @@ public final class SwifterLog {
     public var fileRecordAtAndAboveLevel: Level = .none  { didSet { self.setOverallThreshold() } }
 
     
-    /**
-     Only messages with a level at or above the level specified in this variable will be recorded by the Apple System Log Facility. Set to "SwifterLog.Level.NONE" to suppress all messages to the ASL(F).
-    
-     - Note: The ASL log entries can be viewed with the "System Information.app" that is available in the "Applications/Utilities" folder. Do note that the configuration file at "/etc/asl.conf" suppresses all messages at levels DEBUG and INFO by default irrespective of the value of this variable.
-    
-     - Note: SwifterLog itself can write messages to the ASL at level ERROR if necessary. If the threshold is set higher than ERROR SwifterLog will fail silently.
-     */
+    /// Only messages with a level at or above the level specified in this variable will be recorded by the Apple System Log Facility. Set to "SwifterLog.Level.NONE" to suppress all messages to the ASL(F).
+    ///
+    /// - Note: The ASL log entries can be viewed with the "System Information.app" that is available in the "Applications/Utilities" folder. Do note that the configuration file at "/etc/asl.conf" suppresses all messages at levels DEBUG and INFO by default irrespective of the value of this variable.
+    ///
+    /// - Note: SwifterLog itself can write messages to the ASL at level ERROR if necessary. If the threshold is set higher than ERROR SwifterLog will fail silently.
     
     public var aslFacilityRecordAtAndAboveLevel: Level = .none  {
         didSet {
@@ -490,11 +505,9 @@ public final class SwifterLog {
     public var callbackAtAndAboveLevel: Level = .none { didSet { self.setOverallThreshold() } }
     
     
-    /**
-     Adds the given callback target to the list of callback targets if it is not present in the list yet. Has no effect if the callback target is already present.
-     
-     - Parameter target: The callback target to be added.
-     */
+    /// Adds the given callback target to the list of callback targets if it is not present in the list yet. Has no effect if the callback target is already present.
+    ///
+    /// - Parameter target: The callback target to be added.
     
     public func registerCallback(_ target: SwifterlogCallbackProtocol) {
         for t in callbackTargets {
@@ -504,11 +517,9 @@ public final class SwifterLog {
     }
 
     
-    /**
-     Removes the given callback target from the list of callback targets. Has no effect if the callback target is not present.
-     
-     - Parameter target: The callback target to be removed.
-     */
+    /// Removes the given callback target from the list of callback targets. Has no effect if the callback target is not present.
+    ///
+    /// - Parameter target: The callback target to be removed.
 
     public func removeCallback(_ target: SwifterlogCallbackProtocol) {
         for (index, t) in callbackTargets.enumerated() {
@@ -617,7 +628,7 @@ public final class SwifterLog {
         return String(format: "%08x, %@", id, source)
     }
 
-    private init() { // Guarantee a singleton usage of the logger
+    fileprivate init() { // Guarantee a singleton usage of the logger
         
         // Try to read the settings from the app's Info.plist
         
@@ -727,9 +738,9 @@ public final class SwifterLog {
 
     static var logTimeFormatter: DateFormatter = {
         let ltf = DateFormatter()
-        ltf.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        ltf.dateFormat = "yyyy-MM-dd'T'HH.mm.ss.SSSZ"
         return ltf
-        }()
+    }()
     
     private var aslInitialised: Int = 0
 
@@ -759,7 +770,7 @@ public final class SwifterLog {
     
     // Write log messages only from within this queue, that guarantees a non-overlapping behaviour even if multiple threads use the SwifterLog.
     
-    private let loggingQueue = DispatchQueue(label: "logging-queue", attributes: DispatchQueueAttributes.serial)
+    private let loggingQueue = DispatchQueue(label: "logging-queue", qos: .background, attributes: DispatchQueue.Attributes(), autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit, target: nil)
     
     
     // Send logging messages to a network destination using this. This decouples the log messages on this machine from the traffic conditions to another machine.
@@ -801,7 +812,7 @@ public final class SwifterLog {
         }
         if destinationCallback {
             if callbackQueue == nil {
-                callbackQueue = DispatchQueue(label: "callback-queue", attributes: DispatchQueueAttributes.serial)
+                callbackQueue = DispatchQueue(label: "callback-queue")
             }
             callbackQueue!.async(execute: { [unowned self] in
                 self.logToCallback(time, source: source, logLevel: logLevel, message: message)
@@ -858,19 +869,19 @@ public final class SwifterLog {
         
         do {
             let applicationSupportDirectory =
-                try fileManager.urlForDirectory(
-                    FileManager.SearchPathDirectory.applicationSupportDirectory,
+                try fileManager.url(
+                    for: FileManager.SearchPathDirectory.applicationSupportDirectory,
                     in: FileManager.SearchPathDomainMask.userDomainMask,
                     appropriateFor: nil,
-                    create: true).path!
-                
+                    create: true).path
+            
             let appName = ProcessInfo.processInfo.processName
-            let dirUrl = try! URL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).appendingPathComponent(appName)
-            return try! dirUrl.appendingPathComponent("Logfiles").path
+            let dirUrl = URL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).appendingPathComponent(appName)
+            return dirUrl.appendingPathComponent("Logfiles").path
 
         } catch let error as NSError {
         
-            let message: String = "Could not get application support directory, error = " + (error.localizedDescription ?? "Unknown reason")
+            let message: String = "Could not get application support directory, error = \(error.localizedDescription)"
             self.logToASL(Level.error, message: message)
             return nil
         }
@@ -889,7 +900,7 @@ public final class SwifterLog {
         
         // Get the logfile directory
         
-        if let logdir = (logfileDirectoryPath ?? applicationSupportLogfileDirectory) as? String {
+        if let logdir = logfileDirectoryPath ?? applicationSupportLogfileDirectory {
             
             do {
                 
@@ -901,11 +912,11 @@ public final class SwifterLog {
         
                 let filename = "Log_" + SwifterLog.logTimeFormatter.string(from: Date()) + ".txt"
                 
-                let logfileUrl = try! URL(fileURLWithPath: logdir).appendingPathComponent(filename)
+                let logfileUrl = URL(fileURLWithPath: logdir).appendingPathComponent(filename)
                 
-                if FileManager.default.createFile(atPath: logfileUrl.path!, contents: nil, attributes: [FileAttributeKey.posixPermissions.rawValue : NSNumber(value: 0o640)]) {
+                if FileManager.default.createFile(atPath: logfileUrl.path, contents: nil, attributes: [FileAttributeKey.posixPermissions.rawValue : NSNumber(value: 0o640)]) {
                     
-                    return FileHandle(forUpdatingAtPath: logfileUrl.path!)
+                    return FileHandle(forUpdatingAtPath: logfileUrl.path)
 
                 } else {
                     
@@ -919,7 +930,7 @@ public final class SwifterLog {
             } catch let error as NSError {
                 
                 if !logdirErrorMessageGenerated {
-                    let message = "Could not create logfile directory \(logdir), error = " + (error.localizedDescription ?? "Unknown reason")
+                    let message = "Could not create logfile directory \(logdir), error = \(error.localizedDescription)"
                     logToASL(.error, message: message)
                     logdirErrorMessageGenerated = true
                 }
@@ -963,7 +974,7 @@ public final class SwifterLog {
                     options: FileManager.DirectoryEnumerationOptions.skipsHiddenFiles)
                 
                 if files.count > logfileMaxNumberOfFiles {
-                    let sortedFiles = files.sorted(isOrderedBefore: { $0.lastPathComponent < $1.lastPathComponent })
+                    let sortedFiles = files.sorted(by: { $0.lastPathComponent < $1.lastPathComponent })
                     try FileManager.default.removeItem(at: sortedFiles.first!)
                 }
             } catch {
