@@ -3,13 +3,13 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.13
+//  Version:    0.9.14
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
-//  Website:    http://swiftfire.nl/pages/projects/swifterlog/
+//  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
 //  Blog:       http://swiftrien.blogspot.com
-//  Git:        https://github.com/Swiftrien/SwifterLog
+//  Git:        https://github.com/Balancingrock/SwifterLog
 //
 //  Copyright:  (c) 2014-2016 Marinus van der Lugt, All rights reserved.
 //
@@ -30,7 +30,7 @@
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
 //
 //  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
-//  whishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
+//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
 //
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
 //
@@ -234,6 +234,9 @@
 // =====================================================================================================================
 //
 // History:
+// v0.9.14 - Move to SPM
+//         - Documentation updates for reference manual generation
+//         - Changed callback protocol to 'AnyObject' from 'class'
 // v0.9.13 - Upgraded to Xcode 8 beta 6 (see "NOTES" above!)
 //         - Changed names of logfiles to use '.' instead of '/' as seperator between time components.
 // v0.9.12 - Upgraded to Swift 3 beta
@@ -248,14 +251,14 @@
 //         - JSON code returned by 'json' changed from a value to a valid hierarchy.
 //         - Added ALL_NON_RECURSIVE target definition.
 //         - Updated for changes in SwifterSockets.Transmit
-// v0.9.5  Added transfer of log entries to a TCP/IP destination and targetting of error messages.
-//         Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
-//         Added call-back logging
-// v0.9.4  Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
-// v0.9.3  Changed syntax to Swift 2.0
-// v0.9.2  Removed the 'ID' parameter from the logging calls
-//         Added the "consoleSeparatorLine" function to create separators in the xcode or console output
-// v0.9.1  Initial release
+// v0.9.5  - Added transfer of log entries to a TCP/IP destination and targetting of error messages.
+//         - Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
+//         - Added call-back logging
+// v0.9.4  - Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
+// v0.9.3  - Changed syntax to Swift 2.0
+// v0.9.2  - Removed the 'ID' parameter from the logging calls
+//         - Added the "consoleSeparatorLine" function to create separators in the xcode or console output
+// v0.9.1  - Initial release
 //
 // =====================================================================================================================
 
@@ -263,23 +266,28 @@
 import Foundation
 
 
-// Typing "log." where you need logging will instantly reveal most available options.
+/// The logging instance.
+///
+/// Typing "log." where you need logging will instantly reveal most available options.
+///
+/// Since SwifterLog.init is fileprivate, this is the only instance ever created
 
-public let log = SwifterLog() // Since SwifterLog.init is fileprivate, this is the only instance ever created
+public let log = SwifterLog()
 
 
-/// The protocol for callback receivers
+/// The protocol for loginfo callback receivers
 
-public protocol SwifterlogCallbackProtocol: class {
+public protocol SwifterlogCallbackProtocol: AnyObject {
     
-    /// The registered callback object must implement this function.
+    /// Called when log information must be processed by the target.
     ///
-    /// - Parameter time: The time of the logging event.
-    /// - Parameter level: The level of the logging event.
-    /// - Parameter source: The source of the logging event.
-    /// - Parameter message: The message of the logging event.
+    /// - Note: __DO NOT CALL A LOGGING FUNCTION WITHIN A CALLBACK WITH A TARGET INCLUDING THE CALLBACK ITSELF.__ This would create an endless loop.
     ///
-    /// - Note: DO NOT CALL A LOGGING FUNCTION WITHIN A CALLBACK WITH A TARGET INCLUDING THE CALLBACK ITSELF. This would create an endless loop.
+    /// - Parameters:
+    ///   - time: The time of the logging event.
+    ///   - level: The level of the logging event.
+    ///   - source: The source of the logging event.
+    ///   - message: The message of the logging event.
     
     func logInfo(_ time: Date, level: SwifterLog.Level, source: String, message: String)
 }
@@ -293,10 +301,13 @@ public protocol SwifterlogCallbackProtocol: class {
 public protocol ReflectedStringConvertible: CustomStringConvertible {}
 
 
-/// This protocol/extension combination allows classes to be printed like struct's.
+/// The default extension for this protocol allows classes to be printed like struct's.
+///
 /// Add ReflectedStringConvertible to any class definition and the extension will do the rest.
-/// Credit: Matt Comi
+///
 /// - Note: This will override the default 'description'
+///
+/// Credit: Matt Comi
 
 public extension ReflectedStringConvertible {
     public var description: String {
@@ -319,63 +330,115 @@ public extension ReflectedStringConvertible {
 }
 
 
-public func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
-    return left.rawValue <= right.rawValue
-}
-
-public func >= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
-    return left.rawValue >= right.rawValue
-}
-
-public func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
-    return left.rawValue > right.rawValue
-}
-
-public func < (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
-    return left.rawValue < right.rawValue
-}
-
-public func == (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
-    return left.rawValue == right.rawValue
-}
-
+/// An extension that adds a convenience method for logging information.
 
 public extension String {
     
-    /**
-     Extension to create a SOURCE identifier from a #file identifier.
-     
-     Example usage: log.atLevelDebug(id: 0, source: #file.source(#function, #line), message: "My Message")
-     
-     - Note: This will increase the time needed to create the log entry, it is therefore not advised for time-critical entries. Suggested use is at level NOTICE and above only.
-     
-     - Parameter function: This should be the '#function' identifier.
-     - Parameter line: This should be the '#line' identifier.
-     */
+
+    /// Creates 'source' information from a #file identifier.
+    ///
+    /// Example usage: log.atLevelDebug(id: 0, source: #file.source(#function, #line), message: "My Message")
+    ///
+    /// - Note: This will increase the time needed to create the log entry, it is therefore not advised for time-critical entries. Suggested use is at level NOTICE and above only.
+    ///
+    /// - Parameters:
+    ///   - function: A string identifying the function that the logging information is created in.
+    ///   - line: The line number where the logging call is made.
+    ///
+    /// - Returns: A string to be used as the 'source' identifier in the logging message.
+    
     public func source(_ function: String, _ line: Int) -> String {
         return ((self as NSString).lastPathComponent as NSString).deletingPathExtension + "." + function + "." + line.description
     }
 }
 
+
+/// A single class logging 'framework'
+
 public final class SwifterLog {
     
+    
+    // Setup the ASL logging facility
     
     private lazy var __once: () = { _ = asl_add_log_file(nil, STDERR_FILENO) }()
     
     
-    /// The available levels to cut-off
+    /// The logging levels
     
     public enum Level: Int, CustomStringConvertible {
-        case debug          = 0
-        case info           = 1
-        case notice         = 2
-        case warning        = 3
-        case error          = 4
-        case critical       = 5
-        case alert          = 6
-        case emergency      = 7
-        case none           = 8
+        
+        
+        /// The lowest level, will not appear in the system log unless additional system settings are updated.
+        ///
+        /// Recommendation: Use this level when working in xcode during programming / debugging.
+        ///
+        /// Example: "MyClass.myFunc: started" or "myParameter = 42"
+        
+        case debug = 0
+        
+        
+        /// The lowest level but one, will not appear in the system log unless additional system settings are updated.
+        ///
+        /// Recommendation: Use this level while still working on the project, but a decent level of confidence in the code correctness is present. For example during GUI level test/debugging.
+        ///
+        /// Example: "User clicked commit" or "Image XYZ loaded in MyClass"
+        
+        case info = 1
+        
+        
+        /// The lowest level that can be visible in the Apple System Log.
+        ///
+        /// Recommendation: Use this level to record information that might help you helping a user that experiences problems with the product.
+        ///
+        /// Example: "Connection with server established" or "Set image correction to ALWAYS"
+        
+        case notice = 2
+        
+        
+        /// The lowest level but one that can be visible in the Apple System Log.
+        ///
+        /// Recommendation: Use this level to record information that might help a user to solve a problem or help with understanding the product's behaviour.
+        ///
+        /// Example: "Option HIGHLIGHT no longer supported" or "Data after end-of-data marker ignored"
+
+        case warning = 3
+        
+        
+        /// Recommendation: Use this level to record information that explains why something was wrong and the product (possibly) failed to perform as expected. However future performance of the product should be unaffected.
+        ///
+        /// Example: "Cannot load file format XYZ" or "Data does not contain XYZ"
+        
+        case error = 4
+        
+        
+        /// Recommendation: Use this level to record information that explains why future performance of the product will be affected (unless corrective action is taken).
+        ///
+        /// Example: "Cannot save file, disk is full" or "Transfer interrupted"
+
+        case critical = 5
+        
+        
+        /// Recommendation: Use this level to alert the end-user to possible security violations.
+        ///
+        /// Example: Like somebody failing the password more than N times.
+        
+        case alert = 6
+        
+        
+        /// Recommendation: Use this level to attempt a last ditch effort to record some information that might explain why the application crashed.
+        
+        case emergency = 7
+        
+        
+        /// This is a meta level for filtering purposes only. Use it to allow all other levels to record their information.
+        
+        case none = 8
+        
+        
+        /// A textual description of the level.
+        
         public var description: String {
+            
             switch self {
             case .debug:        return "DEBUG    "
             case .info:         return "INFO     "
@@ -388,7 +451,12 @@ public final class SwifterLog {
             case .none:         return "NONE     "
             }
         }
+        
+        
+        /// The Apple System Log facility level associated with this Logging Level.
+        
         public func toAslLevel() -> Int32 {
+            
             switch self {
             case .debug:        return 7
             case .info:         return 6
@@ -401,28 +469,135 @@ public final class SwifterLog {
             case .none:         return -1
             }
         }
+        
+        
+        /// Implements the Smaller or Equal comparison.
+        ///
+        /// - Parameters:
+        ///   - left: A logging level
+        ///   - right: A logging level
+        ///
+        /// - Returns: True if the left logging level ranks at or below the right logging level. False otherwise.
+        
+        static public func <= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+            return left.rawValue <= right.rawValue
+        }
+        
+        
+        /// Implements the Smaller or Equal comparison.
+        ///
+        /// - Parameters:
+        ///   - left: A logging level
+        ///   - right: A logging level
+        ///
+        /// - Returns: True if the left logging level ranks at or above the right logging level. False otherwise.
+
+        static public func >= (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+            return left.rawValue >= right.rawValue
+        }
+        
+        
+        /// Implements the Smaller or Equal comparison.
+        ///
+        /// - Parameters:
+        ///   - left: A logging level
+        ///   - right: A logging level
+        ///
+        /// - Returns: True if the left logging level ranks above the right logging level. False otherwise.
+        
+        static public func > (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+            return left.rawValue > right.rawValue
+        }
+        
+        
+        /// Implements the Smaller or Equal comparison.
+        ///
+        /// - Parameters:
+        ///   - left: A logging level
+        ///   - right: A logging level
+        ///
+        /// - Returns: True if the left logging level ranks below the right logging level. False otherwise.
+        
+        static public func < (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+            return left.rawValue < right.rawValue
+        }
+        
+        
+        /// Implements the Smaller or Equal comparison.
+        ///
+        /// - Parameters:
+        ///   - left: A logging level
+        ///   - right: A logging level
+        ///
+        /// - Returns: True if the left logging level equals the right logging level. False otherwise.
+        
+        static public func == (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
+            return left.rawValue == right.rawValue
+        }
     }
     
     
-    // TODO: Consider removing the network target if it is not needed. Of course the rest of the code must be slimmed down if this is done. The compiler will identify the other places.
+    // TODO: Consider removing the network target if it is not needed. Of course the rest of the code must be slimmed down if this is done.
     
     /// Available targets for error messages
     
     public enum Target {
-        case stdout, file, asl, network, callback
+        
+        
+        /// Prints the log message to the console in xcode, or to the command line.
+        
+        case stdout
+        
+        
+        /// Writes the log message to a file.
+        
+        case file
+        
+        
+        /// Stores the log message in the Apple System Log facility
+        
+        case asl
+        
+        
+        /// Transfers the log message to the network destination
+        
+        case network
+        
+        
+        /// Sends the log message to the specified target
+        
+        case callback
+        
+        
+        /// A set containing all targets
+        
         public static let ALL: Set<Target> = [stdout, file, asl, network, callback]
+        
+        
+        /// A set containing all targets except the callback
+        
         public static let ALL_EXCEPT_CALLBACK: Set<Target> = [stdout, file, asl, network]
+        
+        
+        /// A set containing all targets except the ASL
+        
         public static let ALL_EXCEPT_ASL: Set<Target> = [stdout, file, network, callback]
-        public static let ALL_NON_RECURSIVE: Set<Target> = [stdout, file, asl] // the callback and network could generate an infinite recursion
+        
+        
+        /// A set containing all targets except the callback and network since there have the potential to be recursive.
+        
+        public static let ALL_NON_RECURSIVE: Set<Target> = [stdout, file, asl]
     }
 
     
-    /**
-     Specifies the path for the directory in which the next logfile will be created. Note that the application must have write access to this directory and to create this directory (sandbox!). If this variable is nil, the logfiles will be written to /Library/Application Support/<<<Application Name>>>/Logfiles. Do not use '~' signs in the path, expand them first if there are tildes in the path that must be set.
+    /// The path for the directory in which the next logfile will be created.
+    ///
+    /// Note that the application must have write access to this directory and the rights to create this directory (sandbox!). If this variable is nil, the logfiles will be written to /Library/Application Support/<<<Application Name>>>/Logfiles.
+    ///
+    /// Do not use '~' signs in the path, expand them first if there are tildes in it.
     
-     - Note: When debugging in xcode, the app support directory is in /Library/Containers/<<<bundle identifier>>>/Data/Library/Application Support/<<<app name>>>/Logfiles.
-     */
-    
+    /// - Note: When debugging in xcode, the app support directory is in /Library/Containers/<<<bundle identifier>>>/Data/Library/Application Support/<<<app name>>>/Logfiles.
+ 
     public var logfileDirectoryPath: String? {
         didSet {
             logdirErrorMessageGenerated = false
@@ -448,16 +623,18 @@ public final class SwifterLog {
     // MARK: - For the network target.
     // TODO: - The following 4 declarations can be removed if the network destination is not needed
     
+    /// Associates a tuple with a network destination.
+    
     public typealias NetworkTarget = (address: String, port: String)
 
     
-    /// The most recent value of the network target that was set using the function "connectToNetworkTarget". If the target is unreachable or after a "closeNetworkTarget" was executed the value will be nil.
+    /// The most recent value of the network target that was set using the function "connectToNetworkTarget".
+    ///
+    /// Will be nil if the target is unreachable or once a "closeNetworkTarget" was executed.
     ///
     /// - Note: There will be a delay between calling connectToNetworkTarget and closeNetworkTarget and the updating of this variable. Thus checking this variable immediately after a return from either function will most likely fail to deliver the actual status.
     
-    public var networkTarget: NetworkTarget? {
-        return _networkTarget
-    }
+    public var networkTarget: NetworkTarget? { return _networkTarget }
     
     internal var _networkTarget: NetworkTarget?
     
@@ -481,7 +658,7 @@ public final class SwifterLog {
     
     /// Only messages with a level at or above the level specified in this variable will be recorded by the Apple System Log Facility. Set to "SwifterLog.Level.NONE" to suppress all messages to the ASL(F).
     ///
-    /// - Note: The ASL log entries can be viewed with the "System Information.app" that is available in the "Applications/Utilities" folder. Do note that the configuration file at "/etc/asl.conf" suppresses all messages at levels DEBUG and INFO by default irrespective of the value of this variable.
+    /// - Note: The ASL log entries can be viewed with the "System Information.app" that is available in the "Applications/Utilities" folder. Also note that the configuration file at "/etc/asl.conf" suppresses all messages at levels DEBUG and INFO by default irrespective of the value of this variable.
     ///
     /// - Note: SwifterLog itself can write messages to the ASL at level ERROR if necessary. If the threshold is set higher than ERROR SwifterLog will fail silently.
     
@@ -495,7 +672,7 @@ public final class SwifterLog {
     }
 
     
-    /// Only messages with a level at or above the level specified in this variable will be transferred to the TCP/IP destination. Set to "SwifterLog.Level.NONE" to suppress transmission of all messages to the TCP/IP destination.
+    /// Only messages with a level at or above the level specified in this variable will be transferred to the network destination. Set to "SwifterLog.Level.NONE" to suppress transmission of all messages to the network destination.
     
     public var networkTransmitAtAndAboveLevel: Level = .none { didSet { self.setOverallThreshold() } }
     
@@ -504,6 +681,8 @@ public final class SwifterLog {
 
     public var callbackAtAndAboveLevel: Level = .none { didSet { self.setOverallThreshold() } }
     
+    
+    // MARK: - Callback management
     
     /// Adds the given callback target to the list of callback targets if it is not present in the list yet. Has no effect if the callback target is already present.
     ///
@@ -528,6 +707,8 @@ public final class SwifterLog {
     }
     
     
+    // MARK: - Console utility
+    
     /// Prints a line with the specified character for the specified times to the console
     
     public func consoleSeperatorLine(_ char: Character, times: Int) {
@@ -547,74 +728,229 @@ public final class SwifterLog {
     
     // MARK: - Logging functions
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below the specified level.
+    ///
+    /// - Parameters:
+    ///   - level: Write the log message to destinations at or below this level.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the specified level).
+    
     public func atLevel(_ level: Level, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: source, message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at .debug.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
 
     public func atLevelDebug(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.debug, source: source, message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .info.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelInfo(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.info, source: source, message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at or below .notice.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
     
     public func atLevelNotice(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.notice, source: source, message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .warning.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelWarning(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.warning, source: source, message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at or below .error.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
     
     public func atLevelError(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.error, source: source, message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .critical.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelCritical(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.critical, source: source, message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at or below .alert.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
     
     public func atLevelAlert(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.alert, source: source, message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .emergency.
+    ///
+    /// - Parameters:
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelEmergency(source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.emergency, source: source, message: message, targets: targets)
     }
 
+    
+    /// Log the given message to all destinations that have a logging level set at or below the specified level.
+    ///
+    /// - Parameters:
+    ///   - level: Write the log message to destinations at or below this level.
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the specified level).
+
     public func atLevel(_ level: Level, id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(level, source: createSource(id, source), message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at .debug.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
 
     public func atLevelDebug(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.debug, source: createSource(id, source), message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .info.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelInfo(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.info, source: createSource(id, source), message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at or below .notice.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
     
     public func atLevelNotice(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.notice, source: createSource(id, source), message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .warning.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelWarning(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.warning, source: createSource(id, source), message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at or below .error.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
     
     public func atLevelError(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.error, source: createSource(id, source), message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .critical.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+    
     public func atLevelCritical(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.critical, source: createSource(id, source), message: message, targets: targets)
     }
+    
+    
+    /// Log the given message to all destinations that have a logging level set at or below .alert.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
     
     public func atLevelAlert(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.alert, source: createSource(id, source), message: message, targets: targets)
     }
     
+    
+    /// Log the given message to all destinations that have a logging level set at or below .emergency.
+    ///
+    /// - Parameters:
+    ///   - id: A 32 bit integer that can be used to identify an object or other resource this message applies to.
+    ///   - source: The source of the message.
+    ///   - message: The data to be recorded.
+    ///   - targets: The target set to record to (subject to the cutoff level).
+
     public func atLevelEmergency(id: Int32, source: String, message: Any? = nil, targets: Set<Target> = Target.ALL) {
         putOnLoggingQueue(.emergency, source: createSource(id, source), message: message, targets: targets)
     }
@@ -736,7 +1072,7 @@ public final class SwifterLog {
     }
 
 
-    static var logTimeFormatter: DateFormatter = {
+    internal static var logTimeFormatter: DateFormatter = {
         let ltf = DateFormatter()
         ltf.dateFormat = "yyyy-MM-dd'T'HH.mm.ss.SSSZ"
         return ltf

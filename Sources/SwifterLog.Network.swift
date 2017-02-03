@@ -67,6 +67,15 @@
 // =====================================================================================================================
 
 import Foundation
+import SwifterJSON
+import SwifterSockets
+
+
+/// Copied from VJson to allow the usage of these operators in this file.
+
+precedencegroup LeftAssociative { associativity: left }
+infix operator | : LeftAssociative
+infix operator &=
 
 
 /// The logline as it will be transferred to the network destination
@@ -76,22 +85,22 @@ public struct LogLine: CustomStringConvertible {
     
     /// Timestamp of the log entry
     
-    let time: Date
+    public let time: Date
     
     
     /// The loglevel of the log entry
     
-    let level: SwifterLog.Level
+    public let level: SwifterLog.Level
     
     
     /// The source of the log entry
     
-    let source: String
+    public let source: String
     
     
     /// The message of the log entry
     
-    let message: String
+    public let message: String
     
     
     /// The CustomStringConvertible protocol
@@ -99,9 +108,9 @@ public struct LogLine: CustomStringConvertible {
     public var description: String { return SwifterLog.logTimeFormatter.string(from: time) + ", " + level.description + ": " + source + ", " + message }
     
     
-    /// Creates a json representation of this struct
+    /// The json representation of this struct
     
-    var json: VJson {
+    public var json: VJson {
         let json = VJson()
         json["LogLine"]["Time"] &= SwifterLog.logTimeFormatter.string(from: time)
         json["LogLine"]["Level"] &= level.rawValue
@@ -113,7 +122,7 @@ public struct LogLine: CustomStringConvertible {
     
     /// Creates a new logline
     
-    init(time: Date, level: SwifterLog.Level, source: String, message: String) {
+    public init(time: Date, level: SwifterLog.Level, source: String, message: String) {
         self.time = time
         self.level = level
         self.source = source
@@ -123,7 +132,7 @@ public struct LogLine: CustomStringConvertible {
     
     /// Creates a new logline from the given JSON code, returns nil if this fails.
     
-    init?(json: VJson?) {
+    public init?(json: VJson?) {
         
         guard let json = json else { return nil }
         
@@ -143,10 +152,14 @@ public struct LogLine: CustomStringConvertible {
 }
 
 
+/// SwifterLog extension for the networking target.
+
 public extension SwifterLog {
     
     
     /// Tries to opens a client connection to the target. Since the connection attempt will take place asynchronously, the feedback by way of the "networkTarget" variable will be delayed. Checking that variable immediately after a return from this function will most likely fail to deliver the actual status.
+    ///
+    /// - Parameter target: The network ip address and port number to use.
     
     public func connectToNetworkTarget(_ target: NetworkTarget) {
         if networkQueue == nil {
@@ -180,7 +193,7 @@ public extension SwifterLog {
         
         // Try to open a connection
         
-        let result = SwifterSockets.connectToServer(atAddress: ipAddress, atPort: port)
+        let result = SwifterSockets.connectToTipServer(atAddress: ipAddress, atPort: port)
         
         switch result {
             
@@ -189,7 +202,7 @@ public extension SwifterLog {
             self.atLevelNotice(source: ProcessInfo.processInfo.processName + ".Swifterlog", message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", targets: [.stdout, .asl, .file])
             
             
-        case let .socket(num):
+        case let .success(num):
             
             socket = num
             _networkTarget = (ipAddress, port)
@@ -205,7 +218,7 @@ public extension SwifterLog {
     
     private func closeNetworkConnection() {
         
-        SwifterSockets.closeSocket(socket)
+        _ = SwifterSockets.closeSocket(socket)
         socket = nil
         _networkTarget = nil
         self.atLevelNotice(source: ProcessInfo.processInfo.processName + ".Swifterlog", message: "Network target logging stopped", targets: [.stdout, .asl, .file])
@@ -229,7 +242,7 @@ public extension SwifterLog {
             
             // Try to transmit it. Use a very short timeout because there can be a lot of messages and the connection should be able to handle a fast succession of messages.
             
-            let result = SwifterSockets.transmit(toSocket: socket!, string: logline.json.description, timeout: 0.1, telemetry: nil)
+            let result = SwifterSockets.tipTransfer(socket: socket!, string: logline.json.description, timeout: 0.1)
             
             switch result {
                 
@@ -246,7 +259,7 @@ public extension SwifterLog {
                 
             case .ready: break
                 
-            case .clientClosed, .serverClosed:
+            case .closed:
                 
                 self.atLevelError(source: ProcessInfo.processInfo.processName + ".Swifterlog.logToNetwork", message: "Connection to network target unexpectedly closed", targets: [.asl, .file, .stdout])
                 self.closeNetworkConnection()
