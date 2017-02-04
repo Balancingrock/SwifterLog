@@ -1,0 +1,13 @@
+# SwifterLog document generator jazzy settings
+
+copyright: Copyright 2016-2017 Rien van der Lugt
+author: Rien van der Lugt
+module: SwifterLog
+hide_documentation_coverage: true
+xcodebuild_arguments: [-target, SwifterLog]
+github_url: https://github.com/Balancingrock/SwifterLog
+output: ~/Documents/Websites/sf/projects/swifterlog/reference
+clean: true
+theme: fullwidth
+readme: README.md
+documentation: docs/*.md
