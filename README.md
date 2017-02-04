@@ -28,7 +28,7 @@ General purpose JSON utility.
 	4. A network destination
 	5. A list of callback objects from the Application itself.
 - 8 log levels, the same as defined for the Apple System Log facility:
-	1. Dedug
+	1. Debug
 	2. Info
 	3. Notice
 	4. Warning
