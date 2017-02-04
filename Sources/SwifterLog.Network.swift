@@ -66,16 +66,12 @@
 //
 // =====================================================================================================================
 
+#if SWIFTERLOG_DISABLE_NETWORK_TARGET
+#else
+
 import Foundation
 import SwifterJSON
 import SwifterSockets
-
-
-/// Copied from VJson to allow the usage of these operators in this file.
-
-precedencegroup LeftAssociative { associativity: left }
-infix operator | : LeftAssociative
-infix operator &=
 
 
 /// The logline as it will be transferred to the network destination
@@ -268,3 +264,5 @@ public extension SwifterLog {
         }
     }
 }
+    
+#endif

@@ -45,183 +45,7 @@
 //
 // =====================================================================================================================
 //
-// This file needs two assist files:
-// 
-// asl-bridge.h which should contain:
-// ----------------------------------
-//
-// #import <Foundation/Foundation.h>
-//
-// #ifndef asl_bridge_h
-// #define asl_bridge_h
-//
-// int asl_bridge_log_message(int level, NSString *message);
-//
-// #endif
-//
-//
-// And the corresponding asl-bridge.m which should contain:
-// --------------------------------------------------------
-//
-// #import <Foundation/Foundation.h>
-//
-// #import <asl.h>
-// #import "asl-bridge.h"
-//
-// int asl_bridge_log_message(int level, NSString *message) {
-//     return asl_log_message(level, "%s", [message cStringUsingEncoding:NSUTF8StringEncoding]);
-// }
-//
-//
-// It also needs the following two lines in your <<<app-name>>-Bridging-Header.h:
-// ------------------------------------------------------------------------------
-//
-// #import <asl.h>
-// #import "asl-bridge.h"
-//
-// =====================================================================================================================
-//
-// WARNING: Both the network destination and callback destinations have the potential to be too slow to accept all the
-// logging information sent to them. While this will not impact the other destinations (i.e. logging will continue to
-// work normally on the other destinations) it will result in an increasing load on the system resources. Eventually
-// this can lead to a crash of your application.
-//
-// Quick start:
-//
-// 1) Add SwifterJSON and SwifterSockets to the project. (Not necessary if the TODO items are performed as detailed in
-//    the source code)
-//
-// 2) Add all 4 files (asl-bridge.h, asl-bridge.m, SwifterLog.swift and SwifterLog.Network.swift) to the project. (Do
-//    not add SwifterLog.Network.swift if SwifterJSON and SwifterSockets are not present)
-//
-// 3) Update the bridging header (create one if necessary)
-//
-// 4) Make sure there is no global variable called "log" in the project, except for the one in this file.
-//
-// 5) That is all. Now add logging statements, just type "log." and the auto-completion in xcode will start suggesting
-//    the operations necessary to log and configure this utility.
-//    Typical is as follows:
-//
-//    a) log.atLevelError(id: logId, source: "My source identifier", message: "Error message")
-//    b) log.atLevelError(id: logId, source: #file.source(#function, #line), message: "Error message")
-//    c) private let SOURCE = ((#file as NSString).lastPathComponent as NSString).stringByDeletingPathExtension
-//       log.atLevelError(id: logId, source: SOURCE + ".\(#function).\(#line)", message: "Error message")
-//
-// Note1: The id is intended to differentiate between sources. I.e. for example an object identifier, a thread
-// identifier, or a socket cq file descriptor.
-//
-// Note2: The source field is used to identify the spot where the log entry originated. The fastest way to do this is
-// by using a constant string (example a). However when the extra time consumption is not a problem it may also be done
-// automatically as in example (b). Example c is a compromise between a and b. I am not really sure, but these two
-// expressions can be evaluated at compile time and hopefully result -like a- in a fast call but with the added benefit
-// of auto-generated identifiers.
-//
-// Note3: Since version 0.9.9 the message parameter has changed to "Any". Extend classes with the
-// ReflectedStringConvertible protocol to gain easy access to debug information:
-//
-//    class MyClass: ReflectedStringConvertible { ... }
-//    var myInstance = MyClass()
-//    log.atLevelDebug(id: logId, source: #file.source(#function, #line), message: myInstance)
-//
-// PS: Note that the #file, #function and #line are determined at compile time and thus cannot be abstracted into a
-// subroutine.
-//
-// Configuration of SwifterLog is through:
-//
-// Configuration for ASL:
-//     aslFacilityRecordAtAndAboveLevel - Threshold for recording.
-//
-// Configuration for STDOUT - i.e. println():
-//     stdoutPrintAtAndAboveLevel       - Threshold for printing.
-//
-// Configuration for a logfile:
-//    logfileRecordAtAndAboveLevel      - Threshold for recording.
-//    logfileDirectoryPath              - Either nil or the directory in which the logfiles should be written.
-//    logfileMaxSizeInBytes             - Approximate maximum size of a single logfile.
-//    logfileMaxNumberOfFiles           - The maximum number of logfiles.
-//
-// Configuration for a network destination:
-//    networkTransmitAtAndAboveLevel    - Threshold for transmisison
-//    networkIpAddress                  - The IP address of the network destination
-//    networkPortNumber                 - The portnumber for the network destination
-//
-// Configuration for callback:
-//    callbackAtAndAboveLevel           - Threshold for calling the callback with the log information
-//
-// For further details on the configuration, check the definitions below, or see the Xcode Quick Help.
-//
-// A suggestion: while working in Xcode, set aslFacilityRecordAtAndAboveLevel to .NONE, the others can be set as you
-// like/need. In a shipping application set stdoutPrintAtAndAboveLevel to .NONE and the logfile and
-// aslFacilityRecordAtAndAboveLevel as you like/need. Be aware that ASL will by default filter out anything at level
-// DEBUG and INFO in the /etc/asl.conf file.
-//
-// Be carefull with the network destination. It can cause a lot of data to be transferred and can potentially cause
-// security or privacy issue's.
-//
-// The configuration variables above can be set in code, or in the application's Info.plist. Note that an application
-// procured through the App-store will not start if the Info.plist is changed from the values when "Archived" for
-// distribution. If end-user must be able to update the log levels, add a settings panel or menu to your code.
-// Note: Without code signing a user can change the Info.plist, but then you cannot use the App-store for distribution.
-//
-// In order to set them in the Info.plist add a dictionary item with the key value "SwifterLog". In this directory add
-// as many of the configuration items as necessary. Use the full name of the configuration items for the key's and
-// numbers for their values except for the logfileDirectoryPath which is a string. SwifterLog will guard against values
-// that are invalid or out-of-bounds, in that case the default values as in this code will be used.
-//
-// Key                              | Type       | Range           | Default when absent
-// -----------------------------------------------------------------------------------------
-// SwifterLog                       | Dictionary | The other items | -
-// aslFacilityRecordAtAndAboveLevel | Number     | 0...8           | NONE (8)
-// stdoutPrintAtAndAboveLevel       | Number     | 0...8           | NONE (8)
-// fileRecordAtAndAboveLevel        | Number     | 0...8           | NONE (8)
-// networkTransmitAtAndAboveLevel   | Number     | 0...8           | NONE (8)
-// callbackAtAndAboveLevel          | Number     | 0...8           | NONE (8)
-// logfileDirectoryPath             | String     | RFC 2396        | "/Library/Application Support/<<AppName>>/Logfiles"
-// logfileMaxSizeInBytes            | Number     | 10K...100M      | 1M
-// logfileMaxNumberOfFiles          | Number     | 2...1000        | 20
-// networkIpAddress                 | String     | IP Address      | -
-// networkPortNumber                | String     | Port Number     | -
-//
-// Note: networkIpAddress and networkPortNumber must both be present to have any effect.
-//
-// =====================================================================================================================
-//
 // Don't forget: Before creating the final release version of the software, make sure to set the correct loglevels!
-//
-// =====================================================================================================================
-//
-// Here is how I use the log levels:
-//
-// DEBUG: Almost all of my log messages are at this level. They are only of interest to me while I am working in Xcode.
-// Typically they are of the kind "MyClass.myFunc: started" or "myParameter = 42".
-//
-// INFO: Once I am done with debugging, I still want to gain confidence that my app works as intended. The information
-// at this level should remain visible in xcode, even though I am by now mostly unit-testing or running GUI tests from
-// within Xcode. None of this information is usefull for the end-user. Typically they are of the kind "User clicked
-// commit" or "Image XYZ loaded in MyClass".
-//
-// NOTICE: This is the first level of information that might be visible to the end-user. I use it to give information
-// about the execution that may help me in helping the end-user with a problem. Typically these are messages like:
-// "Connection with server established" or "Loaded configuration file" or "Set image correction to ALWAYS".
-//
-// WARNING: These messages contain information for the end-user. They usually inform the user about things he did wrong
-// but which are fully handled by the application. I.e. they do not lead to termination of the app. While the messages
-// will often be accompanied by an alert message, they may also fail silently. Typically they are like: "Option
-// HIGHLIGHT no longer supported" or "Data after end-of-data marker ignored"
-//
-// ERROR: These are messages that are always accompanied by an alert window. They alert the user that something impared
-// the functioning of the application. Typically like "Cannot load file format XYZ" or "Data does not contain XYZ". Note
-// that it is still possible for the application to continue.
-//
-// CRITICAL: Messages at this level alert the user that he has to do something, or the application will not be able to
-// continue. The application will usually stop until the user has fixed the situation. Examples are "Cannot save file,
-// disk is full" or "Transfer interrupted".
-//
-// ALERT: This level is important to the end-user. It contains information about situations that could lead to security
-// issues. Like somebody failing the password more than N times.
-//
-// EMERGENCY: I use this level when the application cannot continue and will terminate itself. The message itself
-// is a last ditch attempt to generate some information that gives a clue to the cause of the problem.
 //
 // =====================================================================================================================
 //
@@ -237,6 +61,7 @@
 // v0.9.14 - Move to SPM
 //         - Documentation updates for reference manual generation
 //         - Changed callback protocol to 'AnyObject' from 'class'
+//         - Added conditional compilation for the network target
 // v0.9.13 - Upgraded to Xcode 8 beta 6 (see "NOTES" above!)
 //         - Changed names of logfiles to use '.' instead of '/' as seperator between time components.
 // v0.9.12 - Upgraded to Swift 3 beta
@@ -294,8 +119,11 @@ public protocol SwifterlogCallbackProtocol: AnyObject {
 
 
 /// This protocol/extension combination allows classes to be printed like struct's.
+///
 /// Add ReflectedStringConvertible to any class definition and the extension will do the rest.
+///
 /// Credit: Matt Comi
+///
 /// - Note: This will override the default 'description'
 
 public protocol ReflectedStringConvertible: CustomStringConvertible {}
@@ -536,9 +364,7 @@ public final class SwifterLog {
         }
     }
     
-    
-    // TODO: Consider removing the network target if it is not needed. Of course the rest of the code must be slimmed down if this is done.
-    
+
     /// Available targets for error messages
     
     public enum Target {
@@ -557,32 +383,46 @@ public final class SwifterLog {
         /// Stores the log message in the Apple System Log facility
         
         case asl
+
         
         
+        #if SWIFTERLOG_DISABLE_NETWORK_TARGET
+        #else
         /// Transfers the log message to the network destination
-        
         case network
-        
-        
+        #endif
+
         /// Sends the log message to the specified target
         
         case callback
         
         
+        #if SWIFTERLOG_DISABLE_NETWORK_TARGET
         /// A set containing all targets
-        
+        public static let ALL: Set<Target> = [stdout, file, asl, callback]
+        #else
+        /// A set containing all targets
         public static let ALL: Set<Target> = [stdout, file, asl, network, callback]
+        #endif
         
         
+        #if SWIFTERLOG_DISABLE_NETWORK_TARGET
         /// A set containing all targets except the callback
-        
+        public static let ALL_EXCEPT_CALLBACK: Set<Target> = [stdout, file, asl]
+        #else
+        /// A set containing all targets except the callback
         public static let ALL_EXCEPT_CALLBACK: Set<Target> = [stdout, file, asl, network]
+        #endif
         
         
+        #if SWIFTERLOG_DISABLE_NETWORK_TARGET
         /// A set containing all targets except the ASL
-        
+        public static let ALL_EXCEPT_ASL: Set<Target> = [stdout, file, callback]
+        #else
+        /// A set containing all targets except the ASL
         public static let ALL_EXCEPT_ASL: Set<Target> = [stdout, file, network, callback]
-        
+        #endif
+
         
         /// A set containing all targets except the callback and network since there have the potential to be recursive.
         
@@ -592,11 +432,11 @@ public final class SwifterLog {
     
     /// The path for the directory in which the next logfile will be created.
     ///
-    /// Note that the application must have write access to this directory and the rights to create this directory (sandbox!). If this variable is nil, the logfiles will be written to /Library/Application Support/<<<Application Name>>>/Logfiles.
+    /// Note that the application must have write access to this directory and the rights to create this directory (sandbox!). If this variable is nil, the logfiles will be written to /Library/Application Support/[Application Name]/Logfiles.
     ///
     /// Do not use '~' signs in the path, expand them first if there are tildes in it.
     
-    /// - Note: When debugging in xcode, the app support directory is in /Library/Containers/<<<bundle identifier>>>/Data/Library/Application Support/<<<app name>>>/Logfiles.
+    /// - Note: When debugging in xcode, the app support directory is in /Library/Containers/[bundle identifier]/Data/Library/Application Support/[app name]/Logfiles.
  
     public var logfileDirectoryPath: String? {
         didSet {
@@ -621,7 +461,6 @@ public final class SwifterLog {
     
     
     // MARK: - For the network target.
-    // TODO: - The following 4 declarations can be removed if the network destination is not needed
     
     /// Associates a tuple with a network destination.
     
@@ -1030,13 +869,15 @@ public final class SwifterLog {
                 if let logfileDirPath = swifterLogOptions["logfileDirectoryPath"] as? String {
                     logfileDirectoryPath = logfileDirPath
                 }
-                
-                // TODO: Comment out the next line if the network destination is not needed
+
+                #if SWIFTERLOG_DISABLE_NETWORK_TARGET
+                #else
                 if let networkIpAddress = swifterLogOptions["networkIpAddress"] as? String {
                     if let networkPortNumber = swifterLogOptions["networkPortNumber"] as? String {
                         connectToNetworkTarget(NetworkTarget(networkIpAddress, networkPortNumber))
                     }
                 }
+                #endif
         }
     }
     
@@ -1053,7 +894,13 @@ public final class SwifterLog {
         let stdoutEnabled   = targets.contains(.stdout)   && (stdoutPrintAtAndAboveLevel <= level)
         let aslEnabled      = targets.contains(.asl)      && (aslFacilityRecordAtAndAboveLevel <= level)
         let fileEnabled     = targets.contains(.file)     && (fileRecordAtAndAboveLevel <= level)
+
+        #if SWIFTERLOG_DISABLE_NETWORK_TARGET
+        let networkEnabled  = false
+        #else
         let networkEnabled  = targets.contains(.network)  && (networkTransmitAtAndAboveLevel <= level)
+        #endif
+        
         let callbackEnabled = targets.contains(.callback) && (callbackAtAndAboveLevel <= level)
         let stringMessage = "\(message ?? "")"
         loggingQueue.async(execute: {
@@ -1138,7 +985,9 @@ public final class SwifterLog {
         if destinationSTDOut { logToStdout(logstr) }
         if destinationFile { logToFile(logstr) }
         if destinationASL { logToASL(logLevel, message: logstr) }
-        // TODO: Comment out the next line if the network destination is not needed
+
+        #if SWIFTERLOG_DISABLE_NETWORK_TARGET
+        #else
         if destinationNetwork {
             if networkQueue != nil {
                 networkQueue!.async(execute: { [unowned self] in
@@ -1146,6 +995,8 @@ public final class SwifterLog {
                     })
             }
         }
+        #endif
+
         if destinationCallback {
             if callbackQueue == nil {
                 callbackQueue = DispatchQueue(label: "callback-queue")
