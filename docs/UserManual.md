@@ -241,35 +241,80 @@ To do so, create a dictionary entry in the plist and give it the name SwifterLog
 
 The following table lists the keys and the values:
 
-|---
-
-| Key | Type | Range | Default when absent |
-
-|---
-
-| SwifterLog | Dictionary | The other items |
-
-| aslFacilityRecordAtAndAboveLevel | Number | 0...8 | NONE (8) |
-
-| stdoutPrintAtAndAboveLevel | Number | 0...8 | NONE (8) |
-
-| fileRecordAtAndAboveLevel | Number | 0...8 | NONE (8) |
-
-| networkTransmitAtAndAboveLevel | Number | 0...8 | NONE (8) |
-
-| callbackAtAndAboveLevel | Number | 0...8 | NONE (8) |
-
-| logfileDirectoryPath | String | RFC 2396 | "/Library/Application Support/<<AppName>>/Logfiles" |
-
-| logfileMaxSizeInBytes | Number | 10K...100M | 1M |
-
-| logfileMaxNumberOfFiles | Number | 2...1000 | 20 |
-
-| networkIpAddress | String | IP Address |
-
-| networkPortNumber | String | Port Number |
-
-|---
+<table>
+<tr>
+	<th>Key</th>
+	<th>Type</th>
+	<th>Range</th>
+	<th>Default when absent</th>
+</tr>
+<tr>
+	<td>SwifterLog</td>
+	<td>Dictionary</td>
+	<td>The other items</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>aslFacilityRecordAtAndAboveLevel</td>
+	<td>Number</td>
+	<td>0...8</td>
+	<td>.none (8)</td>
+</tr>
+<tr>
+	<td>stdoutPrintAtAndAboveLevel</td>
+	<td>Number</td>
+	<td>0...8</td>
+	<td>.none (8)</td>
+</tr>
+<tr>
+	<td>fileRecordAtAndAboveLevel</td>
+	<td>Number</td>
+	<td>0...8</td>
+	<td>.none (8)</td>
+</tr>
+<tr>
+	<td>networkTransmitAtAndAboveLevel</td>
+	<td>Number</td>
+	<td>0...8</td>
+	<td>.none (8)</td>
+</tr>
+<tr>
+	<td>callbackAtAndAboveLevel</td>
+	<td>Number</td>
+	<td>0...8</td>
+	<td>.none (8)</td>
+</tr>
+<tr>
+	<td>logfileDirectoryPath</td>
+	<td>String</td>
+	<td>RFC 2396</td>
+	<td>"/Library/Application Support/[AppName]/Logfiles"</td>
+</tr>
+<tr>
+	<td>logfileMaxSizeInBytes</td>
+	<td>Number</td>
+	<td>10K...100M</td>
+	<td>1M</td>
+</tr>
+<tr>
+	<td>logfileMaxNumberOfFiles</td>
+	<td>Number</td>
+	<td>2...1000</td>
+	<td>20</td>
+</tr>
+<tr>
+	<td>networkIpAddress</td>
+	<td>String</td>
+	<td>IP Address</td>
+	<td>-</td>
+</tr>
+<tr>
+	<td>networkPortNumber</td>
+	<td>String</td>
+	<td>Port Number</td>
+	<td>-</td>
+</tr>
+</table>
 
 Note: networkIpAddress and networkPortNumber must both be present to have any effect.
 

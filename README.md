@@ -46,9 +46,9 @@ Project website: [http://swiftfire.nl/projects/swiftfire/swiftfire.html](http://
 
 Reference manual: [http://swiftfire.nl/projects/swiftfire/reference/index.html](http://swiftfire.nl/projects/swiftfire/reference/index.html)
 
-Installation: [http://swiftfire.nl/projects/swifterlog/reference/installation.html](http://swiftfire.nl/projects/swifterlog/reference/installation.html) or on [github](docs/Installation.md)
+Installation: [http://swiftfire.nl/projects/swifterlog/reference/installation.html](http://swiftfire.nl/projects/swifterlog/reference/installation.html) or on [github](https://github.com/Balancingrock/SwifterLog/blob/master/docs/Installation.md)
 
-User Manual: [http://swiftfire.nl/projects/swifterlog/reference/usermanual.html](http://swiftfire.nl/projects/swifterlog/reference/usermanual.html) or on [github](docs/UserManual)
+User Manual: [http://swiftfire.nl/projects/swifterlog/reference/usermanual.html](http://swiftfire.nl/projects/swifterlog/reference/usermanual.html) or on [github](https://github.com/Balancingrock/SwifterLog/blob/master/docs/UserManual.md)
 
 # Version History
 
