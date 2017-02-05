@@ -7,109 +7,135 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		86A21DCC1E45BC1800B5B7B3 /* asl-bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A21DCB1E45BC1800B5B7B3 /* asl-bridge.m */; };
-		86A21DCE1E45C0A000B5B7B3 /* SwifterJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* SwifterJSON.framework */; };
-		86A21DCF1E45C0A000B5B7B3 /* SwifterSockets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SwifterSockets.framework */; };
-		OBJ_37 /* ASCII.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* ASCII.swift */; };
-		OBJ_38 /* VJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* VJson.swift */; };
-		OBJ_45 /* SwifterSockets.Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* SwifterSockets.Accept.swift */; };
-		OBJ_46 /* SwifterSockets.Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* SwifterSockets.Client.swift */; };
-		OBJ_47 /* SwifterSockets.Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* SwifterSockets.Connection.swift */; };
-		OBJ_48 /* SwifterSockets.Receive.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* SwifterSockets.Receive.swift */; };
-		OBJ_49 /* SwifterSockets.Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* SwifterSockets.Server.swift */; };
-		OBJ_50 /* SwifterSockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* SwifterSockets.swift */; };
-		OBJ_51 /* SwifterSockets.Transmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* SwifterSockets.Transmit.swift */; };
-		OBJ_58 /* SwifterLog.Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* SwifterLog.Network.swift */; };
-		OBJ_59 /* SwifterLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* SwifterLog.swift */; };
-		OBJ_70 /* SwifterLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* SwifterLogTests.swift */; };
-		OBJ_72 /* SwifterJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* SwifterJSON.framework */; };
-		OBJ_73 /* SwifterSockets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SwifterSockets.framework */; };
-		OBJ_74 /* SwifterLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* SwifterLog.framework */; };
+		8681E04C1E470B320041A006 /* asl-bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8681E04B1E470B320041A006 /* asl-bridge.m */; };
+		OBJ_40 /* Ascii.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Ascii.swift */; };
+		OBJ_47 /* VJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* VJson.swift */; };
+		OBJ_49 /* Ascii.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Ascii.framework */; };
+		OBJ_56 /* SwifterSockets.Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* SwifterSockets.Accept.swift */; };
+		OBJ_57 /* SwifterSockets.Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* SwifterSockets.Client.swift */; };
+		OBJ_58 /* SwifterSockets.Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* SwifterSockets.Connection.swift */; };
+		OBJ_59 /* SwifterSockets.Receive.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* SwifterSockets.Receive.swift */; };
+		OBJ_60 /* SwifterSockets.Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* SwifterSockets.Server.swift */; };
+		OBJ_61 /* SwifterSockets.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* SwifterSockets.swift */; };
+		OBJ_62 /* SwifterSockets.Transmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* SwifterSockets.Transmit.swift */; };
+		OBJ_69 /* SwifterLog.Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* SwifterLog.Network.swift */; };
+		OBJ_70 /* SwifterLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* SwifterLog.swift */; };
+		OBJ_72 /* Ascii.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Ascii.framework */; };
+		OBJ_73 /* SwifterJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* SwifterJSON.framework */; };
+		OBJ_74 /* SwifterSockets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* SwifterSockets.framework */; };
+		OBJ_83 /* SwifterLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* SwifterLogTests.swift */; };
+		OBJ_85 /* Ascii.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Ascii.framework */; };
+		OBJ_86 /* SwifterJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* SwifterJSON.framework */; };
+		OBJ_87 /* SwifterSockets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* SwifterSockets.framework */; };
+		OBJ_88 /* SwifterLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* SwifterLog.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		86A21DC51E45BBE900B5B7B3 /* PBXContainerItemProxy */ = {
+		8681E0431E470B100041A006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_32;
+			remoteGlobalIDString = OBJ_35;
+			remoteInfo = Ascii;
+		};
+		8681E0441E470B100041A006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = OBJ_35;
+			remoteInfo = Ascii;
+		};
+		8681E0451E470B100041A006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = OBJ_42;
 			remoteInfo = SwifterJSON;
 		};
-		86A21DC61E45BBE900B5B7B3 /* PBXContainerItemProxy */ = {
+		8681E0461E470B100041A006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_40;
+			remoteGlobalIDString = OBJ_51;
 			remoteInfo = SwifterSockets;
 		};
-		86A21DC71E45BBE900B5B7B3 /* PBXContainerItemProxy */ = {
+		8681E0471E470B100041A006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_32;
+			remoteGlobalIDString = OBJ_35;
+			remoteInfo = Ascii;
+		};
+		8681E0481E470B100041A006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = OBJ_42;
 			remoteInfo = SwifterJSON;
 		};
-		86A21DC81E45BBE900B5B7B3 /* PBXContainerItemProxy */ = {
+		8681E0491E470B100041A006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_40;
+			remoteGlobalIDString = OBJ_51;
 			remoteInfo = SwifterSockets;
 		};
-		86A21DC91E45BBE900B5B7B3 /* PBXContainerItemProxy */ = {
+		8681E04A1E470B100041A006 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_53;
+			remoteGlobalIDString = OBJ_64;
 			remoteInfo = SwifterLog;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		86A21DCA1E45BC1000B5B7B3 /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
-		86A21DCB1E45BC1800B5B7B3 /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
-		86A21DCD1E45BC2A00B5B7B3 /* SwifterLog-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwifterLog-Bridging-Header.h"; sourceTree = "<group>"; };
-		OBJ_10 /* VJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VJson.swift; sourceTree = "<group>"; };
-		OBJ_12 /* SwifterSockets.Accept.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Accept.swift; sourceTree = "<group>"; };
-		OBJ_13 /* SwifterSockets.Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Client.swift; sourceTree = "<group>"; };
-		OBJ_14 /* SwifterSockets.Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Connection.swift; sourceTree = "<group>"; };
-		OBJ_15 /* SwifterSockets.Receive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Receive.swift; sourceTree = "<group>"; };
-		OBJ_16 /* SwifterSockets.Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Server.swift; sourceTree = "<group>"; };
-		OBJ_17 /* SwifterSockets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.swift; sourceTree = "<group>"; };
-		OBJ_18 /* SwifterSockets.Transmit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Transmit.swift; sourceTree = "<group>"; };
-		OBJ_20 /* SwifterLog.Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLog.Network.swift; sourceTree = "<group>"; };
-		OBJ_21 /* SwifterLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
-		OBJ_24 /* SwifterLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLogTests.swift; sourceTree = "<group>"; };
-		OBJ_26 /* temp-sources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "temp-sources"; sourceTree = SOURCE_ROOT; };
-		OBJ_28 /* SwifterJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwifterJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_29 /* SwifterSockets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwifterSockets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_30 /* SwifterLog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwifterLog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_31 /* SwifterLogTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = SwifterLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8681E04B1E470B320041A006 /* asl-bridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "asl-bridge.m"; sourceTree = "<group>"; };
+		8681E04D1E470BB80041A006 /* asl-bridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asl-bridge.h"; sourceTree = "<group>"; };
+		8681E04E1E470BBF0041A006 /* SwifterLog-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwifterLog-Bridging-Header.h"; sourceTree = "<group>"; };
+		OBJ_11 /* VJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VJson.swift; sourceTree = "<group>"; };
+		OBJ_13 /* SwifterSockets.Accept.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Accept.swift; sourceTree = "<group>"; };
+		OBJ_14 /* SwifterSockets.Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Client.swift; sourceTree = "<group>"; };
+		OBJ_15 /* SwifterSockets.Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Connection.swift; sourceTree = "<group>"; };
+		OBJ_16 /* SwifterSockets.Receive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Receive.swift; sourceTree = "<group>"; };
+		OBJ_17 /* SwifterSockets.Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Server.swift; sourceTree = "<group>"; };
+		OBJ_18 /* SwifterSockets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.swift; sourceTree = "<group>"; };
+		OBJ_19 /* SwifterSockets.Transmit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterSockets.Transmit.swift; sourceTree = "<group>"; };
+		OBJ_21 /* SwifterLog.Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLog.Network.swift; sourceTree = "<group>"; };
+		OBJ_22 /* SwifterLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLog.swift; sourceTree = "<group>"; };
+		OBJ_25 /* SwifterLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwifterLogTests.swift; sourceTree = "<group>"; };
+		OBJ_26 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = SOURCE_ROOT; };
+		OBJ_27 /* c-sources-backup */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "c-sources-backup"; sourceTree = SOURCE_ROOT; };
+		OBJ_28 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = SOURCE_ROOT; };
+		OBJ_30 /* Ascii.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Ascii.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_31 /* SwifterJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwifterJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_32 /* SwifterSockets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwifterSockets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_33 /* SwifterLog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwifterLog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_34 /* SwifterLogTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = SwifterLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* ASCII.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASCII.swift; sourceTree = "<group>"; };
+		OBJ_9 /* Ascii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ascii.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_39 /* Frameworks */ = {
+		OBJ_41 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_52 /* Frameworks */ = {
+		OBJ_48 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				OBJ_49 /* Ascii.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_60 /* Frameworks */ = {
+		OBJ_63 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				86A21DCE1E45C0A000B5B7B3 /* SwifterJSON.framework in Frameworks */,
-				86A21DCF1E45C0A000B5B7B3 /* SwifterSockets.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,67 +143,88 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_72 /* SwifterJSON.framework in Frameworks */,
-				OBJ_73 /* SwifterSockets.framework in Frameworks */,
-				OBJ_74 /* SwifterLog.framework in Frameworks */,
+				OBJ_72 /* Ascii.framework in Frameworks */,
+				OBJ_73 /* SwifterJSON.framework in Frameworks */,
+				OBJ_74 /* SwifterSockets.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_85 /* Ascii.framework in Frameworks */,
+				OBJ_86 /* SwifterJSON.framework in Frameworks */,
+				OBJ_87 /* SwifterSockets.framework in Frameworks */,
+				OBJ_88 /* SwifterLog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		OBJ_11 /* SwifterSockets */ = {
+		OBJ_10 /* SwifterJSON */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* SwifterSockets.Accept.swift */,
-				OBJ_13 /* SwifterSockets.Client.swift */,
-				OBJ_14 /* SwifterSockets.Connection.swift */,
-				OBJ_15 /* SwifterSockets.Receive.swift */,
-				OBJ_16 /* SwifterSockets.Server.swift */,
-				OBJ_17 /* SwifterSockets.swift */,
-				OBJ_18 /* SwifterSockets.Transmit.swift */,
+				OBJ_11 /* VJson.swift */,
+			);
+			name = SwifterJSON;
+			path = "Packages/SwifterJSON-0.9.16/Sources";
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_12 /* SwifterSockets */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_13 /* SwifterSockets.Accept.swift */,
+				OBJ_14 /* SwifterSockets.Client.swift */,
+				OBJ_15 /* SwifterSockets.Connection.swift */,
+				OBJ_16 /* SwifterSockets.Receive.swift */,
+				OBJ_17 /* SwifterSockets.Server.swift */,
+				OBJ_18 /* SwifterSockets.swift */,
+				OBJ_19 /* SwifterSockets.Transmit.swift */,
 			);
 			name = SwifterSockets;
 			path = "Packages/SwifterSockets-0.9.12/Sources";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_19 /* SwifterLog */ = {
+		OBJ_20 /* SwifterLog */ = {
 			isa = PBXGroup;
 			children = (
-				86A21DCA1E45BC1000B5B7B3 /* asl-bridge.h */,
-				86A21DCB1E45BC1800B5B7B3 /* asl-bridge.m */,
-				86A21DCD1E45BC2A00B5B7B3 /* SwifterLog-Bridging-Header.h */,
-				OBJ_20 /* SwifterLog.Network.swift */,
-				OBJ_21 /* SwifterLog.swift */,
+				8681E04B1E470B320041A006 /* asl-bridge.m */,
+				8681E04E1E470BBF0041A006 /* SwifterLog-Bridging-Header.h */,
+				8681E04D1E470BB80041A006 /* asl-bridge.h */,
+				OBJ_21 /* SwifterLog.Network.swift */,
+				OBJ_22 /* SwifterLog.swift */,
 			);
 			name = SwifterLog;
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_22 /* Tests */ = {
+		OBJ_23 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_23 /* SwifterLogTests */,
+				OBJ_24 /* SwifterLogTests */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		OBJ_23 /* SwifterLogTests */ = {
+		OBJ_24 /* SwifterLogTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_24 /* SwifterLogTests.swift */,
+				OBJ_25 /* SwifterLogTests.swift */,
 			);
 			name = SwifterLogTests;
 			path = Tests/SwifterLogTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_27 /* Products */ = {
+		OBJ_29 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_28 /* SwifterJSON.framework */,
-				OBJ_29 /* SwifterSockets.framework */,
-				OBJ_30 /* SwifterLog.framework */,
-				OBJ_31 /* SwifterLogTests.xctest */,
+				OBJ_30 /* Ascii.framework */,
+				OBJ_31 /* SwifterJSON.framework */,
+				OBJ_32 /* SwifterSockets.framework */,
+				OBJ_33 /* SwifterLog.framework */,
+				OBJ_34 /* SwifterLogTests.xctest */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -187,9 +234,11 @@
 			children = (
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
-				OBJ_22 /* Tests */,
-				OBJ_26 /* temp-sources */,
-				OBJ_27 /* Products */,
+				OBJ_23 /* Tests */,
+				OBJ_26 /* build */,
+				OBJ_27 /* c-sources-backup */,
+				OBJ_28 /* docs */,
+				OBJ_29 /* Products */,
 			);
 			name = "";
 			sourceTree = "<group>";
@@ -197,48 +246,65 @@
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_8 /* SwifterJSON */,
-				OBJ_11 /* SwifterSockets */,
-				OBJ_19 /* SwifterLog */,
+				OBJ_8 /* Ascii */,
+				OBJ_10 /* SwifterJSON */,
+				OBJ_12 /* SwifterSockets */,
+				OBJ_20 /* SwifterLog */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		OBJ_8 /* SwifterJSON */ = {
+		OBJ_8 /* Ascii */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* ASCII.swift */,
-				OBJ_10 /* VJson.swift */,
+				OBJ_9 /* Ascii.swift */,
 			);
-			name = SwifterJSON;
-			path = "Packages/SwifterJSON-0.9.15/Sources";
+			name = Ascii;
+			path = "Packages/Ascii-1.0.0/Sources";
 			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		OBJ_32 /* SwifterJSON */ = {
+		OBJ_35 /* Ascii */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_33 /* Build configuration list for PBXNativeTarget "SwifterJSON" */;
+			buildConfigurationList = OBJ_36 /* Build configuration list for PBXNativeTarget "Ascii" */;
 			buildPhases = (
-				OBJ_36 /* Sources */,
-				OBJ_39 /* Frameworks */,
+				OBJ_39 /* Sources */,
+				OBJ_41 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = SwifterJSON;
-			productName = SwifterJSON;
-			productReference = OBJ_28 /* SwifterJSON.framework */;
+			name = Ascii;
+			productName = Ascii;
+			productReference = OBJ_30 /* Ascii.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		OBJ_40 /* SwifterSockets */ = {
+		OBJ_42 /* SwifterJSON */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_41 /* Build configuration list for PBXNativeTarget "SwifterSockets" */;
+			buildConfigurationList = OBJ_43 /* Build configuration list for PBXNativeTarget "SwifterJSON" */;
 			buildPhases = (
-				OBJ_44 /* Sources */,
-				OBJ_52 /* Frameworks */,
+				OBJ_46 /* Sources */,
+				OBJ_48 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_50 /* PBXTargetDependency */,
+			);
+			name = SwifterJSON;
+			productName = SwifterJSON;
+			productReference = OBJ_31 /* SwifterJSON.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		OBJ_51 /* SwifterSockets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_52 /* Build configuration list for PBXNativeTarget "SwifterSockets" */;
+			buildPhases = (
+				OBJ_55 /* Sources */,
+				OBJ_63 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -246,32 +312,14 @@
 			);
 			name = SwifterSockets;
 			productName = SwifterSockets;
-			productReference = OBJ_29 /* SwifterSockets.framework */;
+			productReference = OBJ_32 /* SwifterSockets.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		OBJ_53 /* SwifterLog */ = {
+		OBJ_64 /* SwifterLog */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_54 /* Build configuration list for PBXNativeTarget "SwifterLog" */;
+			buildConfigurationList = OBJ_65 /* Build configuration list for PBXNativeTarget "SwifterLog" */;
 			buildPhases = (
-				OBJ_57 /* Sources */,
-				OBJ_60 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				OBJ_63 /* PBXTargetDependency */,
-				OBJ_64 /* PBXTargetDependency */,
-			);
-			name = SwifterLog;
-			productName = SwifterLog;
-			productReference = OBJ_30 /* SwifterLog.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		OBJ_65 /* SwifterLogTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_66 /* Build configuration list for PBXNativeTarget "SwifterLogTests" */;
-			buildPhases = (
-				OBJ_69 /* Sources */,
+				OBJ_68 /* Sources */,
 				OBJ_71 /* Frameworks */,
 			);
 			buildRules = (
@@ -281,9 +329,29 @@
 				OBJ_76 /* PBXTargetDependency */,
 				OBJ_77 /* PBXTargetDependency */,
 			);
+			name = SwifterLog;
+			productName = SwifterLog;
+			productReference = OBJ_33 /* SwifterLog.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		OBJ_78 /* SwifterLogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_79 /* Build configuration list for PBXNativeTarget "SwifterLogTests" */;
+			buildPhases = (
+				OBJ_82 /* Sources */,
+				OBJ_84 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_89 /* PBXTargetDependency */,
+				OBJ_90 /* PBXTargetDependency */,
+				OBJ_91 /* PBXTargetDependency */,
+				OBJ_92 /* PBXTargetDependency */,
+			);
 			name = SwifterLogTests;
 			productName = SwifterLogTests;
-			productReference = OBJ_31 /* SwifterLogTests.xctest */;
+			productReference = OBJ_34 /* SwifterLogTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -302,87 +370,110 @@
 				en,
 			);
 			mainGroup = OBJ_5 /*  */;
-			productRefGroup = OBJ_27 /* Products */;
+			productRefGroup = OBJ_29 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				OBJ_32 /* SwifterJSON */,
-				OBJ_40 /* SwifterSockets */,
-				OBJ_53 /* SwifterLog */,
-				OBJ_65 /* SwifterLogTests */,
+				OBJ_35 /* Ascii */,
+				OBJ_42 /* SwifterJSON */,
+				OBJ_51 /* SwifterSockets */,
+				OBJ_64 /* SwifterLog */,
+				OBJ_78 /* SwifterLogTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_36 /* Sources */ = {
+		OBJ_39 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_37 /* ASCII.swift in Sources */,
-				OBJ_38 /* VJson.swift in Sources */,
+				OBJ_40 /* Ascii.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_44 /* Sources */ = {
+		OBJ_46 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_45 /* SwifterSockets.Accept.swift in Sources */,
-				OBJ_46 /* SwifterSockets.Client.swift in Sources */,
-				OBJ_47 /* SwifterSockets.Connection.swift in Sources */,
-				OBJ_48 /* SwifterSockets.Receive.swift in Sources */,
-				OBJ_49 /* SwifterSockets.Server.swift in Sources */,
-				OBJ_50 /* SwifterSockets.swift in Sources */,
-				OBJ_51 /* SwifterSockets.Transmit.swift in Sources */,
+				OBJ_47 /* VJson.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_57 /* Sources */ = {
+		OBJ_55 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				86A21DCC1E45BC1800B5B7B3 /* asl-bridge.m in Sources */,
-				OBJ_58 /* SwifterLog.Network.swift in Sources */,
-				OBJ_59 /* SwifterLog.swift in Sources */,
+				OBJ_56 /* SwifterSockets.Accept.swift in Sources */,
+				OBJ_57 /* SwifterSockets.Client.swift in Sources */,
+				OBJ_58 /* SwifterSockets.Connection.swift in Sources */,
+				OBJ_59 /* SwifterSockets.Receive.swift in Sources */,
+				OBJ_60 /* SwifterSockets.Server.swift in Sources */,
+				OBJ_61 /* SwifterSockets.swift in Sources */,
+				OBJ_62 /* SwifterSockets.Transmit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_69 /* Sources */ = {
+		OBJ_68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_70 /* SwifterLogTests.swift in Sources */,
+				8681E04C1E470B320041A006 /* asl-bridge.m in Sources */,
+				OBJ_69 /* SwifterLog.Network.swift in Sources */,
+				OBJ_70 /* SwifterLog.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_83 /* SwifterLogTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_63 /* PBXTargetDependency */ = {
+		OBJ_50 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = OBJ_32 /* SwifterJSON */;
-			targetProxy = 86A21DC51E45BBE900B5B7B3 /* PBXContainerItemProxy */;
-		};
-		OBJ_64 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = OBJ_40 /* SwifterSockets */;
-			targetProxy = 86A21DC61E45BBE900B5B7B3 /* PBXContainerItemProxy */;
+			target = OBJ_35 /* Ascii */;
+			targetProxy = 8681E0431E470B100041A006 /* PBXContainerItemProxy */;
 		};
 		OBJ_75 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = OBJ_32 /* SwifterJSON */;
-			targetProxy = 86A21DC71E45BBE900B5B7B3 /* PBXContainerItemProxy */;
+			target = OBJ_35 /* Ascii */;
+			targetProxy = 8681E0441E470B100041A006 /* PBXContainerItemProxy */;
 		};
 		OBJ_76 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = OBJ_40 /* SwifterSockets */;
-			targetProxy = 86A21DC81E45BBE900B5B7B3 /* PBXContainerItemProxy */;
+			target = OBJ_42 /* SwifterJSON */;
+			targetProxy = 8681E0451E470B100041A006 /* PBXContainerItemProxy */;
 		};
 		OBJ_77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = OBJ_53 /* SwifterLog */;
-			targetProxy = 86A21DC91E45BBE900B5B7B3 /* PBXContainerItemProxy */;
+			target = OBJ_51 /* SwifterSockets */;
+			targetProxy = 8681E0461E470B100041A006 /* PBXContainerItemProxy */;
+		};
+		OBJ_89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJ_35 /* Ascii */;
+			targetProxy = 8681E0471E470B100041A006 /* PBXContainerItemProxy */;
+		};
+		OBJ_90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJ_42 /* SwifterJSON */;
+			targetProxy = 8681E0481E470B100041A006 /* PBXContainerItemProxy */;
+		};
+		OBJ_91 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJ_51 /* SwifterSockets */;
+			targetProxy = 8681E0491E470B100041A006 /* PBXContainerItemProxy */;
+		};
+		OBJ_92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJ_64 /* SwifterLog */;
+			targetProxy = 8681E04A1E470B100041A006 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -409,43 +500,45 @@
 			};
 			name = Debug;
 		};
-		OBJ_34 /* Debug */ = {
+		OBJ_37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = SwifterLog.xcodeproj/SwifterJSON_Info.plist;
+				INFOPLIST_FILE = SwifterLog.xcodeproj/Ascii_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = SwifterJSON;
+				PRODUCT_BUNDLE_IDENTIFIER = Ascii;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				TARGET_NAME = SwifterJSON;
+				TARGET_NAME = Ascii;
 			};
 			name = Debug;
 		};
-		OBJ_35 /* Release */ = {
+		OBJ_38 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = SwifterLog.xcodeproj/SwifterJSON_Info.plist;
+				INFOPLIST_FILE = SwifterLog.xcodeproj/Ascii_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = SwifterJSON;
+				PRODUCT_BUNDLE_IDENTIFIER = Ascii;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				TARGET_NAME = SwifterJSON;
+				TARGET_NAME = Ascii;
 			};
 			name = Release;
 		};
@@ -469,9 +562,52 @@
 			};
 			name = Release;
 		};
-		OBJ_42 /* Debug */ = {
+		OBJ_44 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwifterLog.xcodeproj/SwifterJSON_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = SwifterJSON;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				TARGET_NAME = SwifterJSON;
+			};
+			name = Debug;
+		};
+		OBJ_45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwifterLog.xcodeproj/SwifterJSON_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = SwifterJSON;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				TARGET_NAME = SwifterJSON;
+			};
+			name = Release;
+		};
+		OBJ_53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -489,9 +625,10 @@
 			};
 			name = Debug;
 		};
-		OBJ_43 /* Release */ = {
+		OBJ_54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -509,7 +646,7 @@
 			};
 			name = Release;
 		};
-		OBJ_55 /* Debug */ = {
+		OBJ_66 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = YES;
@@ -526,13 +663,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SwifterLog;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OBJC_BRIDGING_HEADER = "Sources/SwifterLog-Bridging-Header.h";
 				TARGET_NAME = SwifterLog;
 			};
 			name = Debug;
 		};
-		OBJ_56 /* Release */ = {
+		OBJ_67 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = YES;
@@ -549,13 +685,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SwifterLog;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OBJC_BRIDGING_HEADER = "Sources/SwifterLog-Bridging-Header.h";
 				TARGET_NAME = SwifterLog;
 			};
 			name = Release;
 		};
-		OBJ_67 /* Debug */ = {
+		OBJ_80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -572,7 +707,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_68 /* Release */ = {
+		OBJ_81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -601,38 +736,47 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_33 /* Build configuration list for PBXNativeTarget "SwifterJSON" */ = {
+		OBJ_36 /* Build configuration list for PBXNativeTarget "Ascii" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_34 /* Debug */,
-				OBJ_35 /* Release */,
+				OBJ_37 /* Debug */,
+				OBJ_38 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_41 /* Build configuration list for PBXNativeTarget "SwifterSockets" */ = {
+		OBJ_43 /* Build configuration list for PBXNativeTarget "SwifterJSON" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_42 /* Debug */,
-				OBJ_43 /* Release */,
+				OBJ_44 /* Debug */,
+				OBJ_45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_54 /* Build configuration list for PBXNativeTarget "SwifterLog" */ = {
+		OBJ_52 /* Build configuration list for PBXNativeTarget "SwifterSockets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_55 /* Debug */,
-				OBJ_56 /* Release */,
+				OBJ_53 /* Debug */,
+				OBJ_54 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_66 /* Build configuration list for PBXNativeTarget "SwifterLogTests" */ = {
+		OBJ_65 /* Build configuration list for PBXNativeTarget "SwifterLog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_67 /* Debug */,
-				OBJ_68 /* Release */,
+				OBJ_66 /* Debug */,
+				OBJ_67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_79 /* Build configuration list for PBXNativeTarget "SwifterLogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_80 /* Debug */,
+				OBJ_81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
