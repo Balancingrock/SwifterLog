@@ -6,13 +6,15 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "14F0A7FA95A08688CE263586500388EDDF6AD709" : 9223372036854775807,
     "39D294A3A0619F7440CBCF677E29AAE955CC1617" : 9223372036854775807,
-    "4112BE80E1590C6E997D243FD2B2107DD98EDD52" : 9223372036854775807
+    "4112BE80E1590C6E997D243FD2B2107DD98EDD52" : 9223372036854775807,
+    "6610181D0EA22D8216C8D9C10BC89518F82EB63F" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "7C066F09-553C-4E98-8AFD-B4A8CEB95178",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "14F0A7FA95A08688CE263586500388EDDF6AD709" : "SwifterLog\/Packages\/Ascii-1.0.0\/",
     "39D294A3A0619F7440CBCF677E29AAE955CC1617" : "SwifterLog\/Packages\/SwifterJSON-0.9.15\/",
-    "4112BE80E1590C6E997D243FD2B2107DD98EDD52" : "SwifterLog\/"
+    "4112BE80E1590C6E997D243FD2B2107DD98EDD52" : "SwifterLog\/",
+    "6610181D0EA22D8216C8D9C10BC89518F82EB63F" : "SwifterLog\/Packages\/CAsl-0.1.0\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "SwifterLog",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -32,6 +34,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Balancingrock\/SwifterLog",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4112BE80E1590C6E997D243FD2B2107DD98EDD52"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "\/Volumes\/Home\/Users\/Rien\/Documents\/Projects\/CAsl",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6610181D0EA22D8216C8D9C10BC89518F82EB63F"
     }
   ]
 }

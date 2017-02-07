@@ -89,6 +89,7 @@
 
 
 import Foundation
+import CAsl
 
 
 /// The logging instance.

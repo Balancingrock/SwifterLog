@@ -1,23 +1,7 @@
 # SwifterLog
 A single class framework in Swift to create and manage log entries.
 
-SwifterLog is part of the packages that make up the [Swiftfire](http://swiftfire.nl) webserver:
-
-#####[Swiftfire](https://github.com/Balancingrock/Swiftfire)
-
-An open source web server in Swift.
-
-#####[SwifterSockets](https://github.com/Balancingrock/SwifterSockets)
-
-General purpose socket utilities.
-
-#####[SecureSockets](https://github.com/Balancingrock/SecureSockets)
-
-General purpose secure networking utilities.
-
-#####[SwifterJSON](https://github.com/Balancingrock/SwifterJSON)
-
-General purpose JSON utility.
+SwifterLog is part of the [Swiftfire](http://swiftfire.nl) webserver project.
 
 # Features
 
@@ -54,6 +38,8 @@ User Manual: [http://swiftfire.nl/projects/swifterlog/reference/usermanual.html]
 
 Note: Planned releases are for information only, they are subject to change without notice.
 
+Maintenance updates are updates due to management of the (SPM) package hierarchy, they don't affect the source code.
+
 #### v1.1.0 (Open)
 
 - No new features planned. Features and bugfixes will be made on an ad-hoc basis as needed to support Swiftfire development.
@@ -61,9 +47,17 @@ Note: Planned releases are for information only, they are subject to change with
 
 #### v1.0.0 (Planned)
 
-* Version number will be increased to this level when Swiftfire 1.0.0 is released.
+- Version number will be increased to this level when Swiftfire 1.0.0 is released.
 
-#### v0.9.14 (Current)
+#### v0.9.17 (Current)
+
+- Replaced local c-glue with CAsl glue library (now builds under SPM)
+
+#### v0.9.15-16
+
+- Maintenance updates
+
+#### v0.9.14
 
 - Changed distribution model
 - Added reference manual (improved documentation)
