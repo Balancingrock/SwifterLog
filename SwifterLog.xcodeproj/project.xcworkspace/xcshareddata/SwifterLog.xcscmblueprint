@@ -14,7 +14,7 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "14F0A7FA95A08688CE263586500388EDDF6AD709" : "SwifterLog\/Packages\/Ascii-1.0.0\/",
     "39D294A3A0619F7440CBCF677E29AAE955CC1617" : "SwifterLog\/Packages\/SwifterJSON-0.9.15\/",
-    "5B20DC5A3688C85EB1A5785522EE90A45D6C6FB2" : "SwifterLog\/Packages\/SwifterSockets-0.9.13\/",
+    "5B20DC5A3688C85EB1A5785522EE90A45D6C6FB2" : "SwifterLog\/Packages\/SwifterSockets-0.9.14\/",
     "4112BE80E1590C6E997D243FD2B2107DD98EDD52" : "SwifterLog\/",
     "6610181D0EA22D8216C8D9C10BC89518F82EB63F" : "SwifterLog\/Packages\/CAsl-0.1.0\/"
   },

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_40"
+               BlueprintIdentifier = "OBJ_41"
                BuildableName = "CAsl.framework"
                BlueprintName = "CAsl"
                ReferencedContainer = "container:SwifterLog.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_48"
+               BlueprintIdentifier = "OBJ_49"
                BuildableName = "Ascii.framework"
                BlueprintName = "Ascii"
                ReferencedContainer = "container:SwifterLog.xcodeproj">
@@ -42,7 +42,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_55"
+               BlueprintIdentifier = "OBJ_56"
                BuildableName = "SwifterJSON.framework"
                BlueprintName = "SwifterJSON"
                ReferencedContainer = "container:SwifterLog.xcodeproj">
@@ -56,7 +56,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_64"
+               BlueprintIdentifier = "OBJ_65"
                BuildableName = "SwifterSockets.framework"
                BlueprintName = "SwifterSockets"
                ReferencedContainer = "container:SwifterLog.xcodeproj">
@@ -70,7 +70,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_77"
+               BlueprintIdentifier = "OBJ_79"
                BuildableName = "SwifterLog.framework"
                BlueprintName = "SwifterLog"
                ReferencedContainer = "container:SwifterLog.xcodeproj">
@@ -88,7 +88,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_93"
+               BlueprintIdentifier = "OBJ_95"
                BuildableName = "SwifterLogTests.xctest"
                BlueprintName = "SwifterLogTests"
                ReferencedContainer = "container:SwifterLog.xcodeproj">
@@ -111,7 +111,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OBJ_40"
+            BlueprintIdentifier = "OBJ_41"
             BuildableName = "CAsl.framework"
             BlueprintName = "CAsl"
             ReferencedContainer = "container:SwifterLog.xcodeproj">

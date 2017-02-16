@@ -3,7 +3,7 @@
 //  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.13
+//  Version:    0.9.14
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -56,13 +56,14 @@
 //
 // History:
 //
-// v0.9.13 - Upgraded to Xcode 8 beta 6 (Swift 3)
-// v0.9.12 - Upgraded to Xcode 8 beta 3 (Swift 3)
-// v0.9.11 - Updated for VJson 0.9.8
-// v0.9.10 - Small update to accomodate VJson updates
-// v0.9.8  - Header update
+// 0.9.14  - Added new enum to transmission to network.
+// 0.9.13  - Upgraded to Xcode 8 beta 6 (Swift 3)
+// 0.9.12  - Upgraded to Xcode 8 beta 3 (Swift 3)
+// 0.9.11  - Updated for VJson 0.9.8
+// 0.9.10  - Small update to accomodate VJson updates
+// 0.9.8   - Header update
 //         - Renamed to SwifterLog.Network.swift
-// v0.9.7  - Initial release
+// 0.9.7   - Initial release
 //
 // =====================================================================================================================
 
@@ -253,7 +254,7 @@ public extension SwifterLog {
                 self.closeNetworkConnection()
                 
                 
-            case .ready: break
+            case .ready, .queued: break
                 
             case .closed:
                 
