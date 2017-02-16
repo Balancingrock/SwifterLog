@@ -3,7 +3,7 @@
 //  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.14
+//  Version:    0.9.19
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -56,7 +56,7 @@
 //
 // History:
 //
-// 0.9.14  - Added new enum to transmission to network.
+// 0.9.19  - Added new enum to transmission to network.
 // 0.9.13  - Upgraded to Xcode 8 beta 6 (Swift 3)
 // 0.9.12  - Upgraded to Xcode 8 beta 3 (Swift 3)
 // 0.9.11  - Updated for VJson 0.9.8
