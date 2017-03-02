@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.14
+//  Version:    0.9.19
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -58,47 +58,39 @@
 // =====================================================================================================================
 //
 // History:
-// v0.9.14 - Move to SPM
+// 0.9.19  - Removed definition of global variable log, replaced with 'theLogger' singleton.
+//         - Added logger interfaces to allow higher performance disabled levels through optional chaining.
+// 0.9.14  - Move to SPM
 //         - Documentation updates for reference manual generation
 //         - Changed callback protocol to 'AnyObject' from 'class'
 //         - Added conditional compilation for the network target
-// v0.9.13 - Upgraded to Xcode 8 beta 6 (see "NOTES" above!)
+// 0.9.13  - Upgraded to Xcode 8 beta 6 (see "NOTES" above!)
 //         - Changed names of logfiles to use '.' instead of '/' as seperator between time components.
-// v0.9.12 - Upgraded to Swift 3 beta
-// v0.9.9  - Added 'public' to the string extensions
+// 0.9.12  - Upgraded to Swift 3 beta
+// 0.9.9   - Added 'public' to the string extensions
 //         - Added 'ReflectedStringConvertible' (idea from Matt Comi, https://github.com/mattcomi )
 //         - Changed message parameter from 'String' to optinal 'Any?' on all logging calls
 //           (Inspired by whitehat007, https://github.com/whitehat007 )
 //         - Fixed bug that would not call the callback destination for the very first logging message
-// v0.9.8  - Header update
-// v0.9.7  - Split off the network related stuff into its own file (except for the property definitions)
-// v0.9.6  - Included extension for String to easily create a SOURCE identifier from a #file string.
+// 0.9.8   - Header update
+// 0.9.7   - Split off the network related stuff into its own file (except for the property definitions)
+// 0.9.6   - Included extension for String to easily create a SOURCE identifier from a #file string.
 //         - JSON code returned by 'json' changed from a value to a valid hierarchy.
 //         - Added ALL_NON_RECURSIVE target definition.
 //         - Updated for changes in SwifterSockets.Transmit
-// v0.9.5  - Added transfer of log entries to a TCP/IP destination and targetting of error messages.
+// 0.9.5   - Added transfer of log entries to a TCP/IP destination and targetting of error messages.
 //         - Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
 //         - Added call-back logging
-// v0.9.4  - Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
-// v0.9.3  - Changed syntax to Swift 2.0
-// v0.9.2  - Removed the 'ID' parameter from the logging calls
+// 0.9.4   - Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
+// 0.9.3   - Changed syntax to Swift 2.0
+// 0.9.2   - Removed the 'ID' parameter from the logging calls
 //         - Added the "consoleSeparatorLine" function to create separators in the xcode or console output
-// v0.9.1  - Initial release
+// 0.9.1   - Initial release
 //
 // =====================================================================================================================
 
-
 import Foundation
 import CAsl
-
-
-/// The logging instance.
-///
-/// Typing "log." where you need logging will instantly reveal most available options.
-///
-/// Since SwifterLog.init is fileprivate, this is the only instance ever created
-
-public let log = SwifterLog()
 
 
 /// The protocol for loginfo callback receivers
@@ -363,6 +355,105 @@ public final class SwifterLog {
         static public func == (left: SwifterLog.Level, right: SwifterLog.Level) -> Bool {
             return left.rawValue == right.rawValue
         }
+        
+        
+        /// Synchronize the optional loggers availability with the level of self.
+        
+        fileprivate func createLoggers() {
+            
+            switch self {
+                
+            case .debug:
+                atDebug = Logger.debugLogger
+                atInfo = Logger.debugLogger
+                atNotice = Logger.noticeLogger
+                atWarning = Logger.warningLoger
+                atError = Logger.errorLogger
+                atCritical = Logger.criticalLogger
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+            
+            case .info:
+                atDebug = nil
+                atInfo = Logger.debugLogger
+                atNotice = Logger.noticeLogger
+                atWarning = Logger.warningLoger
+                atError = Logger.errorLogger
+                atCritical = Logger.criticalLogger
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+                
+            case .notice:
+                atDebug = nil
+                atInfo = nil
+                atNotice = Logger.noticeLogger
+                atWarning = Logger.warningLoger
+                atError = Logger.errorLogger
+                atCritical = Logger.criticalLogger
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+                
+            case .warning:
+                atDebug = nil
+                atInfo = nil
+                atNotice = nil
+                atWarning = Logger.warningLoger
+                atError = Logger.errorLogger
+                atCritical = Logger.criticalLogger
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+                
+            case .error:
+                atDebug = nil
+                atInfo = nil
+                atNotice = nil
+                atWarning = nil
+                atError = Logger.errorLogger
+                atCritical = Logger.criticalLogger
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+                
+            case .critical:
+                atDebug = nil
+                atInfo = nil
+                atNotice = nil
+                atWarning = nil
+                atError = nil
+                atCritical = Logger.criticalLogger
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+                
+            case .alert:
+                atDebug = nil
+                atInfo = nil
+                atNotice = nil
+                atWarning = nil
+                atError = nil
+                atCritical = nil
+                atAlert = Logger.alertLogger
+                atEmergency = Logger.emergencyLogger
+                
+            case .emergency:
+                atDebug = nil
+                atInfo = nil
+                atNotice = nil
+                atWarning = nil
+                atError = nil
+                atCritical = nil
+                atAlert = nil
+                atEmergency = Logger.emergencyLogger
+                
+            case .none:
+                atDebug = nil
+                atInfo = nil
+                atNotice = nil
+                atWarning = nil
+                atError = nil
+                atCritical = nil
+                atAlert = nil
+                atEmergency = nil
+            }
+        }
     }
     
 
@@ -430,6 +521,88 @@ public final class SwifterLog {
         public static let ALL_NON_RECURSIVE: Set<Target> = [stdout, file, asl]
     }
 
+    
+    /// This singleton is intended to be used as the logger.
+    
+    public static let theLogger = SwifterLog()
+    
+    
+    /// Convenience class to allow higher performance disabled logging calls.
+
+    public final class Logger {
+        private let level: SwifterLog.Level
+        private init(_ level: SwifterLog.Level) { self.level = level }
+        fileprivate static let debugLogger = Logger(.debug)
+        fileprivate static let infoLogger = Logger(.info)
+        fileprivate static let noticeLogger = Logger(.notice)
+        fileprivate static let warningLoger = Logger(.warning)
+        fileprivate static let errorLogger = Logger(.error)
+        fileprivate static let criticalLogger = Logger(.critical)
+        fileprivate static let alertLogger = Logger(.alert)
+        fileprivate static let emergencyLogger = Logger(.emergency)
+        public func log(source: String, message: Any? = nil, targets: Set<SwifterLog.Target> = SwifterLog.Target.ALL) {
+            theLogger.atLevel(level, source: source, message: message, targets: targets)
+        }
+        public func log(id: Int32, source: String, message: Any? = nil, targets: Set<SwifterLog.Target> = SwifterLog.Target.ALL) {
+            theLogger.atLevel(level, id: id, source: source, message: message, targets: targets)
+        }
+    }
+
+    /// Convenience interface to SwifterLog at the level debug.
+    ///
+    /// This interface has performance advantages when the debug level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atDebug?.log(...)
+    
+    public static var atDebug: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level info.
+    ///
+    /// This interface has performance advantages when the info level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atInfo?.log(...)
+    
+    public static var atInfo: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level notice.
+    ///
+    /// This interface has performance advantages when the notice level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atNotice?.log(...)
+    
+    public static var atNotice: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level warning.
+    ///
+    /// This interface has performance advantages when the warning level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atWarning?.log(...)
+    
+    public static var atWarning: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level error.
+    ///
+    /// This interface has performance advantages when the error level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atError?.log(...)
+    
+    public static var atError: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level critical.
+    ///
+    /// This interface has performance advantages when the notice level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atCritical?.log(...)
+    
+    public static var atCritical: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level alert.
+    ///
+    /// This interface has performance advantages when the warning level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atAlert?.log(...)
+    
+    public static var atAlert: Logger?
+    
+    
+    /// Conveniece interface to SwifterLog at the level emergency.
+    ///
+    /// This interface has performance advantages when the error level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atEmergency?.log(...)
+    
+    public static var atEmergency: Logger?
+    
     
     /// The path for the directory in which the next logfile will be created.
     ///
@@ -949,6 +1122,7 @@ public final class SwifterLog {
         if newThreshold > networkTransmitAtAndAboveLevel { newThreshold = networkTransmitAtAndAboveLevel }
         if newThreshold > callbackAtAndAboveLevel { newThreshold = callbackAtAndAboveLevel }
         overallThreshold = newThreshold
+        overallThreshold.createLoggers()
     }
     
     
