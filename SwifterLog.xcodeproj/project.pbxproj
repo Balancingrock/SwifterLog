@@ -34,70 +34,70 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		86BC57121E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574F81E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_49;
 			remoteInfo = Ascii;
 		};
-		86BC57131E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574F91E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_41;
 			remoteInfo = CAsl;
 		};
-		86BC57141E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574FA1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_49;
 			remoteInfo = Ascii;
 		};
-		86BC57151E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574FB1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_56;
 			remoteInfo = SwifterJSON;
 		};
-		86BC57161E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574FC1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_65;
 			remoteInfo = SwifterSockets;
 		};
-		86BC57171E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574FD1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_41;
 			remoteInfo = CAsl;
 		};
-		86BC57181E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574FE1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_49;
 			remoteInfo = Ascii;
 		};
-		86BC57191E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866574FF1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_56;
 			remoteInfo = SwifterJSON;
 		};
-		86BC571A1E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866575001E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_65;
 			remoteInfo = SwifterSockets;
 		};
-		86BC571B1E5623F40087F0D7 /* PBXContainerItemProxy */ = {
+		866575011E6740F100ED7E89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -214,7 +214,7 @@
 				OBJ_16 /* VJson.swift */,
 			);
 			name = SwifterJSON;
-			path = "Packages/SwifterJSON-0.9.16/Sources";
+			path = "Packages/SwifterJSON-0.9.17/Sources";
 			sourceTree = SOURCE_ROOT;
 		};
 		OBJ_17 /* SwifterSockets */ = {
@@ -230,7 +230,7 @@
 				OBJ_25 /* SwifterSockets.Transmit.swift */,
 			);
 			name = SwifterSockets;
-			path = "Packages/SwifterSockets-0.9.14/Sources";
+			path = "Packages/SwifterSockets-0.9.15/Sources";
 			sourceTree = SOURCE_ROOT;
 		};
 		OBJ_26 /* SwifterLog */ = {
@@ -273,7 +273,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -283,7 +283,6 @@
 				OBJ_33 /* docs */,
 				OBJ_34 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -433,7 +432,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_34 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -523,52 +522,52 @@
 		OBJ_107 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_41 /* CAsl */;
-			targetProxy = 86BC57171E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574FD1E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_108 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_49 /* Ascii */;
-			targetProxy = 86BC57181E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574FE1E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_109 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_56 /* SwifterJSON */;
-			targetProxy = 86BC57191E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574FF1E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_65 /* SwifterSockets */;
-			targetProxy = 86BC571A1E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866575001E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_111 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_79 /* SwifterLog */;
-			targetProxy = 86BC571B1E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866575011E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_64 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_49 /* Ascii */;
-			targetProxy = 86BC57121E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574F81E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_91 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_41 /* CAsl */;
-			targetProxy = 86BC57131E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574F91E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_92 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_49 /* Ascii */;
-			targetProxy = 86BC57141E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574FA1E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_93 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_56 /* SwifterJSON */;
-			targetProxy = 86BC57151E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574FB1E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 		OBJ_94 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_65 /* SwifterSockets */;
-			targetProxy = 86BC57161E5623F40087F0D7 /* PBXContainerItemProxy */;
+			targetProxy = 866574FC1E6740F100ED7E89 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -668,7 +667,6 @@
 		OBJ_51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -689,7 +687,6 @@
 		OBJ_52 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -710,7 +707,6 @@
 		OBJ_58 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -731,7 +727,6 @@
 		OBJ_59 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -752,7 +747,6 @@
 		OBJ_67 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -773,7 +767,6 @@
 		OBJ_68 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -794,7 +787,6 @@
 		OBJ_81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -819,7 +811,6 @@
 		OBJ_82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.9.19
+//  Version:    0.10.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2014-2016 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2014-2017 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -58,7 +58,7 @@
 // =====================================================================================================================
 //
 // History:
-// 0.9.19  - Removed definition of global variable log, replaced with 'theLogger' singleton.
+// 0.10.0  - Removed definition of global variable log, replaced with 'theLogger' singleton.
 //         - Added logger interfaces to allow higher performance disabled levels through optional chaining.
 // 0.9.14  - Move to SPM
 //         - Documentation updates for reference manual generation

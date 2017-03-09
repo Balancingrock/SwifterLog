@@ -49,6 +49,11 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Version number will be increased to this level when Swiftfire 1.0.0 is released.
 
+#### v0.9.18 (Current)
+
+- Removed global 'log' definition, use SwifterLog.theLogger instead. (let log = SwifterLog.theLogger)
+- Added faster loggers for disabled log levels. (eg: Log.atDebug?.log(...))
+
 #### v0.9.17 (Current)
 
 - Replaced local c-glue with CAsl glue library (now builds under SPM)

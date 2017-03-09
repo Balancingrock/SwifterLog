@@ -2,7 +2,9 @@
 
 ## Jump start
 
-The framework defines a global variable called `log`. Use this variable to access all logging functions.
+The framework defines a singleton called `theLogger`. This variable can be use this variable to access all logging functions. For ease of use, it is recommened to create a global variable from this:
+
+    let log = SwifterLog.theLogger
 
 Before using the logging functions, first setup the log level thresholds for the targets. In code this is done as follows:
 
@@ -35,6 +37,35 @@ The ID parameter can be used to differentiate between objects, sockets, threads 
 The source parameter is intended to give a code location from where the log entry was made.
 
 The message parameter is defined as Any. It uses the `description` method to display the information in the item. It is recommended to add the protocol `ReflectedStringConvertible` to objects for an auto generated reflection based description.
+
+## Performance problem & solution
+
+While it is perfectly possible (and the only option before 0.9.18) to use a single point of contact for all logging functions, there is a performance hit for this simplicity.
+
+Consider the following:
+
+    import SwifterLog
+    typealias Log = SwifterLog
+    let log = Log.theLogger
+
+    log.stdoutPrintAtAndAboveLevel = .info
+    extension MyGreatVariable: ReflectedStringConvertable {}
+    let myGreatVariable = MyGreatVariable()
+    log.atLevelDebug(source: "Here", message: myGreatVariable)
+    
+As said before, this works fine. When there is no target with a threshold below `.info` no log information is written. However the call `atLevelDebug` is always made. And hence all parameters must be evaluated and the information must be placed on the stack. That overhead is always incurred. Wether the debug level is used or not.
+
+The solution is to avoid the evaluation/preparation when the debug level is not used.
+
+For this purpose there are additional optional (level dependent) loggers available. Because they are optionals they will be nil when the debug level is not in use. For example the optional debug logger is SwifterLog.atDebug
+
+The last line of the above example then becomes:
+
+    Log.atDebug?.log(source: "Here", message: myGreatVariable)
+
+While the readability has suffered slightly, this has the big advantage of not evaluating the parameters of the call if the debug level is not used in any target. Under circumstances this can either give a performance boost to the application, or alternatively, it becomes unneccesary to comment-out all logger call at the debug and info level before shipping.
+
+There are optional loggers for all levels. Though probably only the ones for the .debug and .info are useful. (It is not likely that the other levels will be disabled in shipping applications)
 
 ## Targets
 
