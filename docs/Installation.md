@@ -22,7 +22,7 @@ To install SwifterLog type the following:
 
 Then open the xcode project (with Xcode) in the new directory.
 
-Hit ⌘B to build the project.
+Build the project.
 
 This creates a modular framework (in products).
 
@@ -34,7 +34,7 @@ It is of course also possible to use SwifterLog as sourcecode. If so, simply add
 
 You will also need the [CAsl framework](https://github.com/Balancingrock/CAsl) which contains the bridging information and C-glue code.
 
-If the networking destination is not needed, do not include the sources from Ascii, SwifterJSON and SwifterSockets and set the active compiler condition `SWIFTERLOG_DISABLE_NETWORK_TARGET` as described above.
+If the networking destination is not needed, do not include the sources from Ascii, SwifterJSON and SwifterSockets and set the active compiler condition `SWIFTERLOG_DISABLE_NETWORK_TARGET`.
 
 ## Optional removal of Ascii, SwifterJSON and SwifterSockets dependency
 

@@ -22,7 +22,9 @@ SwifterLog is part of the [Swiftfire](http://swiftfire.nl) webserver project.
 	8. Emergency
 - Each logging target can have its own cut-off level for the information that is logged.
 - The file target can be configured to store the log info in a predefined number of files of a predefined maximum size. When the maximum number of files is exceeded, the oldest file will automatically be removed.
-- Includes xcode project that creates a modular framework.
+- Included high performance non-evaluation destinations to allow debug logging calls to remain in shipping code
+- Compiles using SPM (Swift Package Manager)
+- Includes Xcode project that creates a modular framework.
 
 # Documentation
 
@@ -49,12 +51,12 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Version number will be increased to this level when Swiftfire 1.0.0 is released.
 
-#### v0.9.18 (Current)
+#### v0.10.0 (Current)
 
 - Removed global 'log' definition, use SwifterLog.theLogger instead. (let log = SwifterLog.theLogger)
-- Added faster loggers for disabled log levels. (eg: Log.atDebug?.log(...))
+- Added faster loggers for disabled log levels. (eg: SwifterLog.atDebug?.log(...))
 
-#### v0.9.17 (Current)
+#### v0.9.17
 
 - Replaced local c-glue with CAsl glue library (now builds under SPM)
 
