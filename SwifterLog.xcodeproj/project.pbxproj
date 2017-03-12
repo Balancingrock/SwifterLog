@@ -34,70 +34,70 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		866574F81E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A271E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_49;
 			remoteInfo = Ascii;
 		};
-		866574F91E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A281E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_41;
 			remoteInfo = CAsl;
 		};
-		866574FA1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A291E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_49;
 			remoteInfo = Ascii;
 		};
-		866574FB1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A2A1E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_56;
 			remoteInfo = SwifterJSON;
 		};
-		866574FC1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A2B1E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_65;
 			remoteInfo = SwifterSockets;
 		};
-		866574FD1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A2C1E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_41;
 			remoteInfo = CAsl;
 		};
-		866574FE1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A2D1E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_49;
 			remoteInfo = Ascii;
 		};
-		866574FF1E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A2E1E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_56;
 			remoteInfo = SwifterJSON;
 		};
-		866575001E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A2F1E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = OBJ_65;
 			remoteInfo = SwifterSockets;
 		};
-		866575011E6740F100ED7E89 /* PBXContainerItemProxy */ = {
+		86EA3A301E7586C40095555B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -214,7 +214,7 @@
 				OBJ_16 /* VJson.swift */,
 			);
 			name = SwifterJSON;
-			path = "Packages/SwifterJSON-0.9.17/Sources";
+			path = "Packages/SwifterJSON-0.10.0/Sources";
 			sourceTree = SOURCE_ROOT;
 		};
 		OBJ_17 /* SwifterSockets */ = {
@@ -273,7 +273,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 = {
+		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -283,6 +283,7 @@
 				OBJ_33 /* docs */,
 				OBJ_34 /* Products */,
 			);
+			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -432,7 +433,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5;
+			mainGroup = OBJ_5 /*  */;
 			productRefGroup = OBJ_34 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -522,52 +523,52 @@
 		OBJ_107 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_41 /* CAsl */;
-			targetProxy = 866574FD1E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A2C1E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_108 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_49 /* Ascii */;
-			targetProxy = 866574FE1E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A2D1E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_109 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_56 /* SwifterJSON */;
-			targetProxy = 866574FF1E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A2E1E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_65 /* SwifterSockets */;
-			targetProxy = 866575001E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A2F1E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_111 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_79 /* SwifterLog */;
-			targetProxy = 866575011E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A301E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_64 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_49 /* Ascii */;
-			targetProxy = 866574F81E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A271E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_91 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_41 /* CAsl */;
-			targetProxy = 866574F91E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A281E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_92 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_49 /* Ascii */;
-			targetProxy = 866574FA1E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A291E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_93 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_56 /* SwifterJSON */;
-			targetProxy = 866574FB1E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A2A1E7586C40095555B /* PBXContainerItemProxy */;
 		};
 		OBJ_94 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJ_65 /* SwifterSockets */;
-			targetProxy = 866574FC1E6740F100ED7E89 /* PBXContainerItemProxy */;
+			targetProxy = 86EA3A2B1E7586C40095555B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
