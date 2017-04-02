@@ -53,6 +53,10 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 #### v0.10.3 (Current)
 
+- Update of SwifterSockets to 0.10.3
+
+#### v0.10.3 (Current)
+
 - Result type was moved from SwifterSockets to BRUtils
 
 #### v0.10.2 (Current)
