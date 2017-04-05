@@ -51,15 +51,19 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Version number will be increased to this level when Swiftfire 1.0.0 is released.
 
-#### v0.10.4 (Current)
+#### v0.10.5 (Current)
+
+- Updated to SwifterJSON 0.10.2
+
+#### v0.10.4
 
 - Update of SwifterSockets to 0.10.3
 
-#### v0.10.3 (Current)
+#### v0.10.3
 
 - Result type was moved from SwifterSockets to BRUtils
 
-#### v0.10.2 (Current)
+#### v0.10.2
 
 - Added compilation speed increase in SwifterSockets 0.10.1
 
