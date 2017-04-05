@@ -4,7 +4,7 @@ let package = Package(
     name: "SwifterLog",
     dependencies: [
         .Package(url: "https://github.com/Balancingrock/CAsl", "0.1.0"),
-        .Package(url: "https://github.com/Balancingrock/SwifterJSON", "0.10.1"),
+        .Package(url: "https://github.com/Balancingrock/SwifterJSON", "0.10.2"),
         .Package(url: "https://github.com/Balancingrock/SwifterSockets", "0.10.3")
     ]
 )
