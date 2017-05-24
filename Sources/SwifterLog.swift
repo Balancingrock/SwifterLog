@@ -3,7 +3,7 @@
 //  File:       SwifterLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.10.0
+//  Version:    0.10.10
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -58,6 +58,7 @@
 // =====================================================================================================================
 //
 // History:
+// 0.10.10 - Bugfix: Info level appeared at debug level when "atInfo" was used.
 // 0.10.0  - Removed definition of global variable log, replaced with 'theLogger' singleton.
 //         - Added logger interfaces to allow higher performance disabled levels through optional chaining.
 // 0.9.14  - Move to SPM
@@ -365,7 +366,7 @@ public final class SwifterLog {
                 
             case .debug:
                 atDebug = Logger.debugLogger
-                atInfo = Logger.debugLogger
+                atInfo = Logger.infoLogger
                 atNotice = Logger.noticeLogger
                 atWarning = Logger.warningLoger
                 atError = Logger.errorLogger
@@ -375,7 +376,7 @@ public final class SwifterLog {
             
             case .info:
                 atDebug = nil
-                atInfo = Logger.debugLogger
+                atInfo = Logger.infoLogger
                 atNotice = Logger.noticeLogger
                 atWarning = Logger.warningLoger
                 atError = Logger.errorLogger

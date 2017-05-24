@@ -5,6 +5,6 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/Balancingrock/CAsl", "0.1.0"),
         .Package(url: "https://github.com/Balancingrock/SwifterJSON", "0.10.4"),
-        .Package(url: "https://github.com/Balancingrock/SwifterSockets", "0.10.6")
+        .Package(url: "https://github.com/Balancingrock/SwifterSockets", "0.10.7")
     ]
 )
