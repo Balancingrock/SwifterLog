@@ -51,7 +51,12 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Version number will be increased to this level when Swiftfire 1.0.0 is released.
 
-#### v0.10.10 (Current)
+#### v0.10.11 (Current)
+
+- Upped SwifterSockets from 0.10.7 to 0.10.8
+- Upped SwifterJSON from 0.10.5 to 0.10.6
+
+#### v0.10.10
 
 - Update of SwifterSockets to 0.10.7
 - Bugfix: Fixed initialization of the 'atInfo' logger.
