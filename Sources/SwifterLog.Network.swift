@@ -3,7 +3,7 @@
 //  File:       SwifterLog.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    0.10.0
+//  Version:    0.10.12
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -56,6 +56,7 @@
 //
 // History:
 //
+// 0.10.12 - Changed SwifterJSON to VJson.
 // 0.10.0  - Added new enum to transmission to network.
 // 0.9.13  - Upgraded to Xcode 8 beta 6 (Swift 3)
 // 0.9.12  - Upgraded to Xcode 8 beta 3 (Swift 3)
@@ -71,7 +72,7 @@
 #else
 
 import Foundation
-import SwifterJSON
+import VJson
 import SwifterSockets
 
 
