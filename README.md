@@ -42,16 +42,24 @@ Note: Planned releases are for information only, they are subject to change with
 
 Maintenance updates are updates due to management of the (SPM) package hierarchy, they don't affect the source code.
 
-#### v1.1.0 (Open)
+#### v2.1.0 (Open)
 
 - No new features planned. Features and bugfixes will be made on an ad-hoc basis as needed to support Swiftfire development.
 - For feature requests and bugfixes please contact rien@balancingrock.nl
 
-#### v1.0.0 (Planned)
+#### v2.0.0 (Planned)
 
-- Version number will be increased to this level when Swiftfire 1.0.0 is released.
+- Overhaul of implementation:
+	- Split into multiple source files
+	- Allow filtering of sources
+	- Allow custom targets
+	- Allow custom formatting
 
-#### v0.10.12 (Current)
+#### v1.0.0 (Current)
+
+- No changes but this readme file since the previous version.
+
+#### v0.10.12
 
 - Changed SwifterJSON to VJson
 
