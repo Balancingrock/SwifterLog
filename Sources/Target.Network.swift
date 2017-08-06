@@ -41,14 +41,14 @@ public struct LogLine: CustomStringConvertible {
     
     /// The CustomStringConvertible protocol
     
-    public var description: String { return "\(SwifterLog.logTimeFormatter.string(from: time)), \(level): \(source), \(message ?? "")" }
+    public var description: String { return "\(logTimeFormatter.string(from: time)), \(level): \(source), \(message ?? "")" }
     
     
     /// The json representation of this struct
     
     public var json: VJson {
         let json = VJson()
-        json["LogLine"]["Time"] &= SwifterLog.logTimeFormatter.string(from: time)
+        json["LogLine"]["Time"] &= logTimeFormatter.string(from: time)
         json["LogLine"]["Level"] &= level.json
         json["LogLine"]["Source"] &= source.json
         json["LogLine"]["Message"] &= "\(message ?? "")"
@@ -77,7 +77,7 @@ public struct LogLine: CustomStringConvertible {
         guard let jSource = (json|"LogLine"|"Source") else { return nil }
         guard let jMessage = (json|"LogLine"|"Message")?.stringValue else { return nil }
         
-        guard let dTime = SwifterLog.logTimeFormatter.date(from: jTime) else { return nil }
+        guard let dTime = logTimeFormatter.date(from: jTime) else { return nil }
         guard let lLevel = Level.factory(jLevel) else { return nil }
         guard let sSource = Source(json: jSource) else { return nil }
         
@@ -99,7 +99,7 @@ public class Network: Target {
     
     /// Transmit a new entry if the level and filter let is pass.
     
-    public override func record(_ level: Level, _ source: Source, _ message: Any? = nil, _ timestamp: Date? = nil) {
+    public override func log(_ level: Level, _ source: Source, _ message: Any? = nil, _ timestamp: Date? = nil) {
         
         
         // Message must be at or above threshold
@@ -110,7 +110,7 @@ public class Network: Target {
         // Prevent unwanted sources from creating an entry
         
         for filter in filters {
-            if filter.excludes(source) { return }
+            if filter.excludes(level, source) { return }
         }
         
         
@@ -161,7 +161,7 @@ public class Network: Target {
     public func connectToNetworkTarget(_ target: NetworkTarget) {
         if networkQueue == nil {
             // Only create this queue if necessary, and then do it only once.
-            networkQueue = DispatchQueue(label: "SwifterLog.Network")
+            networkQueue = DispatchQueue(label: "SwifterLog-Network")
         }
         networkQueue!.async(execute: { [unowned self] in self.openNetworkConnection(target.address, port: target.port)})
     }
@@ -184,7 +184,7 @@ public class Network: Target {
             _ = SwifterSockets.closeSocket(socket!)
             socket = nil
             _networkTarget = nil
-            Level.Notice.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Connection to network target closed")
+            SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Connection to network target closed")
         }
         
         
@@ -196,14 +196,14 @@ public class Network: Target {
             
         case let .error(msg):
             
-            Level.Notice.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)")
+            SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)")
             
             
         case let .success(num):
             
             socket = num
             _networkTarget = (ipAddress, port)
-            Level.Notice.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Openend connection to network target. Address = \(ipAddress), port = \(port)")
+            SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Openend connection to network target. Address = \(ipAddress), port = \(port)")
         }
     }
     
@@ -218,7 +218,7 @@ public class Network: Target {
         _ = SwifterSockets.closeSocket(socket)
         socket = nil
         _networkTarget = nil
-        Level.Notice.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Network target logging stopped")
+        SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Network target logging stopped")
     }
     
     
@@ -245,12 +245,12 @@ public class Network: Target {
                 
             case .timeout:
                 
-                Level.Error.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Timeout on connection to network target")
+                SwifterLog.Loggers.atError.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Timeout on connection to network target")
                 
                 
             case let .error(message: err):
                 
-                Level.Error.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Error on transfer to network target: \(err)")
+                SwifterLog.Loggers.atError.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Error on transfer to network target: \(err)")
                 self.closeNetworkConnection()
                 
                 
@@ -258,7 +258,7 @@ public class Network: Target {
                 
             case .closed:
                 
-                Level.Error.record(Source(file: #file, function: #function, line: #line), SwifterLog.allTargetsExceptNetwork, "Connection to network target unexpectedly closed")
+                SwifterLog.Loggers.atError.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Connection to network target unexpectedly closed")
                 self.closeNetworkConnection()
             }
         }

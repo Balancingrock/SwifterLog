@@ -1,40 +1,67 @@
+// =====================================================================================================================
 //
-//  Extensions.swift
-//  SwifterLog
+//  File:       Extension.swift
+//  Project:    SwifterLog
 //
-//  Created by Marinus van der Lugt on 30/07/2017.
+//  Version:    2.0.0
 //
+//  Author:     Marinus van der Lugt
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
+//  Blog:       http://swiftrien.blogspot.com
+//  Git:        https://github.com/Balancingrock/SwifterLog
 //
+//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//
+//  License:    Use or redistribute this code any way you like with the following two provision:
+//
+//  1) You ACCEPT this source code AS IS without any guarantees that it will work as intended. Any liability from its
+//  use is YOURS.
+//
+//  2) You WILL NOT seek damages from the author or balancingrock.nl.
+//
+//  I also ask you to please leave this header with the source code.
+//
+//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
+//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//
+//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
+//
+//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
+//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
+//
+//  If you like to pay in another way, please contact me at rien@balancingrock.nl
+//
+//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
+//
+//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
+//  For commercial use the suggested price is the price of 1 good meal, say $20.
+//
+//  You are however encouraged to pay more ;-)
+//
+//  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
+//
+// =====================================================================================================================
+//
+// Purpose:
+//
+// Extensions that may be usefull with SwifterLog.
+//
+// =====================================================================================================================
+//
+// History:
+// 2.0.0 -  Initial release
+//
+// =====================================================================================================================
+
 
 import Foundation
 
 
-/// An extension that adds a convenience method for logging information.
-
-public extension String {
-    
-    
-    /// Creates 'source' information from a #file identifier.
-    ///
-    /// Example usage: log.atLevelDebug(id: 0, source: #file.source(#function, #line), message: "My Message")
-    ///
-    /// - Note: This will increase the time needed to create the log entry, it is therefore not advised for time-critical entries. Suggested use is at level NOTICE and above only.
-    ///
-    /// - Parameters:
-    ///   - function: A string identifying the function that the logging information is created in.
-    ///   - line: The line number where the logging call is made.
-    ///
-    /// - Returns: A string to be used as the 'source' identifier in the logging message.
-    
-    public func source(_ function: String, _ line: Int) -> String {
-        return ((self as NSString).lastPathComponent as NSString).deletingPathExtension + "." + function + "." + line.description
-    }
-}
-
-
 /// This protocol/extension combination allows classes to be printed like struct's.
 ///
-/// Add ReflectedStringConvertible to any class definition and the extension will do the rest.
+/// Add ReflectedStringConvertible to any class definition and the default implementation will do the rest.
 ///
 /// Credit: Matt Comi
 ///
@@ -44,12 +71,6 @@ public protocol ReflectedStringConvertible: CustomStringConvertible {}
 
 
 /// The default extension for this protocol allows classes to be printed like struct's.
-///
-/// Add ReflectedStringConvertible to any class definition and the extension will do the rest.
-///
-/// - Note: This will override the default 'description'
-///
-/// Credit: Matt Comi
 
 public extension ReflectedStringConvertible {
     public var description: String {

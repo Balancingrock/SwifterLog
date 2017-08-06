@@ -30,7 +30,7 @@ public class Asl: Target {
     
     /// Record one line of text (conditionally)
     
-    public override func record(_ level: Level, _ source: Source, _ message: Any?, _ timestamp: Date? = nil) {
+    public override func log(_ level: Level, _ source: Source, _ message: Any?, _ timestamp: Date? = nil) {
         
         
         // Message must be at or above threshold
@@ -41,7 +41,7 @@ public class Asl: Target {
         // Prevent unwanted sources from creating an entry
         
         for filter in filters {
-            if filter.excludes(source) { return }
+            if filter.excludes(level, source) { return }
         }
         
         
@@ -64,6 +64,4 @@ public class Asl: Target {
         
         asl_bridge_log_message(level.aslLevel, str)
     }
-
-    
 }

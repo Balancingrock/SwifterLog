@@ -13,7 +13,7 @@ public class Target {
     
     /// Entry levels below this one are ignored.
     
-    public var threshold: Level = Level.None
+    public var threshold: Level = Level.none
     
     
     /// Filters to exclude entries from beiing recorded.
@@ -41,7 +41,7 @@ public class Target {
     ///   - message: An optional message to be recorded with the source & level
     ///   - timestamp: An optional time to record with the loginfo, will be set to 'now' if not supplied.
     
-    open func record(_ level: Level, _ source: Source, _ message: Any? = nil, _ timestamp: Date? = nil) {
+    open func log(_ level: Level, _ source: Source, _ message: Any? = nil, _ timestamp: Date? = nil) {
         
         // Message must be at or above threshold
         
@@ -51,7 +51,7 @@ public class Target {
         // Prevent unwanted sources from creating an entry
         
         for filter in filters {
-            if filter.excludes(source) { return }
+            if filter.excludes(level, source) { return }
         }
         
         

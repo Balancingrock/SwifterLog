@@ -24,7 +24,7 @@ public class Stdout: Target {
         for _ in 0 ..< times {
             separator.append(char)
         }
-        let logstr = SwifterLog.logTimeFormatter.string(from: time) + ", SEPARATOR: " + separator
+        let logstr = logTimeFormatter.string(from: time) + ", SEPARATOR: " + separator
         write(logstr)
     }
 }

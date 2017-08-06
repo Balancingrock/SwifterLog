@@ -34,12 +34,13 @@ public class Callback: Target {
     
     public func record(at level: Level, source: Source, message: Any?, timestamp: Date?) {
         let time = timestamp ?? Date()
-        queue?.async {
+        queue.async {
             [weak self] in
             self?.logToCallback(time, source, level, message)
         }
     }
 
+    
     // Send logging messages to callbacks using this queue. This decouples the log messages on this machine from possible application errors.
     
     private var queue: DispatchQueue = DispatchQueue(label: "SwifterLog-Callback", qos: .background, attributes: DispatchQueue.Attributes(), autoreleaseFrequency: .inherit, target: nil)
@@ -50,7 +51,7 @@ public class Callback: Target {
         if level < threshold { return }
         counters[level.value] += 1
         for filter in filters {
-            if filter.excludes(source) { return }
+            if filter.excludes(level, source) { return }
         }
         for target in targets {
             target.logInfo(time, level, source, message)

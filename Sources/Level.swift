@@ -1,55 +1,143 @@
+// =====================================================================================================================
 //
-//  Level.swift
-//  SwifterLog
+//  File:       Level.swift
+//  Project:    SwifterLog
 //
-//  Created by Marinus van der Lugt on 29/07/2017.
+//  Version:    2.0.0
 //
+//  Author:     Marinus van der Lugt
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
+//  Blog:       http://swiftrien.blogspot.com
+//  Git:        https://github.com/Balancingrock/SwifterLog
 //
+//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//
+//  License:    Use or redistribute this code any way you like with the following two provision:
+//
+//  1) You ACCEPT this source code AS IS without any guarantees that it will work as intended. Any liability from its
+//  use is YOURS.
+//
+//  2) You WILL NOT seek damages from the author or balancingrock.nl.
+//
+//  I also ask you to please leave this header with the source code.
+//
+//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
+//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//
+//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
+//
+//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
+//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
+//
+//  If you like to pay in another way, please contact me at rien@balancingrock.nl
+//
+//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
+//
+//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
+//  For commercial use the suggested price is the price of 1 good meal, say $20.
+//
+//  You are however encouraged to pay more ;-)
+//
+//  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
+//
+// =====================================================================================================================
+//
+// Purpose:
+//
+// Provides logging levels for SwifterLog.
+//
+// =====================================================================================================================
+//
+// History:
+// 2.0.0 -  Initial release, extracted and enhanced from SwifterLog.swift
+//
+// =====================================================================================================================
 
 import Foundation
 import VJson
 
-public class Level: CustomStringConvertible, VJsonSerializable {
+
+// The log level at which log entries can be written.
+
+public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     
-    public let value: Int
-    public let aslLevel: Int32
-    
-    static public let Debug = Level(0)!
-    static public let Info = Level(1)!
-    static public let Notice = Level(2)!
-    static public let Warning = Level(3)!
-    static public let Error = Level(4)!
-    static public let Critical = Level(5)!
-    static public let Alert = Level(6)!
-    static public let Emergency = Level(7)!
-    static public let None = Level(8)!
-    
-    public var filters: [Filter] = []
+    case debug, info, notice, warning, error, critical, alert, emergency, none
     
     
-    public var json: VJson {
-        return VJson(value)
-    }
+    /// The numerical value for this loglevel.
     
-    public var description: String {
-        switch value {
-        case 0: return "DEBUG    "
-        case 1: return "INFO     "
-        case 2: return "NOTICE   "
-        case 3: return "WARNING  "
-        case 4: return "ERROR    "
-        case 5: return "CRITICAL "
-        case 6: return "ALERT    "
-        case 7: return "EMERGENCY"
-        case 8: return "NONE     "
-        default: return "***ERR***"
+    public var value: Int {
+        switch self {
+        case .debug:        return 0
+        case .info:         return 1
+        case .notice:       return 2
+        case .warning:      return 3
+        case .error:        return 4
+        case .critical:     return 5
+        case .alert:        return 6
+        case .emergency:    return 7
+        case .none:         return 8
         }
     }
     
-    private init?(_ value: Int) {
-        guard value >= 0 && value <= 8 else { return nil }
-        self.value = value
-        self.aslLevel = -(Int32(value) - 7)
+    
+    /// The ASL level for this loglevel.
+    
+    public var aslLevel: Int32 {
+        switch self {
+        case .debug:        return 7
+        case .info:         return 6
+        case .notice:       return 5
+        case .warning:      return 4
+        case .error:        return 3
+        case .critical:     return 2
+        case .alert:        return 1
+        case .emergency:    return 0
+        case .none:         fatalError("aslLevel should never be used on Level enum")
+        }
+    }
+
+    
+    /// The binary pattern for this loglevel
+    
+    public var bitPattern: Int {
+        switch self {
+        case .debug:        return 0b0000_0000_0001
+        case .info:         return 0b0000_0000_0010
+        case .notice:       return 0b0000_0000_0100
+        case .warning:      return 0b0000_0000_1000
+        case .error:        return 0b0000_0001_0000
+        case .critical:     return 0b0000_0010_0000
+        case .alert:        return 0b0000_0100_0000
+        case .emergency:    return 0b0000_1000_0000
+        case .none:         return 0b0001_0000_0000
+        }
+    }
+
+    
+    /// The CustomStringConvertible protocol
+    
+    public var description: String {
+        switch self {
+        case .debug:        return "DEBUG    "
+        case .info:         return "INFO     "
+        case .notice:       return "NOTICE   "
+        case .warning:      return "WARNING  "
+        case .error:        return "ERROR    "
+        case .critical:     return "CRITICAL "
+        case .alert:        return "ALERT    "
+        case .emergency:    return "EMERGENCY"
+        case .none:         return "NONE     "
+        }
+    }
+    
+    
+    /// The JSON representation
+    
+    public var json: VJson {
+        return VJson(value)
     }
     
     
@@ -74,60 +162,52 @@ public class Level: CustomStringConvertible, VJsonSerializable {
     
     public static func factory(_ value: Int) -> Level? {
         switch value {
-        case 0: return Debug
-        case 1: return Info
-        case 2: return Notice
-        case 3: return Warning
-        case 4: return Error
-        case 5: return Critical
-        case 6: return Alert
-        case 7: return Emergency
-        case 8: return None
+        case 0: return .debug
+        case 1: return .info
+        case 2: return .notice
+        case 3: return .warning
+        case 4: return .error
+        case 5: return .critical
+        case 6: return .alert
+        case 7: return .emergency
+        case 8: return .none
         default: return nil
         }
     }
     
-    public convenience init?(string: String) {
+    
+    /// This function returns one of the static levels in this class.
+    ///
+    /// - Parameter string: The string for which to determine the static level.
+    ///
+    /// - Returns: The static level corresponding to the given string, or nil if there is no such level.
+
+    public static func factory(_ string: String) -> Level? {
         switch string {
-        case "DEBUG": self.init(0)
-        case "INFO": self.init(1)
-        case "NOTICE": self.init(2)
-        case "WARNING": self.init(3)
-        case "ERROR": self.init(4)
-        case "CRITICAL": self.init(5)
-        case "ALERT": self.init(6)
-        case "EMERGENCY": self.init(7)
-        default: return nil
+        case "DEBUG":       return .debug
+        case "INFO":        return .info
+        case "NOTICE":      return .notice
+        case "WARNING":     return .warning
+        case "ERROR":       return .error
+        case "CRITICAL":    return .critical
+        case "ALERT":       return .alert
+        case "EMERGENCY":   return .emergency
+        case "NONE":        return .none
+        default:            return nil
         }
     }
  
-    public func record(_ source: Source, _ targets: [Target], _ message: Any? = nil) {
-        let now = Date()
-        for filter in filters {
-            if filter.excludes(source) { return }
-        }
-        logQueue.async {
-            targets.forEach { $0.record(self, source, message, now) }
-        }
-    }
     
-    public static func >= (lhs: Level, rhs: Level) -> Bool {
-        return lhs.value >= rhs.value
-    }
+    /// The equatable & comparable protocol function
     
     public static func == (lhs: Level, rhs: Level) -> Bool {
         return lhs.value == rhs.value
     }
 
-    public static func <= (lhs: Level, rhs: Level) -> Bool {
-        return lhs.value <= rhs.value
-    }
     
+    /// The comparable protocol function
+
     public static func < (lhs: Level, rhs: Level) -> Bool {
         return lhs.value < rhs.value
-    }
-    
-    public static func > (lhs: Level, rhs: Level) -> Bool {
-        return lhs.value > rhs.value
     }
 }

@@ -1,15 +1,68 @@
+// =====================================================================================================================
 //
-//  Formatter.swift
-//  SwifterLog
+//  File:       Formatter.swift
+//  Project:    SwifterLog
 //
-//  Created by Marinus van der Lugt on 29/07/2017.
+//  Version:    2.0.0
+//
+//  Author:     Marinus van der Lugt
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
+//  Blog:       http://swiftrien.blogspot.com
+//  Git:        https://github.com/Balancingrock/SwifterLog
+//
+//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//
+//  License:    Use or redistribute this code any way you like with the following two provision:
+//
+//  1) You ACCEPT this source code AS IS without any guarantees that it will work as intended. Any liability from its
+//  use is YOURS.
+//
+//  2) You WILL NOT seek damages from the author or balancingrock.nl.
+//
+//  I also ask you to please leave this header with the source code.
+//
+//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
+//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//
+//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
+//
+//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
+//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
+//
+//  If you like to pay in another way, please contact me at rien@balancingrock.nl
+//
+//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
+//
+//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
+//  For commercial use the suggested price is the price of 1 good meal, say $20.
+//
+//  You are however encouraged to pay more ;-)
+//
+//  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
+//
+// =====================================================================================================================
+//
+// Purpose:
+//
+// A formatter defines the layout of a log entry. It is (should be) able to transform in both directions in order to
+// support all future toolsets. I.e. it should be able to convert an entry to string and a string to an entry.
+//
+// Formatters can be customized, a default formatter is provided.
 //
 //
+// =====================================================================================================================
+//
+// History:
+// 2.0.0 -  Initial release
+//
+// =====================================================================================================================
 
 import Foundation
 
 
-/// A (log) Target uses a formatter to create the string that it will record.
+/// A formatter creates a string from the log entry information, and creates the log entry information from a string.
 
 public protocol Formatter {
 
@@ -17,7 +70,21 @@ public protocol Formatter {
     /// Creates a single string from the input data.
     
     func string(level: Level, source: Source, message: Any?, timestamp: Date) -> String
+    
+    
+    /// Create the log entry information from a string.
+    
+    func parse(_ string: String) -> (Date, Level, Source, String?)?
 }
+
+
+/// Creates the date & time in the log info string.
+
+internal var logTimeFormatter: DateFormatter = {
+    let ltf = DateFormatter()
+    ltf.dateFormat = "yyyy-MM-dd'T'HH.mm.ss.SSSZ"
+    return ltf
+}()
 
 
 /// The default formatter, used by all defaults targets.
@@ -25,23 +92,11 @@ public protocol Formatter {
 public struct SfFormatter: Formatter {
     
     
-    /// Creates a single string from the input data.
+    /// Creates a single string from the log entry information.
 
     public func string(level: Level, source: Source, message: Any?, timestamp: Date) -> String {
         
-        let levelStr: String
-        switch level.value {
-        case 0: levelStr = "DEBUG    "
-        case 1: levelStr = "INFO     "
-        case 2: levelStr = "NOTICE   "
-        case 3: levelStr = "WARNING  "
-        case 4: levelStr = "ERROR    "
-        case 5: levelStr = "CRITICAL "
-        case 6: levelStr = "ALERT    "
-        case 7: levelStr = "EMERGENCY"
-        case 8: levelStr = "NONE     "
-        default: levelStr = "         "
-        }
+        let levelStr = level.description
         
         let idStr = source.id == nil ? "" : String(format: "%08x", source.id!)
         
@@ -53,7 +108,7 @@ public struct SfFormatter: Formatter {
         
         let lineStr = source.line?.description ?? ""
         
-        let timeStr = SwifterLog.logTimeFormatter.string(from: timestamp)
+        let timeStr = logTimeFormatter.string(from: timestamp)
         
         let str: String
         if let m = message {
@@ -67,7 +122,7 @@ public struct SfFormatter: Formatter {
 
     
     
-    /// Create a log entry from a string
+    /// Create the log entry information from a string
     
     public func parse(_ string: String) -> (Date, Level, Source, String?)? {
 
@@ -83,7 +138,7 @@ public struct SfFormatter: Formatter {
         let line: Int?
         let message: String?
         
-        if let date = SwifterLog.logTimeFormatter.date(from: strs[0]) {
+        if let date = logTimeFormatter.date(from: strs[0]) {
             time = date
         } else {
             return nil
@@ -91,15 +146,15 @@ public struct SfFormatter: Formatter {
         
         let levelId = strs[1].components(separatedBy: ": ")
         switch levelId[0] {
-        case "DEBUG    ": level = Level.Debug
-        case "INFO     ": level = Level.Info
-        case "NOTICE   ": level = Level.Notice
-        case "WARNING  ": level = Level.Warning
-        case "ERROR    ": level = Level.Error
-        case "CRITICAL ": level = Level.Critical
-        case "ALERT    ": level = Level.Alert
-        case "EMERGENCY": level = Level.Emergency
-        default: level = Level.None
+        case "DEBUG    ": level = Level.debug
+        case "INFO     ": level = Level.info
+        case "NOTICE   ": level = Level.notice
+        case "WARNING  ": level = Level.warning
+        case "ERROR    ": level = Level.error
+        case "CRITICAL ": level = Level.critical
+        case "ALERT    ": level = Level.alert
+        case "EMERGENCY": level = Level.emergency
+        default: level = Level.none
         }
         if levelId.count == 2 {
             id = Int(levelId[1])

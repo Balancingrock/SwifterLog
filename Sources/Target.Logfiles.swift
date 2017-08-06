@@ -122,7 +122,7 @@ public class Logfiles: Target {
                 
                 directoryURL = URL(fileURLWithPath: logdir, isDirectory: true) // For the logfile services
                 
-                let filename = "Log_" + SwifterLog.logTimeFormatter.string(from: Date()) + ".txt"
+                let filename = "Log_" + logTimeFormatter.string(from: Date()) + ".txt"
                 
                 let logfileUrl = URL(fileURLWithPath: logdir).appendingPathComponent(filename)
                 
