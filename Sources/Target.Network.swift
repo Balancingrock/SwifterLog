@@ -1,10 +1,59 @@
+// =====================================================================================================================
 //
-//  Target.Network.swift
-//  SwifterLog
+//  File:       Target.Network.swift
+//  Project:    SwifterLog
 //
-//  Created by Marinus van der Lugt on 30/07/2017.
+//  Version:    2.0.0
 //
+//  Author:     Marinus van der Lugt
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
+//  Blog:       http://swiftrien.blogspot.com
+//  Git:        https://github.com/Balancingrock/SwifterLog
 //
+//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//
+//  License:    Use or redistribute this code any way you like with the following two provision:
+//
+//  1) You ACCEPT this source code AS IS without any guarantees that it will work as intended. Any liability from its
+//  use is YOURS.
+//
+//  2) You WILL NOT seek damages from the author or balancingrock.nl.
+//
+//  I also ask you to please leave this header with the source code.
+//
+//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
+//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//
+//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
+//
+//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
+//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
+//
+//  If you like to pay in another way, please contact me at rien@balancingrock.nl
+//
+//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
+//
+//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
+//  For commercial use the suggested price is the price of 1 good meal, say $20.
+//
+//  You are however encouraged to pay more ;-)
+//
+//  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
+//
+// =====================================================================================================================
+//
+// Purpose:
+//
+// Writes the log entries to a remote server.
+//
+// =====================================================================================================================
+//
+// History:
+// 2.0.0 -  Completely rewritten from 1.0.0
+//
+// =====================================================================================================================
 
 #if SWIFTERLOG_DISABLE_NETWORK_TARGET
 #else
@@ -58,11 +107,11 @@ public struct LogLine: CustomStringConvertible {
     
     /// Creates a new logline
     
-    public init(time: Date, level: Level, source: Source, message: String) {
-        self.time = time
-        self.level = level
-        self.source = source
-        self.message = message
+    public init(_ entry: Entry) {
+        self.time = entry.timestamp
+        self.level = entry.level
+        self.source = entry.source
+        self.message = entry.message
     }
     
     
@@ -99,36 +148,13 @@ public class Network: Target {
     
     /// Transmit a new entry if the level and filter let is pass.
     
-    public override func log(_ level: Level, _ source: Source, _ message: Any? = nil, _ timestamp: Date? = nil) {
+    public override func process(_ entry: Entry) {
         
-        
-        // Message must be at or above threshold
-        
-        if level >= threshold { return }
-        
-        
-        // Prevent unwanted sources from creating an entry
-        
-        for filter in filters {
-            if filter.excludes(level, source) { return }
-        }
-        
-        
-        // Increment the counter
-        
-        counters[level.value] += 1
-        
-        
-        // Set the date for the entry
-        
-        let date = timestamp ?? Date()
-        
-        
-        // Dispatch it so a blocked network does not impact the application.
+        // Dispatch it so a blocked network does not impact the application or SwifterLog.
         
         networkQueue?.async {
             [weak self] in
-            self?.logToNetwork(date, source: source, logLevel: level, message: message)
+            self?.logToNetwork(entry)
         }
     }
     
@@ -184,7 +210,7 @@ public class Network: Target {
             _ = SwifterSockets.closeSocket(socket!)
             socket = nil
             _networkTarget = nil
-            SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Connection to network target closed")
+            SwifterLog.Loggers.atNotice.log(message: "Connection to network target closed", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
         }
         
         
@@ -196,14 +222,14 @@ public class Network: Target {
             
         case let .error(msg):
             
-            SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)")
+            SwifterLog.Loggers.atNotice.log(message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
             
             
         case let .success(num):
             
             socket = num
             _networkTarget = (ipAddress, port)
-            SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Openend connection to network target. Address = \(ipAddress), port = \(port)")
+            SwifterLog.Loggers.atNotice.log(message: "Openend connection to network target. Address = \(ipAddress), port = \(port)", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
         }
     }
     
@@ -218,13 +244,13 @@ public class Network: Target {
         _ = SwifterSockets.closeSocket(socket)
         socket = nil
         _networkTarget = nil
-        SwifterLog.Loggers.atNotice.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Network target logging stopped")
+        SwifterLog.Loggers.atNotice.log(message: "Network target logging stopped", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
     }
     
     
     // Log information to the network destination (or open cq close that connection)
     
-    internal func logToNetwork(_ time: Date, source: Source, logLevel: Level, message: Any?) {
+    internal func logToNetwork(_ entry: Entry) {
         
         
         // Send the log information to a network destination (if there is one)
@@ -234,7 +260,7 @@ public class Network: Target {
             
             // JSON formatted message
             
-            let logline = LogLine(time: time, level: logLevel, source: source, message: "\(message ?? "")")
+            let logline = LogLine(entry)
             
             
             // Try to transmit it. Use a very short timeout because there can be a lot of messages and the connection should be able to handle a fast succession of messages.
@@ -245,12 +271,12 @@ public class Network: Target {
                 
             case .timeout:
                 
-                SwifterLog.Loggers.atError.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Timeout on connection to network target")
+                SwifterLog.Loggers.atError.log(message: "Timeout on connection to network target", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
                 
                 
             case let .error(message: err):
                 
-                SwifterLog.Loggers.atError.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Error on transfer to network target: \(err)")
+                SwifterLog.Loggers.atError.log(message: "Error on transfer to network target: \(err)", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
                 self.closeNetworkConnection()
                 
                 
@@ -258,7 +284,7 @@ public class Network: Target {
                 
             case .closed:
                 
-                SwifterLog.Loggers.atError.log(from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork, message: "Connection to network target unexpectedly closed")
+                SwifterLog.Loggers.atError.log(message: "Connection to network target unexpectedly closed", from: Source(file: #file, function: #function, line: #line), to: SwifterLog.allTargetsExceptNetwork)
                 self.closeNetworkConnection()
             }
         }

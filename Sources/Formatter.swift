@@ -69,12 +69,12 @@ public protocol Formatter {
     
     /// Creates a single string from the input data.
     
-    func string(level: Level, source: Source, message: Any?, timestamp: Date) -> String
+    func string(_ entry: Entry) -> String
     
     
     /// Create the log entry information from a string.
     
-    func parse(_ string: String) -> (Date, Level, Source, String?)?
+    func parse(_ string: String) -> Entry?
 }
 
 
@@ -94,24 +94,24 @@ public struct SfFormatter: Formatter {
     
     /// Creates a single string from the log entry information.
 
-    public func string(level: Level, source: Source, message: Any?, timestamp: Date) -> String {
+    public func string(_ entry: Entry) -> String {
         
-        let levelStr = level.description
+        let levelStr = entry.level.description
         
-        let idStr = source.id == nil ? "" : String(format: "%08x", source.id!)
+        let idStr = entry.source.id == nil ? "" : String(format: "%08x", entry.source.id!)
         
-        let fileStr = source.file ?? ""
+        let fileStr = entry.source.file ?? ""
         
-        let typeStr = source.type ?? ""
+        let typeStr = entry.source.type ?? ""
         
-        let functionStr = source.function ?? ""
+        let functionStr = entry.source.function ?? ""
         
-        let lineStr = source.line?.description ?? ""
+        let lineStr = entry.source.line?.description ?? ""
         
-        let timeStr = logTimeFormatter.string(from: timestamp)
+        let timeStr = logTimeFormatter.string(from: entry.timestamp)
         
         let str: String
-        if let m = message {
+        if let m = entry.message {
             str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr), \(m)"
         } else {
             str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr)"
@@ -124,7 +124,7 @@ public struct SfFormatter: Formatter {
     
     /// Create the log entry information from a string
     
-    public func parse(_ string: String) -> (Date, Level, Source, String?)? {
+    public func parse(_ string: String) -> Entry? {
 
         let strs = string.components(separatedBy: ", ")
         guard strs.count >= 3 else { return nil }
@@ -177,7 +177,7 @@ public struct SfFormatter: Formatter {
         
         let source = Source(id: id, file: file, type: type, function: function, line: line)
         
-        return (time, level, source, message)
+        return Entry(message: message, level: level, source: source, timestamp: time)
     }
     
     

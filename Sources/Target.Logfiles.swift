@@ -1,29 +1,92 @@
+// =====================================================================================================================
 //
-//  Target.File.swift
-//  SwifterLog
+//  File:       Target.File.swift
+//  Project:    SwifterLog
 //
-//  Created by Marinus van der Lugt on 30/07/2017.
+//  Version:    2.0.0
 //
+//  Author:     Marinus van der Lugt
+//  Company:    http://balancingrock.nl
+//  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
+//  Blog:       http://swiftrien.blogspot.com
+//  Git:        https://github.com/Balancingrock/SwifterLog
 //
+//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//
+//  License:    Use or redistribute this code any way you like with the following two provision:
+//
+//  1) You ACCEPT this source code AS IS without any guarantees that it will work as intended. Any liability from its
+//  use is YOURS.
+//
+//  2) You WILL NOT seek damages from the author or balancingrock.nl.
+//
+//  I also ask you to please leave this header with the source code.
+//
+//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
+//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//
+//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
+//
+//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
+//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
+//
+//  If you like to pay in another way, please contact me at rien@balancingrock.nl
+//
+//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
+//
+//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
+//  For commercial use the suggested price is the price of 1 good meal, say $20.
+//
+//  You are however encouraged to pay more ;-)
+//
+//  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
+//
+// =====================================================================================================================
+//
+// Purpose:
+//
+// This writes the log entries to a log directory.
+// The files have an associated maximum size. Once the maximum size has been exceeded a new file will be created.
+// If more than a maximum number of files have been created, the oldest file will be removed once a new file is created.
+//
+// =====================================================================================================================
+//
+// History:
+// 2.0.0 -  Completely rewritten from 1.0.0
+//
+// =====================================================================================================================
 
 import Foundation
 
 public class Logfiles: Target {
     
+    
+    // The queue that decouples the request for entries from the actual writing to the filesystem.
+    
+    private var queue: DispatchQueue = DispatchQueue(label: "SwifterLog.Target.Logfiles", qos: .background, attributes: DispatchQueue.Attributes(), autoreleaseFrequency: .inherit, target: nil)
+
+    
     public override func write(_ message: String) {
         
-        if let file = logfile {
+        queue.async() {
+                
+            [weak self] in
+            guard let `self` = self else { return }
+                
+            if let file = self.logfile {
+
+                _ = file.seekToEndOfFile()
+                if let data = (message + "\r\n").data(using: String.Encoding.utf8, allowLossyConversion: true) {
+                    file.write(data)
+                    file.synchronizeFile()
+                }
             
-            _ = file.seekToEndOfFile()
-            if let data = (message + "\r\n").data(using: String.Encoding.utf8, allowLossyConversion: true) {
-                file.write(data)
-                file.synchronizeFile()
+            
+                // Do some additional stuff like creating a new file if the current one gets too large and cleaning up of existing logfiles if there are too many
+            
+                self.logfileServices()
             }
-            
-            
-            // Do some additional stuff like creating a new file if the current one gets too large and cleaning up of existing logfiles if there are too many
-            
-            self.logfileServices()
         }
     }
 

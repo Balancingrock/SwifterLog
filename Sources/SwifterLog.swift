@@ -64,9 +64,6 @@
 import Foundation
 
 
-internal var sfQueue = DispatchQueue(label: "SwifterLog", qos: .default, attributes: DispatchQueue.Attributes(), autoreleaseFrequency: .inherit, target: nil)
-
-
 public final class SwifterLog {
 
 
@@ -174,8 +171,8 @@ public final class SwifterLog {
         internal static let atCritical = Loggers(Level.critical)
         internal static let atAlert = Loggers(Level.alert)
         internal static let atEmergency = Loggers(Level.emergency)
-        public func log(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-            theLogger.atLevel(level, from: source, to: targets, message: message)
+        public func log(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+            theLogger.atLevel(level, message: message, from: source, to: targets)
         }
     }
 
@@ -343,16 +340,16 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atLevel(_ level: Level, from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
+    public func atLevel(_ level: Level, message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         switch level {
-        case .debug: Loggers.atDebug.log(from: source, to: targets, message: message)
-        case .info: Loggers.atInfo.log(from: source, to: targets, message: message)
-        case .notice: Loggers.atNotice.log(from: source, to: targets, message: message)
-        case .warning: Loggers.atWarning.log(from: source, to: targets, message: message)
-        case .error: Loggers.atError.log(from: source, to: targets, message: message)
-        case .critical: Loggers.atCritical.log(from: source, to: targets, message: message)
-        case .alert: Loggers.atAlert.log(from: source, to: targets, message: message)
-        case .emergency: Loggers.atEmergency.log(from: source, to: targets, message: message)
+        case .debug: Loggers.atDebug.log(message: message, from: source, to: targets)
+        case .info: Loggers.atInfo.log(message: message, from: source, to: targets)
+        case .notice: Loggers.atNotice.log(message: message, from: source, to: targets)
+        case .warning: Loggers.atWarning.log(message: message, from: source, to: targets)
+        case .error: Loggers.atError.log(message: message, from: source, to: targets)
+        case .critical: Loggers.atCritical.log(message: message, from: source, to: targets)
+        case .alert: Loggers.atAlert.log(message: message, from: source, to: targets)
+        case .emergency: Loggers.atEmergency.log(message: message, from: source, to: targets)
         case .none: break
         }
     }
@@ -365,8 +362,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atDebug(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atDebug.log(from: source, to: targets, message: message)
+    public func atDebug(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atDebug.log(message: message, from: source, to: targets)
     }
     
     
@@ -377,8 +374,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atInfo(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atInfo.log(from: source, to: targets, message: message)
+    public func atInfo(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atInfo.log(message: message, from: source, to: targets)
     }
     
     
@@ -389,8 +386,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atNotice(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atNotice.log(from: source, to: targets, message: message)
+    public func atNotice(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atNotice.log(message: message, from: source, to: targets)
     }
     
     
@@ -401,8 +398,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atWarning(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atWarning.log(from: source, to: targets, message: message)
+    public func atWarning(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atWarning.log(message: message, from: source, to: targets)
     }
     
     
@@ -413,8 +410,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atError(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atError.log(from: source, to: targets, message: message)
+    public func atError(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atError.log(message: message, from: source, to: targets)
     }
 
     /// Logs a message at level Critical.
@@ -424,8 +421,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atCritical(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atCritical.log(from: source, to: targets, message: message)
+    public func atCritical(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atCritical.log(message: message, from: source, to: targets)
     }
     
     
@@ -436,8 +433,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atAlert(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atAlert.log(from: source, to: targets, message: message)
+    public func atAlert(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atAlert.log(message: message, from: source, to: targets)
     }
     
     
@@ -448,8 +445,8 @@ public final class SwifterLog {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atEmergency(from source: Source, to targets: Array<Target> = allTargets, message: Any? = nil) {
-        Loggers.atEmergency.log(from: source, to: targets, message: message)
+    public func atEmergency(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        Loggers.atEmergency.log(message: message, from: source, to: targets)
     }
     
     
@@ -466,7 +463,7 @@ public final class SwifterLog {
                 if alsThreshold.intValue >= Level.debug.value && alsThreshold.intValue <= Level.none.value {
                     SwifterLog.asl.threshold = Level.factory(alsThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
+                    SwifterLog.asl.log(message: "Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -474,7 +471,7 @@ public final class SwifterLog {
                 if stdoutThreshold.intValue >= Level.debug.value && stdoutThreshold.intValue <= Level.none.value {
                     stdoutPrintAtAndAboveLevel = Level.factory(stdoutThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
+                    SwifterLog.asl.log(message: "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -482,7 +479,7 @@ public final class SwifterLog {
                 if logfileThreshold.intValue >= Level.debug.value && logfileThreshold.intValue <= Level.none.value {
                     fileRecordAtAndAboveLevel = Level.factory(logfileThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
+                    SwifterLog.asl.log(message: "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -490,7 +487,7 @@ public final class SwifterLog {
                 if networkThreshold.intValue >= Level.debug.value && networkThreshold.intValue <= Level.none.value {
                     networkTransmitAtAndAboveLevel = Level.factory(networkThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
+                    SwifterLog.asl.log(message: "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -498,7 +495,7 @@ public final class SwifterLog {
                 if callbackThreshold.intValue >= Level.debug.value && callbackThreshold.intValue <= Level.none.value {
                     callbackAtAndAboveLevel = Level.factory(callbackThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)")
+                    SwifterLog.asl.log(message: "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -506,7 +503,7 @@ public final class SwifterLog {
                 if logfileMaxSize.intValue >= 10 * 1024 && logfileMaxSize.intValue <= 100 * 1024 * 1024 {
                     SwifterLog.logfiles.maxSizeInBytes = UInt64(logfileMaxSize.intValue)
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)")
+                    SwifterLog.asl.log(message: "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -514,7 +511,7 @@ public final class SwifterLog {
                 if logfileNofFiles.intValue >= 2 && logfileNofFiles.intValue <= 1000 {
                     SwifterLog.logfiles.maxNumberOfFiles = logfileNofFiles.intValue
                 } else {
-                    SwifterLog.asl.log(Level.error, Source(), "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)")
+                    SwifterLog.asl.log(message: "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             

@@ -1,6 +1,6 @@
 // =====================================================================================================================
 //
-//  File:       Target.Asl.swift
+//  File:       Entry.swift
 //  Project:    SwifterLog
 //
 //  Version:    2.0.0
@@ -46,51 +46,39 @@
 //
 // Purpose:
 //
-// Interface to write log entries to the ASL.
+/// This type is used to represent the data to be logged. It is usually created by internal functions of SwifterLog.
 //
 // =====================================================================================================================
 //
 // History:
-// 2.0.0 -  Completely rewritten from 1.0.0
+// 2.0.0 -  Initial release.
 //
 // =====================================================================================================================
 
 import Foundation
-import CAsl
 
 
-/// An interface to write log entries to the ASL.
+/// This type is used to represent the data to be logged. It is usually created by internal functions of SwifterLog.
 
-public class Asl: Target {
-
+public struct Entry {
     
-    /// The only instance of ASL created
     
-    public static var singleton: Asl = { Asl() }()
-
+    /// The message that accompanies the log entry. If the message (object) is a class and does not implement `CustomStringConvertible` it is recommended to extend the class with `ReflectedStringConvertible`.
     
-    /// This target can only be a singleton
+    public let message: Any?
     
-    private override init() {}
-
     
-    // Setup the ASL logging facility
+    /// The logging level at which this entry should be created.
     
-    private var __once: () = { _ = asl_add_log_file(nil, STDERR_FILENO) }()
-
+    public let level: Level
     
-    /// Record one line of text (conditionally)
     
-    public override func process(_ entry: Entry) {
-        
-        
-        // Create the line with loginformation
-        
-        let str = (formatter ?? SwifterLog.formatter).string(entry)
-        
-        
-        // Create the entry in the ASL
-        
-        asl_bridge_log_message(entry.level.aslLevel, str)
-    }
+    /// The source that created this entry.
+    
+    public let source: Source
+    
+    
+    /// The timestamp at which this entry was made.
+    
+    public let timestamp: Date
 }
