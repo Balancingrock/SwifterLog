@@ -145,7 +145,7 @@ public class Target {
         
         // Create the line with loginformation
         
-        let loginfo = (formatter ?? SwifterLog.formatter).string(entry)
+        let loginfo = (formatter ?? Logger.formatter).string(entry)
         
         
         // Write the log info to the destination

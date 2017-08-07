@@ -86,7 +86,7 @@ public class Asl: Target {
         
         // Create the line with loginformation
         
-        let str = (formatter ?? SwifterLog.formatter).string(entry)
+        let str = (formatter ?? Logger.formatter).string(entry)
         
         
         // Create the entry in the ASL

@@ -64,7 +64,7 @@
 import Foundation
 
 
-public final class SwifterLog {
+public final class Logger {
 
 
     /// This formatter is used to create the string for the log info.
@@ -155,24 +155,24 @@ public final class SwifterLog {
     ///
     /// - Note: This singleton is also used by the high-performance loggers.
 
-    static public let theLogger = SwifterLog()
+    static public let singleton = Logger()
 
 
     /// The base class for the high performance loggers
 
-    public final class Loggers {
+    public final class OptionalLogger {
         private let level: Level
         private init(_ level: Level) { self.level = level }
-        internal static let atDebug = Loggers(Level.debug)
-        internal static let atInfo = Loggers(Level.info)
-        internal static let atNotice = Loggers(Level.notice)
-        internal static let atWarning = Loggers(Level.warning)
-        internal static let atError = Loggers(Level.error)
-        internal static let atCritical = Loggers(Level.critical)
-        internal static let atAlert = Loggers(Level.alert)
-        internal static let atEmergency = Loggers(Level.emergency)
+        internal static let atDebug = OptionalLogger(Level.debug)
+        internal static let atInfo = OptionalLogger(Level.info)
+        internal static let atNotice = OptionalLogger(Level.notice)
+        internal static let atWarning = OptionalLogger(Level.warning)
+        internal static let atError = OptionalLogger(Level.error)
+        internal static let atCritical = OptionalLogger(Level.critical)
+        internal static let atAlert = OptionalLogger(Level.alert)
+        internal static let atEmergency = OptionalLogger(Level.emergency)
         public func log(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-            theLogger.atLevel(level, message: message, from: source, to: targets)
+            singleton.atLevel(level, message: message, from: source, to: targets)
         }
     }
 
@@ -181,80 +181,80 @@ public final class SwifterLog {
     ///
     /// This interface has performance advantages when the debug level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atDebug?.log(...)
 
-    static public var atDebug: Loggers?
+    static public var atDebug: OptionalLogger?
 
 
     /// Conveniece interface to the level info.
     ///
     /// This interface has performance advantages when the info level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atInfo?.log(...)
 
-    static public var atInfo: Loggers?
+    static public var atInfo: OptionalLogger?
 
 
     /// Conveniece interface to the level notice.
     ///
     /// This interface has performance advantages when the notice level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atNotice?.log(...)
 
-    static public var atNotice: Loggers?
+    static public var atNotice: OptionalLogger?
 
 
     /// Conveniece interface to the level warning.
     ///
     /// This interface has performance advantages when the warning level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atWarning?.log(...)
 
-    static public var atWarning: Loggers?
+    static public var atWarning: OptionalLogger?
 
 
     /// Conveniece interface to the level error.
     ///
     /// This interface has performance advantages when the error level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atError?.log(...)
 
-    static public var atError: Loggers?
+    static public var atError: OptionalLogger?
 
 
     /// Conveniece interface to the level critical.
     ///
     /// This interface has performance advantages when the notice level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atCritical?.log(...)
 
-    static public var atCritical: Loggers?
+    static public var atCritical: OptionalLogger?
 
 
     /// Conveniece interface to the level alert.
     ///
     /// This interface has performance advantages when the warning level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atAlert?.log(...)
 
-    static public var atAlert: Loggers?
+    static public var atAlert: OptionalLogger?
 
 
     /// Conveniece interface to the level emergency.
     ///
     /// This interface has performance advantages when the error level is disabled, as it will not evaluate the arguments before the logging call is made. However it must always be called using optional chaining: atEmergency?.log(...)
 
-    static public var atEmergency: Loggers?
+    static public var atEmergency: OptionalLogger?
     
     
     /// Synchronize the optional loggers availability with the level of self.
         
     fileprivate func setLoggersFor(_ level: Level) {
         
-        SwifterLog.atDebug = nil
-        SwifterLog.atInfo = nil
-        SwifterLog.atNotice = nil
-        SwifterLog.atWarning = nil
-        SwifterLog.atError = nil
-        SwifterLog.atCritical = nil
-        SwifterLog.atAlert = nil
-        SwifterLog.atEmergency = nil
+        Logger.atDebug = nil
+        Logger.atInfo = nil
+        Logger.atNotice = nil
+        Logger.atWarning = nil
+        Logger.atError = nil
+        Logger.atCritical = nil
+        Logger.atAlert = nil
+        Logger.atEmergency = nil
 
         switch level {
-        case .debug: SwifterLog.atDebug = Loggers.atDebug; fallthrough
-        case .info: SwifterLog.atInfo = Loggers.atInfo; fallthrough
-        case .notice: SwifterLog.atNotice = Loggers.atNotice; fallthrough
-        case .warning: SwifterLog.atWarning = Loggers.atWarning; fallthrough
-        case .error: SwifterLog.atError = Loggers.atError; fallthrough
-        case .critical: SwifterLog.atCritical = Loggers.atCritical; fallthrough
-        case .alert: SwifterLog.atAlert = Loggers.atAlert; fallthrough
-        case .emergency: SwifterLog.atEmergency = Loggers.atEmergency; fallthrough
+        case .debug: Logger.atDebug = OptionalLogger.atDebug; fallthrough
+        case .info: Logger.atInfo = OptionalLogger.atInfo; fallthrough
+        case .notice: Logger.atNotice = OptionalLogger.atNotice; fallthrough
+        case .warning: Logger.atWarning = OptionalLogger.atWarning; fallthrough
+        case .error: Logger.atError = OptionalLogger.atError; fallthrough
+        case .critical: Logger.atCritical = OptionalLogger.atCritical; fallthrough
+        case .alert: Logger.atAlert = OptionalLogger.atAlert; fallthrough
+        case .emergency: Logger.atEmergency = OptionalLogger.atEmergency; fallthrough
         case .none: break
         }
     }
@@ -266,11 +266,11 @@ public final class SwifterLog {
     
     public var stdoutPrintAtAndAboveLevel: Level {
         set {
-            SwifterLog.stdout.threshold = newValue
+            Logger.stdout.threshold = newValue
             self.setOverallThreshold()
         }
         get {
-            return SwifterLog.stdout.threshold
+            return Logger.stdout.threshold
         }
     }
     
@@ -279,11 +279,11 @@ public final class SwifterLog {
     
     public var fileRecordAtAndAboveLevel: Level  {
         set {
-            SwifterLog.logfiles.threshold = newValue
+            Logger.logfiles.threshold = newValue
             self.setOverallThreshold()
         }
         get {
-            return SwifterLog.logfiles.threshold
+            return Logger.logfiles.threshold
         }
     }
     
@@ -294,11 +294,11 @@ public final class SwifterLog {
     
     public var aslFacilityRecordAtAndAboveLevel: Level {
         set {
-            SwifterLog.asl.threshold = newValue
+            Logger.asl.threshold = newValue
             self.setOverallThreshold()
         }
         get {
-            return SwifterLog.asl.threshold
+            return Logger.asl.threshold
         }
     }
     
@@ -307,11 +307,11 @@ public final class SwifterLog {
     
     public var networkTransmitAtAndAboveLevel: Level {
         set {
-            SwifterLog.network.threshold = newValue
+            Logger.network.threshold = newValue
             self.setOverallThreshold()
         }
         get {
-            return SwifterLog.network.threshold
+            return Logger.network.threshold
         }
     }
     
@@ -320,11 +320,11 @@ public final class SwifterLog {
     
     public var callbackAtAndAboveLevel: Level {
         set {
-            SwifterLog.callback.threshold = newValue
+            Logger.callback.threshold = newValue
             self.setOverallThreshold()
         }
         get {
-            return SwifterLog.callback.threshold
+            return Logger.callback.threshold
         }
     }
     
@@ -342,14 +342,14 @@ public final class SwifterLog {
     
     public func atLevel(_ level: Level, message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         switch level {
-        case .debug: Loggers.atDebug.log(message: message, from: source, to: targets)
-        case .info: Loggers.atInfo.log(message: message, from: source, to: targets)
-        case .notice: Loggers.atNotice.log(message: message, from: source, to: targets)
-        case .warning: Loggers.atWarning.log(message: message, from: source, to: targets)
-        case .error: Loggers.atError.log(message: message, from: source, to: targets)
-        case .critical: Loggers.atCritical.log(message: message, from: source, to: targets)
-        case .alert: Loggers.atAlert.log(message: message, from: source, to: targets)
-        case .emergency: Loggers.atEmergency.log(message: message, from: source, to: targets)
+        case .debug: OptionalLogger.atDebug.log(message: message, from: source, to: targets)
+        case .info: OptionalLogger.atInfo.log(message: message, from: source, to: targets)
+        case .notice: OptionalLogger.atNotice.log(message: message, from: source, to: targets)
+        case .warning: OptionalLogger.atWarning.log(message: message, from: source, to: targets)
+        case .error: OptionalLogger.atError.log(message: message, from: source, to: targets)
+        case .critical: OptionalLogger.atCritical.log(message: message, from: source, to: targets)
+        case .alert: OptionalLogger.atAlert.log(message: message, from: source, to: targets)
+        case .emergency: OptionalLogger.atEmergency.log(message: message, from: source, to: targets)
         case .none: break
         }
     }
@@ -363,7 +363,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atDebug(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atDebug.log(message: message, from: source, to: targets)
+        OptionalLogger.atDebug.log(message: message, from: source, to: targets)
     }
     
     
@@ -375,7 +375,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atInfo(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atInfo.log(message: message, from: source, to: targets)
+        OptionalLogger.atInfo.log(message: message, from: source, to: targets)
     }
     
     
@@ -387,7 +387,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atNotice(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atNotice.log(message: message, from: source, to: targets)
+        OptionalLogger.atNotice.log(message: message, from: source, to: targets)
     }
     
     
@@ -399,7 +399,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atWarning(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atWarning.log(message: message, from: source, to: targets)
+        OptionalLogger.atWarning.log(message: message, from: source, to: targets)
     }
     
     
@@ -411,7 +411,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atError(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atError.log(message: message, from: source, to: targets)
+        OptionalLogger.atError.log(message: message, from: source, to: targets)
     }
 
     /// Logs a message at level Critical.
@@ -422,7 +422,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atCritical(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atCritical.log(message: message, from: source, to: targets)
+        OptionalLogger.atCritical.log(message: message, from: source, to: targets)
     }
     
     
@@ -434,7 +434,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atAlert(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atAlert.log(message: message, from: source, to: targets)
+        OptionalLogger.atAlert.log(message: message, from: source, to: targets)
     }
     
     
@@ -446,7 +446,7 @@ public final class SwifterLog {
     ///   - message: The data to be recorded (Default = nil).
     
     public func atEmergency(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        Loggers.atEmergency.log(message: message, from: source, to: targets)
+        OptionalLogger.atEmergency.log(message: message, from: source, to: targets)
     }
     
     
@@ -461,9 +461,9 @@ public final class SwifterLog {
             
             if let alsThreshold = swifterLogOptions["aslFacilityRecordAtAndAboveLevel"] as? NSNumber {
                 if alsThreshold.intValue >= Level.debug.value && alsThreshold.intValue <= Level.none.value {
-                    SwifterLog.asl.threshold = Level.factory(alsThreshold.intValue)!
+                    Logger.asl.threshold = Level.factory(alsThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -471,7 +471,7 @@ public final class SwifterLog {
                 if stdoutThreshold.intValue >= Level.debug.value && stdoutThreshold.intValue <= Level.none.value {
                     stdoutPrintAtAndAboveLevel = Level.factory(stdoutThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -479,7 +479,7 @@ public final class SwifterLog {
                 if logfileThreshold.intValue >= Level.debug.value && logfileThreshold.intValue <= Level.none.value {
                     fileRecordAtAndAboveLevel = Level.factory(logfileThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -487,7 +487,7 @@ public final class SwifterLog {
                 if networkThreshold.intValue >= Level.debug.value && networkThreshold.intValue <= Level.none.value {
                     networkTransmitAtAndAboveLevel = Level.factory(networkThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -495,35 +495,35 @@ public final class SwifterLog {
                 if callbackThreshold.intValue >= Level.debug.value && callbackThreshold.intValue <= Level.none.value {
                     callbackAtAndAboveLevel = Level.factory(callbackThreshold.intValue)!
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
             if let logfileMaxSize = swifterLogOptions["logfileMaxSizeInBytes"] as? NSNumber {
                 if logfileMaxSize.intValue >= 10 * 1024 && logfileMaxSize.intValue <= 100 * 1024 * 1024 {
-                    SwifterLog.logfiles.maxSizeInBytes = UInt64(logfileMaxSize.intValue)
+                    Logger.logfiles.maxSizeInBytes = UInt64(logfileMaxSize.intValue)
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
             if let logfileNofFiles = swifterLogOptions["logfileMaxNumberOfFiles"] as? NSNumber {
                 if logfileNofFiles.intValue >= 2 && logfileNofFiles.intValue <= 1000 {
-                    SwifterLog.logfiles.maxNumberOfFiles = logfileNofFiles.intValue
+                    Logger.logfiles.maxNumberOfFiles = logfileNofFiles.intValue
                 } else {
-                    SwifterLog.asl.log(message: "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.asl.log(message: "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
             if let logfileDirPath = swifterLogOptions["logfileDirectoryPath"] as? String {
-                SwifterLog.logfiles.directoryPath = logfileDirPath
+                Logger.logfiles.directoryPath = logfileDirPath
             }
             
             #if SWIFTERLOG_DISABLE_NETWORK_TARGET
             #else
                 if let networkIpAddress = swifterLogOptions["networkIpAddress"] as? String {
                     if let networkPortNumber = swifterLogOptions["networkPortNumber"] as? String {
-                        SwifterLog.network.connectToNetworkTarget(Network.NetworkTarget(networkIpAddress, networkPortNumber))
+                        Logger.network.connectToNetworkTarget(Network.NetworkTarget(networkIpAddress, networkPortNumber))
                     }
                 }
             #endif
