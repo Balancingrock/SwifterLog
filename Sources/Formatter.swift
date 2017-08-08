@@ -100,7 +100,7 @@ public struct SfFormatter: Formatter {
         
         let idStr = entry.source.id == nil ? "" : String(format: "%08x", entry.source.id!)
         
-        let fileStr = entry.source.file ?? ""
+        let fileStr = ((entry.source.file as NSString?)?.lastPathComponent as NSString?)?.deletingPathExtension ?? ""
         
         let typeStr = entry.source.type ?? ""
         
