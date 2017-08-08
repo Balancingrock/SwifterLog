@@ -100,11 +100,11 @@ public struct SfFormatter: Formatter {
         
         let idStr = entry.source.id == nil ? "" : String(format: "%08x", entry.source.id!)
         
-        let fileStr = ((entry.source.file as NSString?)?.lastPathComponent as NSString?)?.deletingPathExtension ?? ""
+        let fileStr = (((entry.source.file as NSString?)?.lastPathComponent as NSString?)?.deletingPathExtension ?? "").replacingOccurrences(of: ".", with: "_")
         
-        let typeStr = entry.source.type ?? ""
+        let typeStr = (entry.source.type ?? "").replacingOccurrences(of: ".", with: "_")
         
-        let functionStr = entry.source.function ?? ""
+        let functionStr = (entry.source.function ?? "").replacingOccurrences(of: ".", with: "_")
         
         let lineStr = entry.source.line?.description ?? ""
         
