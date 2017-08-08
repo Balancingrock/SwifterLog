@@ -162,15 +162,15 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     
     public static func factory(_ value: Int) -> Level? {
         switch value {
-        case 0: return .debug
-        case 1: return .info
-        case 2: return .notice
-        case 3: return .warning
-        case 4: return .error
-        case 5: return .critical
-        case 6: return .alert
-        case 7: return .emergency
-        case 8: return .none
+        case 0: return Level.debug
+        case 1: return Level.info
+        case 2: return Level.notice
+        case 3: return Level.warning
+        case 4: return Level.error
+        case 5: return Level.critical
+        case 6: return Level.alert
+        case 7: return Level.emergency
+        case 8: return Level.none
         default: return nil
         }
     }
@@ -184,15 +184,15 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
 
     public static func factory(_ string: String) -> Level? {
         switch string {
-        case "DEBUG":       return .debug
-        case "INFO":        return .info
-        case "NOTICE":      return .notice
-        case "WARNING":     return .warning
-        case "ERROR":       return .error
-        case "CRITICAL":    return .critical
-        case "ALERT":       return .alert
-        case "EMERGENCY":   return .emergency
-        case "NONE":        return .none
+        case "DEBUG":       return Level.debug
+        case "INFO":        return Level.info
+        case "NOTICE":      return Level.notice
+        case "WARNING":     return Level.warning
+        case "ERROR":       return Level.error
+        case "CRITICAL":    return Level.critical
+        case "ALERT":       return Level.alert
+        case "EMERGENCY":   return Level.emergency
+        case "NONE":        return Level.none
         default:            return nil
         }
     }
