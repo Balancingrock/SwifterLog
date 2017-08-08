@@ -172,7 +172,10 @@ public final class Logger {
         internal static let atAlert = OptionalLogger(Level.alert)
         internal static let atEmergency = OptionalLogger(Level.emergency)
         public func log(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-            singleton.atLevel(level, message: message, from: source, to: targets)
+            let now = Date()
+            for target in targets {
+                target.log(message: message, at: level, from: source, with: now)
+            }
         }
     }
 
