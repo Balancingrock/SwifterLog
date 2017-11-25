@@ -55,7 +55,11 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 	- Allow custom targets
 	- Allow custom formatting
 
-#### v1.0.0 (Current)
+#### v1.0.1 (Current)
+
+- Updated dependecies
+
+#### v1.0.0
 
 - No changes but this readme file since the previous version.
 

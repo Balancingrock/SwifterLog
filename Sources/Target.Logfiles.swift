@@ -3,7 +3,7 @@
 //  File:       Target.File.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    1.1.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -53,7 +53,7 @@
 // =====================================================================================================================
 //
 // History:
-// 2.0.0 -  Completely rewritten from 1.0.0
+// 1.1.0 -  Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 

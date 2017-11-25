@@ -3,7 +3,7 @@
 //  File:       Level.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    1.1.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -51,7 +51,7 @@
 // =====================================================================================================================
 //
 // History:
-// 2.0.0 -  Initial release, extracted and enhanced from SwifterLog.swift
+// 1.1.0 -  Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
