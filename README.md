@@ -55,9 +55,13 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 	- Allow custom targets
 	- Allow custom formatting
 
-#### v1.0.1 (Current)
+#### v1.0.2 (Current)
 
 - Updated dependecies
+
+#### v1.0.1
+
+- Updated dependecies (VJson & SwifterSockets)
 
 #### v1.0.0
 
