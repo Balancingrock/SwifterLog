@@ -3,7 +3,7 @@
 //  File:       Source.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.1.2
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -51,7 +51,9 @@
 // =====================================================================================================================
 //
 // History:
-// 1.1.0 -  Initial release in preperation for v2.0.0
+//
+// 1.1.2 - Migration to Swift 4, minor changes.
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -78,7 +80,7 @@ public struct Source: Hashable {
         self.type = type
         self.function = function
         self.line = line
-        let arr: [Int] = [id?.hashValue, file?.hashValue, type?.hashValue, function?.hashValue, line?.hashValue].flatMap { $0 }
+        let arr: [Int] = [id?.hashValue, file?.hashValue, type?.hashValue, function?.hashValue, line?.hashValue].compactMap { $0 }
         self.hashValue = arr.reduce(5381) { return ($0 << 5) &+ $0 &+ $1 }
     }
     

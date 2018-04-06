@@ -55,7 +55,12 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 	- Allow custom targets
 	- Allow custom formatting
 
-#### v1.1.1 (Current)
+#### v1.1.2 (Current)
+
+- Migration to Swift 4, minor changes.
+- Updated user manual
+
+#### v1.1.1
 
 - Updated dependecies
 

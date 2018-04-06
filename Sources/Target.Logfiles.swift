@@ -3,7 +3,7 @@
 //  File:       Target.File.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.1.2
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -53,6 +53,8 @@
 // =====================================================================================================================
 //
 // History:
+//
+// 1.1.2 - Migration to Swift 4, minor changes.
 // 1.1.0 -  Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
@@ -189,7 +191,7 @@ public class Logfiles: Target {
                 
                 let logfileUrl = URL(fileURLWithPath: logdir).appendingPathComponent(filename)
                 
-                if FileManager.default.createFile(atPath: logfileUrl.path, contents: nil, attributes: [FileAttributeKey.posixPermissions.rawValue : NSNumber(value: 0o640)]) {
+                if FileManager.default.createFile(atPath: logfileUrl.path, contents: nil, attributes: [FileAttributeKey(rawValue: FileAttributeKey.posixPermissions.rawValue) : NSNumber(value: 0o640)]) {
                     
                     return FileHandle(forUpdatingAtPath: logfileUrl.path)
                     

@@ -2,9 +2,9 @@
 
 ## Jump start
 
-The framework defines a singleton called `theLogger`. This variable can be use this variable to access all logging functions. For ease of use, it is recommened to create a global variable from this:
+The framework defines a singleton called `singleton`. This variable can be use this variable to access all logging functions. For ease of use, it is recommened to create a global variable from this:
 
-    let log = SwifterLog.theLogger
+    let log = SwifterLog.singleton
 
 Before using the logging functions, first setup the log level thresholds for the targets. In code this is done as follows:
 
@@ -18,19 +18,10 @@ Of course the default is `.none`, thus it is not necessary to assign `.none` to 
 
 After the threshold levels are set, use the log as follows:
 
-    log.atLevelError(id: logId, source: "My source identifier", message: "Error message")
+    log.atError(message: "Informative text or variable", from: Source(id: -1, file: #file, type: "textual", function: #function, line: #line), to: myTargets)
 or
 
-    log.atLevelDebug(id: logId, source: #file.source(#function, #line), message: myVariable)
-
-or alternatively without the id parameter:
-
-    log.atLevelInfo(source: "My source identifier", message: myObject)
-or
-
-    log.atLevelNotice(source: #file.source(#function, #line), message: "Error message")
-
-For best layout in the log, either always use the ID parameter, or never us it.
+    log.atDebug(message: myVariable, from: Source(id: -1, file: #file, type: "myType", function: #function, line:#line))
 
 The ID parameter can be used to differentiate between objects, sockets, threads etc. Set it to -1 if IDs are used but there is no such id present in a specific case.
 
@@ -46,14 +37,14 @@ Consider the following:
 
     import SwifterLog
     typealias Log = SwifterLog
-    let log = Log.theLogger
+    let log = Log.singleton
 
     log.stdoutPrintAtAndAboveLevel = .info
     extension MyGreatVariable: ReflectedStringConvertable {}
     let myGreatVariable = MyGreatVariable()
-    log.atLevelDebug(source: "Here", message: myGreatVariable)
+    log.atDebug(message: myGreatVariable, from: Source(...))
     
-As said before, this works fine. When there is no target with a threshold below `.info` no log information is written. However the call `atLevelDebug` is always made. And hence all parameters must be evaluated and the information must be placed on the stack. That overhead is always incurred. Wether the debug level is used or not.
+As said before, this works fine. When there is no target with a threshold below `.info` no log information is written. However the call `atDebug` is always made. And hence all parameters must be evaluated and the information must be placed on the stack. That overhead is always incurred. Wether the debug level is used or not.
 
 The solution is to avoid the evaluation/preparation when the debug level is not used.
 
@@ -61,7 +52,7 @@ For this purpose there are additional optional (level dependent) loggers availab
 
 The last line of the above example then becomes:
 
-    Log.atDebug?.log(source: "Here", message: myGreatVariable)
+    Log.atDebug?.log(message: myGreatVariable, from: Source(...))
 
 While the readability has suffered slightly, this has the big advantage of not evaluating the parameters of the call if the debug level is not used in any target. Under circumstances this can either give a performance boost to the application, or alternatively, it becomes unneccesary to comment-out all logger call at the debug and info level before shipping.
 
@@ -175,7 +166,7 @@ The information is transmitted as a small JSON record. An example:
     
 All of the data fields are in fact strings.
 
-__Warning__: If a network target is too slow, logging messages will stack up in the logger. Leading to increased use of system resources that could eventually crash the applications.
+__Warning__: If a network target is too slow, logging messages will stack up in the logger. Leading to increased use of system resources that could eventually crash the application.
 
 Be aware of privacy issues when using a network target!
 
@@ -197,7 +188,7 @@ It can be uninstalled by:
 
 Note that from within the callback there should be no logging entries made that include the callback target!
 
-__Warning__: If a callback target is too slow, logging messages will stack up in the logger. Leading to increased use of system resources that could eventually crash the applications.
+__Warning__: If a callback target is too slow, logging messages will stack up in the logger. Leading to increased use of system resources that could eventually crash the application.
 
 ## Levels
 
@@ -352,15 +343,6 @@ Note: networkIpAddress and networkPortNumber must both be present to have any ef
 Caveat: The end user cannot change the plist entries without invalidating the app. Hence plist settings are only usefull for developers.
 
 ## Extra's
-
-### Source
-To make life easier, SwifterLog has an extension on String to create a very readable `source` identifier.
-
-The Swift language has three literals that make sense to use as a `source` identifier: #file, #function and #line.
-
-However the value of these is not very readable if they are simply concatenated. Therefore the String extension "source" can be used to transform the value of these literals into a shorter more readable form:
-
-    log.atLevelNotice(source: #file.source(#function, #line), message: "Error message")
 
 ### ReflectedStringConvertable
 
