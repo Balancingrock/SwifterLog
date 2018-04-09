@@ -2,7 +2,7 @@
 
 ## Jump start
 
-The framework defines a singleton called `singleton`. This variable can be use this variable to access all logging functions. For ease of use, it is recommened to create a global variable from this:
+The framework defines a singleton called `singleton`. This variable can be used to access all logging functions. For ease of use, it is recommened to create a global variable from this:
 
     let log = SwifterLog.singleton
 
@@ -18,16 +18,21 @@ Of course the default is `.none`, thus it is not necessary to assign `.none` to 
 
 After the threshold levels are set, use the log as follows:
 
-    log.atError(message: "Informative text or variable", from: Source(id: -1, file: #file, type: "textual", function: #function, line: #line), to: myTargets)
+    log.atError(
+        message: "Informative text or variable",
+        from: Source(id: -1, file: #file, type: "myType", function: #function, line: #line),
+        to: myTargets)
 or
 
-    log.atDebug(message: myVariable, from: Source(id: -1, file: #file, type: "myType", function: #function, line:#line))
+    log.atDebug(
+        message: myVariable,
+        from: Source(id: -1, file: #file, type: "myType", function: #function, line:#line))
 
-The ID parameter can be used to differentiate between objects, sockets, threads etc. Set it to -1 if IDs are used but there is no such id present in a specific case.
+The ID parameter in Source can be used to differentiate between objects, sockets, threads etc. Set it to -1 if IDs are used but there is no such id present in a specific case.
 
 The source parameter is intended to give a code location from where the log entry was made.
 
-The message parameter is defined as Any. It uses the `description` method to display the information in the item. It is recommended to add the protocol `ReflectedStringConvertible` to objects for an auto generated reflection based description.
+The message parameter is defined as Any. It uses the `description` method to display the information in the item. It is recommended to add the (also provided) protocol `ReflectedStringConvertible` to objects for an auto generated reflection based description.
 
 ## Performance problem & solution
 
@@ -44,7 +49,7 @@ Consider the following:
     let myGreatVariable = MyGreatVariable()
     log.atDebug(message: myGreatVariable, from: Source(...))
     
-As said before, this works fine. When there is no target with a threshold below `.info` no log information is written. However the call `atDebug` is always made. And hence all parameters must be evaluated and the information must be placed on the stack. That overhead is always incurred. Wether the debug level is used or not.
+This works fine. When there is no target with a threshold below `.info` no log information is written. However the call `atDebug` is always made. And hence all parameters must be evaluated and the information must be placed on the stack. That overhead is always incurred. Wether the debug level is used or not.
 
 The solution is to avoid the evaluation/preparation when the debug level is not used.
 

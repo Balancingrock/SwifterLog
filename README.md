@@ -1,5 +1,5 @@
 # SwifterLog
-A single class framework in Swift to create and manage log entries.
+A framework in Swift to create and manage log entries.
 
 SwifterLog is part of the [Swiftfire](http://swiftfire.nl), the HTTP(S) webserver framework.
 
@@ -55,7 +55,15 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 	- Allow custom targets
 	- Allow custom formatting
 
-#### v1.1.2 (Current)
+#### v1.3.0 (Planned)
+
+- Replace ASL with os_log
+
+#### v1.2.0 (Current)
+
+- Migration to SPM 4
+
+#### v1.1.2
 
 - Migration to Swift 4, minor changes.
 - Updated user manual
