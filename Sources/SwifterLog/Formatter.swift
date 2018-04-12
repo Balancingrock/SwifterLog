@@ -3,7 +3,7 @@
 //  File:       Formatter.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -55,6 +55,8 @@
 // =====================================================================================================================
 //
 // History:
+//
+// 1.3.0 - Changed message from Any to CustomStringConvertible
 // 1.1.0 -  Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
@@ -98,21 +100,21 @@ public struct SfFormatter: Formatter {
         
         let levelStr = entry.level.description
         
-        let idStr = entry.source.id == nil ? "" : String(format: "%08x", entry.source.id!)
+        let idStr = String(format: "%08x", entry.source.id)
         
         let fileStr = (((entry.source.file as NSString?)?.lastPathComponent as NSString?)?.deletingPathExtension ?? "").replacingOccurrences(of: ".", with: "_")
         
-        let typeStr = (entry.source.type ?? "").replacingOccurrences(of: ".", with: "_")
+        let typeStr = entry.source.type.replacingOccurrences(of: ".", with: "_")
         
-        let functionStr = (entry.source.function ?? "").replacingOccurrences(of: ".", with: "_")
+        let functionStr = entry.source.function.replacingOccurrences(of: ".", with: "_")
         
-        let lineStr = entry.source.line?.description ?? ""
+        let lineStr = entry.source.line.description
         
         let timeStr = logTimeFormatter.string(from: entry.timestamp)
-        
+
         let str: String
         if let m = entry.message {
-            str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr), \(m)"
+            str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr), \(m.description)"
         } else {
             str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr)"
         }
@@ -131,11 +133,11 @@ public struct SfFormatter: Formatter {
 
         let time: Date
         let level: Level
-        let id: Int?
-        let file: String?
-        let type: String?
-        let function: String?
-        let line: Int?
+        let id: Int
+        let file: String
+        let type: String
+        let function: String
+        let line: Int
         let message: String?
         
         if let date = logTimeFormatter.date(from: strs[0]) {
@@ -156,18 +158,17 @@ public struct SfFormatter: Formatter {
         case "EMERGENCY": level = Level.emergency
         default: level = Level.none
         }
-        if levelId.count == 2 {
-            id = Int(levelId[1])
-        } else {
-            id = nil
-        }
+        
+        guard levelId.count == 2 else { return nil }
+        guard let li = Int(levelId[1]) else { return nil }
+        id = li
         
         let srcStrs = strs[2].components(separatedBy: ".")
         guard srcStrs.count == 4 else { return nil }
         file = srcStrs[0]
         type = srcStrs[1]
         function = srcStrs[2]
-        line = Int(srcStrs[3])
+        line = Int(srcStrs[3]) ?? 0
         
         if strs.count == 4 {
             message = strs[3]

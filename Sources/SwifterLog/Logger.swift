@@ -3,7 +3,7 @@
 //  File:       Public.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -57,7 +57,10 @@
 // =====================================================================================================================
 //
 // History:
-// 1.1.0 -  Initial release in preperation for v2.0.0
+//
+// 1.3.0 - Replaced ASL with OSLog
+//         Added defaults for Source parameters.
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -74,13 +77,13 @@ public final class Logger {
     static public var formatter = SfFormatter()
 
 
-    /// The ASL logger.
+    /// The OS logger.
     ///
-    /// Notice that this is a singleton, it is not possible to have multiple ASL loggers. This is a restriction of the Asl class, not of the ASL itself.
+    /// This output will be sent to the OS logger.
     ///
-    /// - Note: Do not change the threshold of this target directly, instead, change it through the parameter `aslFacilityRecordAtAndAboveLevel` of `theLogger`. Failure to do so will cause the loggers-instances to become desynchronised with the level settings.
+    /// - Note: Do not change the threshold of this target directly, instead, change it through the parameter `osLogRecordAtAndAboveLevel` of `theLogger`. Failure to do so will cause the loggers-instances to become desynchronised with the level settings.
 
-    static public let asl = Asl.singleton
+    static public let osLog = OSLog()
 
 
     /// The default STDOut logger.
@@ -110,17 +113,17 @@ public final class Logger {
 
     /// A set containing all targets
     
-    static public let allTargets: Array<Target> = [stdout, logfiles, asl, callback]
+    static public let allTargets: Array<Target> = [stdout, logfiles, oslog, callback]
 
     
     /// A set containing all targets except the callback
     
-    static public let allTargetsExceptCallback: Array<Target> = [stdout, logfiles, asl]
+    static public let allTargetsExceptCallback: Array<Target> = [stdout, logfiles, oslog]
 
     
     /// A set containing all targets except the ASL
     
-    static public let allTargetsExceptAsl: Array<Target> = [stdout, logfiles, callback]
+    static public let allTargetsExceptOSLog: Array<Target> = [stdout, logfiles, callback]
 
 #else
     
@@ -131,22 +134,22 @@ public final class Logger {
     
     /// A set containing all targets
     
-    static public let allTargets: Array<Target> = [stdout, logfiles, asl, network, callback]
+    static public let allTargets: Array<Target> = [stdout, logfiles, osLog, network, callback]
 
     
     /// A set containing all targets
     
-    static public let allTargetsExceptNetwork: Array<Target> = [stdout, logfiles, asl, callback]
+    static public let allTargetsExceptNetwork: Array<Target> = [stdout, logfiles, osLog, callback]
 
     
     /// A set containing all targets except the callback
     
-    static public let allTargetsExceptCallback: Array<Target> = [stdout, logfiles, asl, network]
+    static public let allTargetsExceptCallback: Array<Target> = [stdout, logfiles, osLog, network]
 
     
-    /// A set containing all targets except the ASL
+    /// A set containing all targets except the OSLog
     
-    static public let allTargetsExceptAsl: Array<Target> = [stdout, logfiles, network, callback]
+    static public let allTargetsExceptOSLog: Array<Target> = [stdout, logfiles, network, callback]
 
 #endif
 
@@ -171,7 +174,14 @@ public final class Logger {
         internal static let atCritical = OptionalLogger(Level.critical)
         internal static let atAlert = OptionalLogger(Level.alert)
         internal static let atEmergency = OptionalLogger(Level.emergency)
-        public func log(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        public func log(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+            let now = Date()
+            for target in targets {
+                target.log(message: message, at: level, from: source, with: now)
+            }
+        }
+        public func log(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+            let source = Source(id: id, file: file, type: type, function: function, line: line)
             let now = Date()
             for target in targets {
                 target.log(message: message, at: level, from: source, with: now)
@@ -291,17 +301,15 @@ public final class Logger {
     }
     
     
-    /// Only messages with a level at or above the level specified in this variable will be recorded by the Apple System Log Facility. Set to "SwifterLog.Level.NONE" to suppress all messages to the ASL(F).
-    ///
-    /// - Note: The ASL log entries can be viewed with the "System Information.app" that is available in the "Applications/Utilities" folder. Also note that the configuration file at "/etc/asl.conf" suppresses all messages at levels DEBUG and INFO by default irrespective of the value of this variable.
+    /// Only messages with a level at or above the level specified in this variable will be recorded by the OS Logger. Set to "SwifterLog.Level.NONE" to suppress all messages.
     
-    public var aslFacilityRecordAtAndAboveLevel: Level {
+    public var osLogFacilityRecordAtAndAboveLevel: Level {
         set {
-            Logger.asl.threshold = newValue
+            Logger.osLog.threshold = newValue
             self.setOverallThreshold()
         }
         get {
-            return Logger.asl.threshold
+            return Logger.osLog.threshold
         }
     }
     
@@ -343,7 +351,7 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atLevel(_ level: Level, message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atLevel(_ level: Level, message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         switch level {
         case .debug: OptionalLogger.atDebug.log(message: message, from: source, to: targets)
         case .info: OptionalLogger.atInfo.log(message: message, from: source, to: targets)
@@ -358,6 +366,25 @@ public final class Logger {
     }
     
     
+    /// Logs a message.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - level: The level at which the log message should be managed.
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+
+    public func atLevel(_ level: Level, message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atLevel(level, message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    }
+    
+    
     /// Logs a message at level Debug.
     ///
     /// - Parameters:
@@ -365,10 +392,28 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atDebug(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atDebug(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atDebug.log(message: message, from: source, to: targets)
     }
     
+    
+    /// Logs a message at the debug level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+
+    public func atDebug(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atDebug(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    }
+
     
     /// Logs a message at level Info.
     ///
@@ -377,8 +422,26 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atInfo(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atInfo(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atInfo.log(message: message, from: source, to: targets)
+    }
+    
+    
+    /// Logs a message at the info level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atInfo(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atInfo(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -389,8 +452,26 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atNotice(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atNotice(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atNotice.log(message: message, from: source, to: targets)
+    }
+    
+    
+    /// Logs a message at the notice level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atNotice(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atNotice(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -401,8 +482,26 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atWarning(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atWarning(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atWarning.log(message: message, from: source, to: targets)
+    }
+    
+    
+    /// Logs a message at the warning level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atWarning(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atWarning(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -413,10 +512,29 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atError(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atError(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atError.log(message: message, from: source, to: targets)
     }
 
+    
+    /// Logs a message at the error level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atError(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atError(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    }
+    
+    
     /// Logs a message at level Critical.
     ///
     /// - Parameters:
@@ -424,8 +542,26 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atCritical(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atCritical(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atCritical.log(message: message, from: source, to: targets)
+    }
+    
+    
+    /// Logs a message at the critical level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atCritical(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atCritical(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -436,8 +572,26 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atAlert(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atAlert(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atAlert.log(message: message, from: source, to: targets)
+    }
+    
+    
+    /// Logs a message at the alert level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atAlert(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atAlert(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -448,8 +602,26 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atEmergency(message: Any? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+    public func atEmergency(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         OptionalLogger.atEmergency.log(message: message, from: source, to: targets)
+    }
+    
+    
+    /// Logs a message at the emergency level.
+    ///
+    /// Convenience wrapper that automatically fills in the source.
+    ///
+    /// - Parameters:
+    ///   - message: An optional message.
+    ///   - id: An identifier that may be used to indicate which object, thread etc made the call. Default is -1 which is taken to mean 'not available'.
+    ///   - type: An identifier that may be used to identify the type in which the call was made. Default is 'noType'.
+    ///   - file: The name of the source code file in which the call is made, should follow the conventions of #file, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - file: The name of the function in which the call is made, should follow the conventions of #function, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
+    ///   - to: The targets to record to (Default = allTargets).
+    
+    public func atEmergency(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atEmergency(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -462,11 +634,11 @@ public final class Logger {
         if  let infoPlist = Bundle.main.infoDictionary,
             let swifterLogOptions = infoPlist["SwifterLog"] as? Dictionary<String, AnyObject> {
             
-            if let alsThreshold = swifterLogOptions["aslFacilityRecordAtAndAboveLevel"] as? NSNumber {
-                if alsThreshold.intValue >= Level.debug.value && alsThreshold.intValue <= Level.none.value {
-                    Logger.asl.threshold = Level.factory(alsThreshold.intValue)!
+            if let osLogThreshold = swifterLogOptions["osLogFacilityRecordAtAndAboveLevel"] as? NSNumber {
+                if osLogThreshold.intValue >= Level.debug.value && osLogThreshold.intValue <= Level.none.value {
+                    Logger.osLog.threshold = Level.factory(osLogThreshold.intValue)!
                 } else {
-                    Logger.asl.log(message: "Info.plist value for aslFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for osLogFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -474,7 +646,7 @@ public final class Logger {
                 if stdoutThreshold.intValue >= Level.debug.value && stdoutThreshold.intValue <= Level.none.value {
                     stdoutPrintAtAndAboveLevel = Level.factory(stdoutThreshold.intValue)!
                 } else {
-                    Logger.asl.log(message: "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -482,7 +654,7 @@ public final class Logger {
                 if logfileThreshold.intValue >= Level.debug.value && logfileThreshold.intValue <= Level.none.value {
                     fileRecordAtAndAboveLevel = Level.factory(logfileThreshold.intValue)!
                 } else {
-                    Logger.asl.log(message: "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -490,7 +662,7 @@ public final class Logger {
                 if networkThreshold.intValue >= Level.debug.value && networkThreshold.intValue <= Level.none.value {
                     networkTransmitAtAndAboveLevel = Level.factory(networkThreshold.intValue)!
                 } else {
-                    Logger.asl.log(message: "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -498,7 +670,7 @@ public final class Logger {
                 if callbackThreshold.intValue >= Level.debug.value && callbackThreshold.intValue <= Level.none.value {
                     callbackAtAndAboveLevel = Level.factory(callbackThreshold.intValue)!
                 } else {
-                    Logger.asl.log(message: "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -506,7 +678,7 @@ public final class Logger {
                 if logfileMaxSize.intValue >= 10 * 1024 && logfileMaxSize.intValue <= 100 * 1024 * 1024 {
                     Logger.logfiles.maxSizeInBytes = UInt64(logfileMaxSize.intValue)
                 } else {
-                    Logger.asl.log(message: "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -514,7 +686,7 @@ public final class Logger {
                 if logfileNofFiles.intValue >= 2 && logfileNofFiles.intValue <= 1000 {
                     Logger.logfiles.maxNumberOfFiles = logfileNofFiles.intValue
                 } else {
-                    Logger.asl.log(message: "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log(message: "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -543,7 +715,7 @@ public final class Logger {
     
     private func setOverallThreshold() {
         var newThreshold = stdoutPrintAtAndAboveLevel
-        if newThreshold > aslFacilityRecordAtAndAboveLevel { newThreshold = aslFacilityRecordAtAndAboveLevel }
+        if newThreshold > osLogFacilityRecordAtAndAboveLevel { newThreshold = osLogFacilityRecordAtAndAboveLevel }
         if newThreshold > fileRecordAtAndAboveLevel { newThreshold = fileRecordAtAndAboveLevel }
         if newThreshold > networkTransmitAtAndAboveLevel { newThreshold = networkTransmitAtAndAboveLevel }
         if newThreshold > callbackAtAndAboveLevel { newThreshold = callbackAtAndAboveLevel }

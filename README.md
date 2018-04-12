@@ -49,17 +49,15 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 #### v2.0.0 (Planned)
 
-- Overhaul of implementation:
-	- Split into multiple source files
-	- Allow filtering of sources
-	- Allow custom targets
-	- Allow custom formatting
+- Will be release in sync with Swiftfire 1.0.0
 
-#### v1.3.0 (Planned)
+#### v1.4.0 (as needed for bugfixes and possible feature updates)
+
+#### v1.3.0 (Current)
 
 - Replace ASL with os_log
 
-#### v1.2.0 (Current)
+#### v1.2.0
 
 - Migration to SPM 4
 

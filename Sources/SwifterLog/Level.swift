@@ -3,7 +3,7 @@
 //  File:       Level.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -51,12 +51,15 @@
 // =====================================================================================================================
 //
 // History:
+//
+// 1.3.0 -  Replaced ASL levels with OSLogType
 // 1.1.0 -  Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
 import Foundation
 import VJson
+import os
 
 
 // The log level at which log entries can be written.
@@ -83,19 +86,19 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     }
     
     
-    /// The ASL level for this loglevel.
+    /// The OSLogTYpe for this loglevel.
     
-    public var aslLevel: Int32 {
+    public var osLogType: OSLogType {
         switch self {
-        case .debug:        return 7
-        case .info:         return 6
-        case .notice:       return 5
-        case .warning:      return 4
-        case .error:        return 3
-        case .critical:     return 2
-        case .alert:        return 1
-        case .emergency:    return 0
-        case .none:         fatalError("aslLevel should never be used on Level enum")
+        case .debug:        return OSLogType.debug
+        case .info:         return OSLogType.info
+        case .notice:       return OSLogType.default
+        case .warning:      return OSLogType.error
+        case .error:        return OSLogType.error
+        case .critical:     return OSLogType.error
+        case .alert:        return OSLogType.error
+        case .emergency:    return OSLogType.fault
+        case .none:         fatalError("osLogType should never be used on Level enum")
         }
     }
 

@@ -3,7 +3,7 @@
 //  File:       Filter.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -55,6 +55,8 @@
 // =====================================================================================================================
 //
 // History:
+//
+// 1.3.0 - Definition of Entry was changed.
 // 1.1.0 -  Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
@@ -165,11 +167,11 @@ public struct SfFilter: Filter {
         
         if !((level.bitPattern & self.level) != 0) { return false }
         
-        if !(source.id?.inRange(first: self.firstId, last: self.lastId) ?? false) { return false }
-        if !(source.file?.regex(self.file) ?? false) { return false }
-        if !(source.type?.regex(self.type) ?? false) { return false }
-        if !(source.function?.regex(self.function) ?? false) { return false }
-        if !(source.line?.inRange(first: self.firstLine, last: self.lastLine) ?? false) { return false }
+        if !(source.id.inRange(first: self.firstId, last: self.lastId)) { return false }
+        if !(source.file.regex(self.file)) { return false }
+        if !(source.type.regex(self.type)) { return false }
+        if !(source.function.regex(self.function)) { return false }
+        if !(source.line.inRange(first: self.firstLine, last: self.lastLine)) { return false }
 
         return true
     }

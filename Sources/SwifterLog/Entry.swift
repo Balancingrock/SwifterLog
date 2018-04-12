@@ -3,7 +3,7 @@
 //  File:       Entry.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -51,7 +51,9 @@
 // =====================================================================================================================
 //
 // History:
-// 1.1.0 -  Initial release in preperation for v2.0.0
+//
+// 1.3.0 - Changed message type from Any to CustomStringConvertible
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -65,7 +67,7 @@ public struct Entry {
     
     /// The message that accompanies the log entry. If the message (object) is a class and does not implement `CustomStringConvertible` it is recommended to extend the class with `ReflectedStringConvertible`.
     
-    public let message: Any?
+    public let message: CustomStringConvertible?
     
     
     /// The logging level at which this entry should be created.

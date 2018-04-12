@@ -3,7 +3,7 @@
 //  File:       Source.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.2
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -52,6 +52,8 @@
 //
 // History:
 //
+// 1.3.0 - Added default initialisation
+//         Removed optionality from all members.
 // 1.1.2 - Migration to Swift 4, minor changes.
 // 1.1.0 - Initial release in preperation for v2.0.0
 //
@@ -67,20 +69,20 @@ public struct Source: Hashable {
     
     public private(set) var hashValue: Int
     
-    public let id: Int?
-    public let file: String?
-    public let type: String?
-    public let function: String?
-    public let line: Int?
+    public let id: Int
+    public let file: String
+    public let type: String
+    public let function: String
+    public let line: Int
     
     
-    public init(id: Int? = nil, file: String? = nil, type: String? = nil, function: String? = nil, line: Int? = nil) {
+    public init(id: Int = -1, file: String = #file, type: String = "noType", function: String = #function, line: Int = #line) {
         self.id = id
         self.file = file
         self.type = type
         self.function = function
         self.line = line
-        let arr: [Int] = [id?.hashValue, file?.hashValue, type?.hashValue, function?.hashValue, line?.hashValue].compactMap { $0 }
+        let arr: [Int] = [id.hashValue, file.hashValue, type.hashValue, function.hashValue, line.hashValue].compactMap { $0 }
         self.hashValue = arr.reduce(5381) { return ($0 << 5) &+ $0 &+ $1 }
     }
     
@@ -100,11 +102,11 @@ extension Source: VJsonConvertible {
 
     public init?(json: VJson?) {
         guard let json = json else { return nil }
-        let jid = (json|"Id")?.intValue
-        let jfile = (json|"File")?.stringValue
-        let jtype = (json|"Type")?.stringValue
-        let jfunction = (json|"Function")?.stringValue
-        let jline = (json|"Line")?.intValue
+        guard let jid = (json|"Id")?.intValue else { return nil }
+        guard let jfile = (json|"File")?.stringValue else { return nil }
+        guard let jtype = (json|"Type")?.stringValue else { return nil }
+        guard let jfunction = (json|"Function")?.stringValue else { return nil }
+        guard let jline = (json|"Line")?.intValue else { return nil }
         self.init(id: jid, file: jfile, type: jtype, function: jfunction, line: jline)
     }
 }
@@ -112,13 +114,9 @@ extension Source: VJsonConvertible {
 extension Source: CustomStringConvertible {
     
     public var description: String {
-        let strs: [String] = [file ?? "", type ?? "", function ?? "", (line == nil ? "" : line!.description)]
+        let strs: [String] = [file, type, function, line.description]
         let str = strs.joined(separator: ".")
-        if let id = id {
-            return "\(id), \(str)"
-        } else {
-            return str
-        }
+        return "\(id), \(str)"
     }
 }
 
@@ -134,17 +132,3 @@ extension Source: Equatable {
     }
 }
 
-
-// Helper extension to read an integer from self and verify that the description of the integer is equal to self.
-
-fileprivate extension String {
-    
-    func verifiedInt() -> Int? {
-        if let i = Int(self) {
-            if i.description == self {
-                return i
-            }
-        }
-        return nil
-    }
-}

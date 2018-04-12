@@ -1,9 +1,9 @@
 // =====================================================================================================================
 //
-//  File:       Target.Asl.swift
+//  File:       Target.OSLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.3.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -11,7 +11,7 @@
 //  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -46,37 +46,24 @@
 //
 // Purpose:
 //
-// Interface to write log entries to the ASL.
+// Interface to write log entries to the OS Logger.
 //
 // =====================================================================================================================
 //
 // History:
-// 1.1.0 -  Initial release in preperation for v2.0.0
+//
+// 1.3.0 - Removed CAsl, renamed to OSLog
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
 import Foundation
-import CAsl
+import os
 
 
 /// An interface to write log entries to the ASL.
 
-public class Asl: Target {
-
-    
-    /// The only instance of ASL created
-    
-    public static var singleton: Asl = { Asl() }()
-
-    
-    /// This target can only be a singleton
-    
-    private override init() {}
-
-    
-    // Setup the ASL logging facility
-    
-    private var __once: () = { _ = asl_add_log_file(nil, STDERR_FILENO) }()
+public class OSLog: Target {
 
     
     /// Record one line of text (conditionally)
@@ -88,9 +75,8 @@ public class Asl: Target {
         
         let str = (formatter ?? Logger.formatter).string(entry)
         
-        
         // Create the entry in the ASL
         
-        asl_bridge_log_message(entry.level.aslLevel, str)
+        os_log("%@", type: entry.level.osLogType, (str as NSString))
     }
 }
