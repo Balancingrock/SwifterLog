@@ -6,12 +6,12 @@ SwifterLog is part of the [Swiftfire](http://swiftfire.nl), the HTTP(S) webserve
 # Features
 
 - 5 different logging targets:
-	1. The Apple System Log facility
+	1. The OS Log facility
 	2. A file
 	3. STDOUT (println)
 	4. A network destination
 	5. A list of callback objects from the Application itself.
-- 8 log levels, the same as defined for the Apple System Log facility:
+- 8 log levels:
 	1. Debug
 	2. Info
 	3. Notice
@@ -51,9 +51,13 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Will be release in sync with Swiftfire 1.0.0
 
-#### v1.4.0 (as needed for bugfixes and possible feature updates)
+#### v1.5.0 (as needed for bugfixes and possible feature updates)
 
-#### v1.3.0 (Current)
+#### v1.4.0 (Current)
+
+- Made the message parameter implicit
+
+#### v1.3.0
 
 - Replace ASL with os_log
 

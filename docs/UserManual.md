@@ -10,7 +10,7 @@ Before using the logging functions, first setup the log level thresholds for the
 
     log.stdoutPrintAtAndAboveLevel = .debug
     log.fileRecordAtAndAboveLevel = .notice
-    log.aslFacilityRecordAtAndAboveLevel = .warning
+    log.osLogFacilityRecordAtAndAboveLevel = .notice
     log.networkTransmitAtAndAboveLevel = .none
     log.callbackAtAndAboveLevel = .none
 
@@ -18,21 +18,25 @@ Of course the default is `.none`, thus it is not necessary to assign `.none` to 
 
 After the threshold levels are set, use the log as follows:
 
-    log.atError(
-        message: "Informative text or variable",
-        from: Source(id: -1, file: #file, type: "myType", function: #function, line: #line),
-        to: myTargets)
-or
+    log.atDebug("Kilroy was here")
+    
+Or use the optional loggers:
+    
+    SwifterLog.atDebug?.log("Kilroy was here")
 
-    log.atDebug(
-        message: myVariable,
-        from: Source(id: -1, file: #file, type: "myType", function: #function, line:#line))
+The optional logger are not as readable, but offer performance advantages when levels are disabled.
 
-The ID parameter in Source can be used to differentiate between objects, sockets, threads etc. Set it to -1 if IDs are used but there is no such id present in a specific case.
+There are other optional parameters that can be usefull:
 
-The source parameter is intended to give a code location from where the log entry was made.
+    log.atDebug("Kilroy was here", id: 16, type: "MyType")
 
-The message parameter is defined as Any. It uses the `description` method to display the information in the item. It is recommended to add the (also provided) protocol `ReflectedStringConvertible` to objects for an auto generated reflection based description.
+The `id` parameter can be used to identify an object, thread, socket etc. Its default value is -1. Hence -1 should not be used for any other purpose.
+
+The `type` parameter can be used to identify the type for which the entry was made. Its default value is _noType_.
+
+Note that all log entries will be accompanied by a Source specifier that identifies the file, function and line number of where the log entry was made.
+
+The message parameter is defined as `CustomStringConvertible`. It uses the `description` method to display the information in the item. It is recommended to add the (also provided) protocol `ReflectedStringConvertible` to objects for an auto generated reflection based description.
 
 ## Performance problem & solution
 
@@ -47,7 +51,7 @@ Consider the following:
     log.stdoutPrintAtAndAboveLevel = .info
     extension MyGreatVariable: ReflectedStringConvertable {}
     let myGreatVariable = MyGreatVariable()
-    log.atDebug(message: myGreatVariable, from: Source(...))
+    log.atDebug(myGreatVariable)
     
 This works fine. When there is no target with a threshold below `.info` no log information is written. However the call `atDebug` is always made. And hence all parameters must be evaluated and the information must be placed on the stack. That overhead is always incurred. Wether the debug level is used or not.
 
@@ -57,7 +61,7 @@ For this purpose there are additional optional (level dependent) loggers availab
 
 The last line of the above example then becomes:
 
-    Log.atDebug?.log(message: myGreatVariable, from: Source(...))
+    Log.atDebug?.log(myGreatVariable)
 
 While the readability has suffered slightly, this has the big advantage of not evaluating the parameters of the call if the debug level is not used in any target. Under circumstances this can either give a performance boost to the application, or alternatively, it becomes unneccesary to comment-out all logger call at the debug and info level before shipping.
 
@@ -69,7 +73,7 @@ SwifterLog defines 5 targets that can receive the information from the logging c
 
 - STDOUT
 - File
-- Apple System Log (ASL)
+- OS Log
 - Network
 - Callback
 
@@ -121,37 +125,20 @@ _Note_: When running under Xcode the default logfile location is different:
 
 __Warning__: When using a different path for the logfiles make sure the app has write access to that location. Also make sure that this write access persists between sessions.
 
-### Apple System Log
+### OS Log
 
-The Apple System Log can be viewed with the console application in the system utilties.
+The OS Log has fewer levels than SwifterLog, the following mapping has been made:
 
-The threshold level is set through: `log.aslFacilityRecordAtAndAboveLevel`
+    debug -> OSLogType.debug
+    info -> OSLogType.info
+    notice -> OSLogType.default
+    warning -> OSLogType.error
+    error -> OSLogType.error
+    critical -> OSLogType.error
+    alert -> OSLogType.error
+    emergency -> OSLogType.fault
 
-The ASL has multiple places that control which information is logged, besides the settings in SwifterLog.
-
-By default the ASL only shows loglevel at the level `.notice` or above.
-
-The main switch can be seen (and set) with the `syslog` command line utility.
-
-    > syslog -c 0
-    Master filter mask: Off
-
-There is also a process switch which can be seen (and set) with the `syslog` command line utility.
-
-First you will have to find the process number (pid) with:
-
-    > ps ax | grep <app name> | grep -v grep
-
-The first number on the line is the pid.
-
-To see the switch for that pid:
-
-    > syslog -c 1726
-    Process 1726 syslog filter mask: Off
-
-Unless these switches were set explicitly they are unlikely to be active.
-
-The file `/etc/asl.conf` contains the default configuration for the system log. It is this file that specifies the minimum level of `.notice` for the ASL target. Regardless of the settings of SwifterLog.
+The threshold level is set through: `log.osLogRecordAtAndAboveLevel`. The level that is set here must be one of the SwifterLog levels.
 
 ### Network
 
@@ -163,7 +150,7 @@ The network destination is set by calling the operation:
 
 Of course there should be a server running at that destination to receive the information.
 
-To use the network destination the frameworks SwifterJSON and SwifterSockets are necessary. These are installed by default.
+To use the network destination the frameworks VJson and SwifterSockets are necessary. These are installed by default.
 
 The information is transmitted as a small JSON record. An example:
 
@@ -197,11 +184,11 @@ __Warning__: If a callback target is too slow, logging messages will stack up in
 
 ## Levels
 
-SwiftLog uses the same levels as the Apple System Log:
+SwiftLog uses the following levels:
 
 - Debug (lowest level)
 - Info
-- Notice (lowest level that appears in the ASL by default)
+- Notice
 - Warning
 - Error
 - Critical
@@ -282,7 +269,7 @@ The following table lists the keys and the values:
 	<td>-</td>
 </tr>
 <tr>
-	<td>aslFacilityRecordAtAndAboveLevel</td>
+	<td>osLogFacilityRecordAtAndAboveLevel</td>
 	<td>Number</td>
 	<td>0...8</td>
 	<td>.none (8)</td>

@@ -3,12 +3,11 @@
 //  File:       Public.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.3.0
+//  Version:    1.4.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
 //  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
@@ -58,6 +57,7 @@
 //
 // History:
 //
+// 1.4.0 - Made message parameter implicit
 // 1.3.0 - Replaced ASL with OSLog
 //         Added defaults for Source parameters.
 // 1.1.0 - Initial release in preperation for v2.0.0
@@ -174,17 +174,17 @@ public final class Logger {
         internal static let atCritical = OptionalLogger(Level.critical)
         internal static let atAlert = OptionalLogger(Level.alert)
         internal static let atEmergency = OptionalLogger(Level.emergency)
-        public func log(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        public func log(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
             let now = Date()
             for target in targets {
-                target.log(message: message, at: level, from: source, with: now)
+                target.log(message, at: level, from: source, with: now)
             }
         }
-        public func log(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        public func log(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
             let source = Source(id: id, file: file, type: type, function: function, line: line)
             let now = Date()
             for target in targets {
-                target.log(message: message, at: level, from: source, with: now)
+                target.log(message, at: level, from: source, with: now)
             }
         }
     }
@@ -353,14 +353,14 @@ public final class Logger {
     
     public func atLevel(_ level: Level, message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
         switch level {
-        case .debug: OptionalLogger.atDebug.log(message: message, from: source, to: targets)
-        case .info: OptionalLogger.atInfo.log(message: message, from: source, to: targets)
-        case .notice: OptionalLogger.atNotice.log(message: message, from: source, to: targets)
-        case .warning: OptionalLogger.atWarning.log(message: message, from: source, to: targets)
-        case .error: OptionalLogger.atError.log(message: message, from: source, to: targets)
-        case .critical: OptionalLogger.atCritical.log(message: message, from: source, to: targets)
-        case .alert: OptionalLogger.atAlert.log(message: message, from: source, to: targets)
-        case .emergency: OptionalLogger.atEmergency.log(message: message, from: source, to: targets)
+        case .debug: OptionalLogger.atDebug.log(message, from: source, to: targets)
+        case .info: OptionalLogger.atInfo.log(message, from: source, to: targets)
+        case .notice: OptionalLogger.atNotice.log(message, from: source, to: targets)
+        case .warning: OptionalLogger.atWarning.log(message, from: source, to: targets)
+        case .error: OptionalLogger.atError.log(message, from: source, to: targets)
+        case .critical: OptionalLogger.atCritical.log(message, from: source, to: targets)
+        case .alert: OptionalLogger.atAlert.log(message, from: source, to: targets)
+        case .emergency: OptionalLogger.atEmergency.log(message, from: source, to: targets)
         case .none: break
         }
     }
@@ -392,8 +392,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atDebug(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atDebug.log(message: message, from: source, to: targets)
+    public func atDebug(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atDebug.log(message, from: source, to: targets)
     }
     
     
@@ -410,8 +410,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
 
-    public func atDebug(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atDebug(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atDebug(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atDebug(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
 
     
@@ -422,8 +422,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atInfo(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atInfo.log(message: message, from: source, to: targets)
+    public func atInfo(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atInfo.log(message, from: source, to: targets)
     }
     
     
@@ -440,8 +440,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atInfo(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atInfo(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atInfo(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atInfo(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -452,8 +452,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atNotice(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atNotice.log(message: message, from: source, to: targets)
+    public func atNotice(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atNotice.log(message, from: source, to: targets)
     }
     
     
@@ -470,8 +470,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atNotice(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atNotice(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atNotice(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atNotice(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -482,8 +482,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atWarning(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atWarning.log(message: message, from: source, to: targets)
+    public func atWarning(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atWarning.log(message, from: source, to: targets)
     }
     
     
@@ -500,8 +500,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atWarning(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atWarning(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atWarning(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atWarning(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -512,8 +512,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atError(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atError.log(message: message, from: source, to: targets)
+    public func atError(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atError.log(message, from: source, to: targets)
     }
 
     
@@ -530,8 +530,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atError(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atError(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atError(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atError(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -542,8 +542,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atCritical(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atCritical.log(message: message, from: source, to: targets)
+    public func atCritical(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atCritical.log(message, from: source, to: targets)
     }
     
     
@@ -560,8 +560,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atCritical(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atCritical(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atCritical(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atCritical(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -572,8 +572,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atAlert(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atAlert.log(message: message, from: source, to: targets)
+    public func atAlert(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atAlert.log(message, from: source, to: targets)
     }
     
     
@@ -590,8 +590,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atAlert(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atAlert(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atAlert(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atAlert(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -602,8 +602,8 @@ public final class Logger {
     ///   - to: The targets to record to (Default = allTargets).
     ///   - message: The data to be recorded (Default = nil).
     
-    public func atEmergency(message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
-        OptionalLogger.atEmergency.log(message: message, from: source, to: targets)
+    public func atEmergency(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
+        OptionalLogger.atEmergency.log(message, from: source, to: targets)
     }
     
     
@@ -620,8 +620,8 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atEmergency(message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
-        atEmergency(message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
+    public func atEmergency(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        atEmergency(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
     
@@ -638,7 +638,7 @@ public final class Logger {
                 if osLogThreshold.intValue >= Level.debug.value && osLogThreshold.intValue <= Level.none.value {
                     Logger.osLog.threshold = Level.factory(osLogThreshold.intValue)!
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for osLogFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for osLogFacilityRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -646,7 +646,7 @@ public final class Logger {
                 if stdoutThreshold.intValue >= Level.debug.value && stdoutThreshold.intValue <= Level.none.value {
                     stdoutPrintAtAndAboveLevel = Level.factory(stdoutThreshold.intValue)!
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for stdoutPrintAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -654,7 +654,7 @@ public final class Logger {
                 if logfileThreshold.intValue >= Level.debug.value && logfileThreshold.intValue <= Level.none.value {
                     fileRecordAtAndAboveLevel = Level.factory(logfileThreshold.intValue)!
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for fileRecordAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -662,7 +662,7 @@ public final class Logger {
                 if networkThreshold.intValue >= Level.debug.value && networkThreshold.intValue <= Level.none.value {
                     networkTransmitAtAndAboveLevel = Level.factory(networkThreshold.intValue)!
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for networkTransmitAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -670,7 +670,7 @@ public final class Logger {
                 if callbackThreshold.intValue >= Level.debug.value && callbackThreshold.intValue <= Level.none.value {
                     callbackAtAndAboveLevel = Level.factory(callbackThreshold.intValue)!
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for callbackAtAndAboveLevel in SwifterLog out of bounds (0 .. 8)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -678,7 +678,7 @@ public final class Logger {
                 if logfileMaxSize.intValue >= 10 * 1024 && logfileMaxSize.intValue <= 100 * 1024 * 1024 {
                     Logger.logfiles.maxSizeInBytes = UInt64(logfileMaxSize.intValue)
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for logfileMaxSizeInBytes in SwifterLog out of bounds (10kB .. 100MB)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             
@@ -686,7 +686,7 @@ public final class Logger {
                 if logfileNofFiles.intValue >= 2 && logfileNofFiles.intValue <= 1000 {
                     Logger.logfiles.maxNumberOfFiles = logfileNofFiles.intValue
                 } else {
-                    Logger.osLog.log(message: "Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
+                    Logger.osLog.log("Info.plist value for logfileMaxNumberOfFiles in SwifterLog out of bounds (2 .. 1000)", at: Level.error, from: Source(id: -1, file: #file, type: "SwifterLog", function: #function, line: #line))
                 }
             }
             

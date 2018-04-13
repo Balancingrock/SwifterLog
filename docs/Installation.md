@@ -39,18 +39,14 @@ Then use "import SwifterLog" in the source code to expose the API.
 
 ## Install as source code
 
-It is of course also possible to use SwifterLog as sourcecode. If so, simply add the sources from the SwifterJSON, SwifterSockets (from `Packages`)and the SwifterLog subdirectories (from `Sources`) to the project target.
+It is of course also possible to use SwifterLog as sourcecode. If so, simply add the sources from the VJson, SwifterSockets (from `Packages`)and the SwifterLog subdirectories (from `Sources`) to the project target.
 
-You will also need the [CAsl framework](https://github.com/Balancingrock/CAsl) which contains the bridging information and C-glue code.
+If the networking destination is not needed, do not include the sources from Ascii, VJson and SwifterSockets and set the active compiler condition `SWIFTERLOG_DISABLE_NETWORK_TARGET`.
 
-If the networking destination is not needed, do not include the sources from Ascii, SwifterJSON and SwifterSockets and set the active compiler condition `SWIFTERLOG_DISABLE_NETWORK_TARGET`.
+## Optional removal of Ascii, VJson and SwifterSockets dependency
 
-## Optional removal of Ascii, SwifterJSON and SwifterSockets dependency
-
-By default SwifterLog also needs Ascii, SwifterJSON and SwifterSockets for the networking target. If the networking target is not needed, that code can be excluded by adding an Active Compilation Condition:
+By default SwifterLog also needs Ascii, VJson and SwifterSockets for the networking target. If the networking target is not needed, that code can be excluded by adding an Active Compilation Condition:
 
 In the xcode project, the SwifterLog framework target, select the `Build Settings` and under `Swift Compiler - Custom Flags` add `SWIFTERLOG_DISABLE_NETWORK_TARGET` to the `Active Compiler Conditions`.
 
-Also remove the Ascii, SwifterJSON and SwifterSockets from the `Linked Frameworks and Libraries` settings under the `General` tab for the SwifterLog target.
-
-However do not remove the CAsl framework.
+Also remove the Ascii, VJson and SwifterSockets from the `Linked Frameworks and Libraries` settings under the `General` tab for the SwifterLog target.

@@ -3,12 +3,11 @@
 //  File:       Target.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.3.0
+//  Version:    1.4.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
 //  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
@@ -52,6 +51,7 @@
 //
 // History:
 //
+// 1.4.0 - Made message parameter implicit
 // 1.3.0 - Added default for Source parameter
 // 1.1.0 - Initial release in preperation for v2.0.0
 //
@@ -97,7 +97,7 @@ public class Target {
     ///   - with: An optional time to record with the loginfo, will be set to 'now' if not supplied.
     
     public func log(
-        message: CustomStringConvertible? = nil,
+        _ message: CustomStringConvertible? = nil,
         at level: Level,
         from source: Source = Source(),
         with timestamp: Date? = nil

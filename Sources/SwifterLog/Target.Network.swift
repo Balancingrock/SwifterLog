@@ -210,7 +210,7 @@ public class Network: Target {
             _ = SwifterSockets.closeSocket(socket!)
             socket = nil
             _networkTarget = nil
-            Logger.OptionalLogger.atNotice.log(message: "Connection to network target closed", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+            Logger.OptionalLogger.atNotice.log("Connection to network target closed", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
         }
         
         
@@ -222,14 +222,14 @@ public class Network: Target {
             
         case let .error(msg):
             
-            Logger.OptionalLogger.atNotice.log(message: "Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+            Logger.OptionalLogger.atNotice.log("Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
             
             
         case let .success(num):
             
             socket = num
             _networkTarget = (ipAddress, port)
-            Logger.OptionalLogger.atNotice.log(message: "Openend connection to network target. Address = \(ipAddress), port = \(port)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+            Logger.OptionalLogger.atNotice.log("Openend connection to network target. Address = \(ipAddress), port = \(port)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
         }
     }
     
@@ -244,7 +244,7 @@ public class Network: Target {
         _ = SwifterSockets.closeSocket(socket)
         socket = nil
         _networkTarget = nil
-        Logger.OptionalLogger.atNotice.log(message: "Network target logging stopped", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+        Logger.OptionalLogger.atNotice.log("Network target logging stopped", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
     }
     
     
@@ -271,12 +271,12 @@ public class Network: Target {
                 
             case .timeout:
                 
-                Logger.OptionalLogger.atError.log(message: "Timeout on connection to network target", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+                Logger.OptionalLogger.atError.log("Timeout on connection to network target", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
                 
                 
             case let .error(message: err):
                 
-                Logger.OptionalLogger.atError.log(message: "Error on transfer to network target: \(err)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+                Logger.OptionalLogger.atError.log("Error on transfer to network target: \(err)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
                 self.closeNetworkConnection()
                 
                 
@@ -284,7 +284,7 @@ public class Network: Target {
                 
             case .closed:
                 
-                Logger.OptionalLogger.atError.log(message: "Connection to network target unexpectedly closed", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+                Logger.OptionalLogger.atError.log("Connection to network target unexpectedly closed", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
                 self.closeNetworkConnection()
             }
         }
