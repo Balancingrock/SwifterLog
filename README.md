@@ -51,9 +51,14 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Will be release in sync with Swiftfire 1.0.0
 
-#### v1.5.0 (as needed for bugfixes and possible feature updates)
+#### v1.6.0 (as needed for bugfixes and possible feature updates)
 
-#### v1.4.0 (Current)
+#### v1.5.0 (Current)
+
+- Added disabling of time info to Stdout target
+- Added disable/enable settings for OSLog target
+
+#### v1.4.0
 
 - Made the message parameter implicit
 

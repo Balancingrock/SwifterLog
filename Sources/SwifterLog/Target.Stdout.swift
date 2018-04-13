@@ -3,15 +3,14 @@
 //  File:       Target.Stdout.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.5.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -51,15 +50,83 @@
 // =====================================================================================================================
 //
 // History:
-// 1.1.0 -  Initial release in preperation for v2.0.0
+//
+// 1.5.0 - Introduced option to suppress time information.
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
 import Foundation
 
+
 public class Stdout: Target {
+    
+    public var noTimeInfo: Bool = false
+    
+    private var noTimeFormatter = StdoutNoTimeFormatter()
+    
+    open override func process(_ entry: Entry) {
         
+        
+        // Create the line with loginformation
+        
+        let loginfo: String
+        
+        if noTimeInfo {
+            loginfo = noTimeFormatter.string(entry)
+        } else {
+            loginfo = (formatter ?? Logger.formatter).string(entry)
+        }
+        
+        // Write the log info to the destination
+        
+        write(loginfo)
+    }
+
     public override func write(_ string: String) {
         print(string)
     }    
+}
+
+public struct StdoutNoTimeFormatter: Formatter {
+    
+    
+    /// Creates a single string from the log entry information.
+    
+    public func string(_ entry: Entry) -> String {
+        
+        let levelStr = entry.level.description
+        
+        let idStr = String(format: "%08x", entry.source.id)
+        
+        let fileStr = (((entry.source.file as NSString?)?.lastPathComponent as NSString?)?.deletingPathExtension ?? "").replacingOccurrences(of: ".", with: "_")
+        
+        let typeStr = entry.source.type.replacingOccurrences(of: ".", with: "_")
+        
+        let functionStr = entry.source.function.replacingOccurrences(of: ".", with: "_")
+        
+        let lineStr = entry.source.line.description
+        
+        let str: String
+        if let m = entry.message {
+            str = ", \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr), \(m.description)"
+        } else {
+            str = ", \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr)"
+        }
+        
+        return str
+    }
+    
+    
+    
+    /// Create the log entry information from a string
+    
+    public func parse(_ string: String) -> Entry? {
+        fatalError()
+    }
+    
+    
+    /// Allow external instances.
+    
+    fileprivate init() {}
 }

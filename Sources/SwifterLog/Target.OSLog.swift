@@ -3,12 +3,11 @@
 //  File:       Target.OSLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.3.0
+//  Version:    1.5.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
 //  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
@@ -52,6 +51,7 @@
 //
 // History:
 //
+// 1.5.0 - Added OSLog levels filtering
 // 1.3.0 - Removed CAsl, renamed to OSLog
 // 1.1.0 - Initial release in preperation for v2.0.0
 //
@@ -61,21 +61,58 @@ import Foundation
 import os
 
 
-/// An interface to write log entries to the ASL.
+/// An interface to write log entries to the OS Log.
 
 public class OSLog: Target {
 
+    
+    /// This filter decides AFTER the osLogFacilityRecordAtAndAboveLevel setting if an entry at this level should be enabled or not.
+    
+    public var debugEnabled: Bool = true
+    
+    
+    /// This filter decides AFTER the osLogFacilityRecordAtAndAboveLevel setting if an entry at this level should be enabled or not.
+
+    public var infoEnabled: Bool = true
+
+
+    /// This filter decides AFTER the osLogFacilityRecordAtAndAboveLevel setting if an entry at this level should be enabled or not.
+
+    public var defaultEnabled: Bool = true
+
+
+    /// This filter decides AFTER the osLogFacilityRecordAtAndAboveLevel setting if an entry at this level should be enabled or not.
+
+    public var errorEnabled: Bool = true
+
+
+    /// This filter decides AFTER the osLogFacilityRecordAtAndAboveLevel setting if an entry at this level should be enabled or not.
+
+    public var faultEnabled: Bool = true
+    
     
     /// Record one line of text (conditionally)
     
     public override func process(_ entry: Entry) {
         
         
+        // Check OSLog custom levels
+        
+        switch entry.level {
+        case .debug: if !debugEnabled { return }
+        case .info: if !infoEnabled { return }
+        case .notice: if !defaultEnabled { return }
+        case .warning, .error, .critical, .alert: if !errorEnabled { return }
+        case .emergency: if !faultEnabled { return }
+        case .none: break
+        }
+
+        
         // Create the line with loginformation
         
         let str = (formatter ?? Logger.formatter).string(entry)
         
-        // Create the entry in the ASL
+        // Create the entry in the OS Log
         
         os_log("%@", type: entry.level.osLogType, (str as NSString))
     }
