@@ -51,9 +51,14 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Will be release in sync with Swiftfire 1.0.0
 
-#### v1.6.0 (as needed for bugfixes and possible feature updates)
+#### v1.7.0 (as needed for bugfixes and possible feature updates)
 
-#### v1.5.0 (Current)
+#### v1.6.0 (Current)
+
+- Undid the disabling of time info in Stdout target (not needed)
+- Fixed level-inversion bug that made the newest versions of SwifterLog unworkable
+
+#### v1.5.0
 
 - Added disabling of time info to Stdout target
 - Added disable/enable settings for OSLog target

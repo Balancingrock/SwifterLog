@@ -3,7 +3,7 @@
 //  File:       Target.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.4.0
+//  Version:    1.6.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -51,6 +51,7 @@
 //
 // History:
 //
+// 1.6.0 - Fixed level inversion error
 // 1.4.0 - Made message parameter implicit
 // 1.3.0 - Added default for Source parameter
 // 1.1.0 - Initial release in preperation for v2.0.0
@@ -105,7 +106,7 @@ public class Target {
         
         // Message must be at or above threshold
         
-        if level >= threshold { return }
+        if level < threshold { return }
         
         
         // Prevent unwanted sources from creating an entry
