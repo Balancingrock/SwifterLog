@@ -1,4 +1,5 @@
 # SwifterLog
+
 A framework in Swift to create and manage log entries.
 
 SwifterLog is part of the [Swiftfire](http://swiftfire.nl), the HTTP(S) webserver framework.
@@ -51,9 +52,11 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Will be release in sync with Swiftfire 1.0.0
 
-#### v1.7.0 (as needed for bugfixes and possible feature updates)
+#### v1.7.0 (Current)
 
-#### v1.6.0 (Current)
+- Migration to Swift 5
+
+#### v1.6.0
 
 - Undid the disabling of time info in Stdout target (not needed)
 - Fixed level-inversion bug that made the newest versions of SwifterLog unworkable

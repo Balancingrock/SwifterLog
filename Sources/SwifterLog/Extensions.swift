@@ -3,15 +3,14 @@
 //  File:       Extension.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.1.0
+//  Version:    1.7.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2019 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -22,8 +21,8 @@
 //
 //  I also ask you to please leave this header with the source code.
 //
-//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
-//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//  I strongly believe that voluntarism is the way for societies to function optimally. So you can pay whatever you
+//  think our code is worth to you.
 //
 //   - You can send payment via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
@@ -33,12 +32,7 @@
 //
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
 //
-//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
-//
-//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
-//  For commercial use the suggested price is the price of 1 good meal, say $20.
-//
-//  You are however encouraged to pay more ;-)
+//  (It is always a good idea to visit the website to ensure that you actually pay me and not some imposter)
 //
 //  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
 //
@@ -51,7 +45,9 @@
 // =====================================================================================================================
 //
 // History:
-// 1.1.0 -  Initial release in preperation for v2.0.0
+//
+// 1.7.0 - Migration to Swift 5
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -73,7 +69,7 @@ public protocol ReflectedStringConvertible: CustomStringConvertible {}
 /// The default extension for this protocol allows classes to be printed like struct's.
 
 public extension ReflectedStringConvertible {
-    public var description: String {
+    var description: String {
         let mirror = Mirror(reflecting: self)
         var result = "\(mirror.subjectType)("
         var first = true

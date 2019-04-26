@@ -3,15 +3,14 @@
 //  File:       Source.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.3.0
+//  Version:    1.7.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2019 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -22,8 +21,8 @@
 //
 //  I also ask you to please leave this header with the source code.
 //
-//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
-//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//  I strongly believe that voluntarism is the way for societies to function optimally. So you can pay whatever you
+//  think our code is worth to you.
 //
 //   - You can send payment via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
@@ -33,12 +32,7 @@
 //
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
 //
-//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
-//
-//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
-//  For commercial use the suggested price is the price of 1 good meal, say $20.
-//
-//  You are however encouraged to pay more ;-)
+//  (It is always a good idea to visit the website to ensure that you actually pay me and not some imposter)
 //
 //  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
 //
@@ -52,6 +46,7 @@
 //
 // History:
 //
+// 1.7.0 - Migration to Swift 5
 // 1.3.0 - Added default initialisation
 //         Removed optionality from all members.
 // 1.1.2 - Migration to Swift 4, minor changes.
@@ -66,9 +61,7 @@ import VJson
 /// This struct represents the full source specifier for a log entry.
 
 public struct Source: Hashable {
-    
-    public private(set) var hashValue: Int
-    
+        
     public let id: Int
     public let file: String
     public let type: String
@@ -82,10 +75,15 @@ public struct Source: Hashable {
         self.type = type
         self.function = function
         self.line = line
-        let arr: [Int] = [id.hashValue, file.hashValue, type.hashValue, function.hashValue, line.hashValue].compactMap { $0 }
-        self.hashValue = arr.reduce(5381) { return ($0 << 5) &+ $0 &+ $1 }
     }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(file)
+        hasher.combine(type)
+        hasher.combine(function)
+        hasher.combine(line)
+    }
 }
 
 extension Source: VJsonConvertible {
