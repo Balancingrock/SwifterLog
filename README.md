@@ -52,7 +52,12 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 
 - Will be release in sync with Swiftfire 1.0.0
 
-#### v1.7.0 (Current)
+#### v1.7.1 (Current)
+
+- Updated manifest to tool v5
+- Added platform to manifest (macOS 10.12)
+
+#### v1.7.0
 
 - Migration to Swift 5
 
