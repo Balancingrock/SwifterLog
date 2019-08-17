@@ -16,7 +16,7 @@ SwifterLog is part of the [Swiftfire](http://swiftfire.nl), the HTTP(S) webserve
 	1. Debug
 	2. Info
 	3. Notice
-	4. Warning
+	4. Warning_ (note: without the underscore! - that has to be added to prevent redlining by Jazzy)
 	5. Error
 	6. Critical
 	7. Alert
@@ -48,11 +48,12 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 - No new features planned. Features and bugfixes will be made on an ad-hoc basis as needed to support Swiftfire development.
 - For feature requests and bugfixes please contact rien@balancingrock.nl
 
-#### v2.0.0 (Planned)
+#### v2.0.0 (Current)
 
-- Will be release in sync with Swiftfire 1.0.0
+- Udated headers
+- Added defaultTypeString and now allows empty type parameters.
 
-#### v1.7.1 (Current)
+#### v1.7.1
 
 - Updated manifest to tool v5
 - Added platform to manifest (macOS 10.12)
@@ -103,130 +104,3 @@ Maintenance updates are updates due to management of the (SPM) package hierarchy
 #### v1.0.0
 
 - No changes but this readme file since the previous version.
-
-#### v0.10.12
-
-- Changed SwifterJSON to VJson
-
-#### v0.10.11
-
-- Upped SwifterSockets from 0.10.7 to 0.10.8
-- Upped SwifterJSON from 0.10.5 to 0.10.6
-
-#### v0.10.10
-
-- Update of SwifterSockets to 0.10.7
-- Bugfix: Fixed initialization of the 'atInfo' logger.
-
-#### v0.10.9
-
-- Update of SwifterJSON to 0.10.4
-- Update of SwifterSockets to 0.10.6
-
-#### v0.10.8
-
-- Update of SwifterJSON to 0.10.3
-
-#### v0.10.7
-
-- Update of SwifterSockets to 0.10.5
-
-#### v0.10.6
-
-- Update of SwifterSockets to 0.10.4
-
-#### v0.10.5
-
-- Updated to SwifterJSON 0.10.2
-
-#### v0.10.4
-
-- Update of SwifterSockets to 0.10.3
-
-#### v0.10.3
-
-- Result type was moved from SwifterSockets to BRUtils
-
-#### v0.10.2
-
-- Added compilation speed increase in SwifterSockets 0.10.1
-
-#### v0.10.1
-
-- Removed xcodeproj from github
-- Update to SwifterJSON 0.10.1
-
-#### v0.10.0
-
-- Removed global 'log' definition, use SwifterLog.theLogger instead. (let log = SwifterLog.theLogger)
-- Added faster loggers for disabled log levels. (eg: SwifterLog.atDebug?.log(...))
-
-#### v0.9.17
-
-- Replaced local c-glue with CAsl glue library (now builds under SPM)
-
-#### v0.9.15-16
-
-- Maintenance updates
-
-#### v0.9.14
-
-- Changed distribution model
-- Added reference manual (improved documentation)
-
-#### v0.9.13
-
-- Upgraded to Xcode 8 beta 6 (Swift 3)
-
-#### v0.9.12
-
-- Upgraded to Xcode 8 beta 3 (Swift 3)
-
-#### v0.9.11
-
-- Update to accomodate VJson v0.9.8
-
-#### v0.9.10
-
-- Update to accomodate VJson updates
-
-#### v0.9.9
-
-- Added 'public' to the string extensions
-- Added 'ReflectedStringConvertible' (Idea from [Matt Comi](https://github.com/mattcomi))
-- Changed message parameter from 'String' to 'Any' on all logging calls (Inspired by [whitehat007](https://github.com/whitehat007))
-- Fixed bug that would not call the callback destination for the very first logging message
-- Added a few unit tests
-
-#### v0.9.8:
-
-- Header update to include new website: [swiftfire.nl](http://swiftfire.nl)
-- Renamed SwifterLogNetwork.swift to SwifterLog.Network.swift
-
-#### v0.9.7:
-
-- Removed all targets
-- Removed other unnecessary files
-- Moved the network support to its own file (as far as possible).
-- Added release tag
-
-#### v0.9.6:
-
-- Included extension for type String to easily create a SOURCE identifier from a #file string.
-- JSON code returned by 'json' changed from a value to a valid hierarchy.
-- Added ALL_NON_RECURSIVE target definition.
-- Updated for changes in SwifterSockets.Transmit
-
-#### v0.9.5:
-
-- Added transfer of log entries to a TCP/IP destination and targetting of error messages.
-- Renamed logfileRecordAtAndAboveLevel to fileRecordAtAndAboveLevel
-- Added call-back logging
-
-#### v0.9.4
-
-- Added conveniance functions that add the "ID" parameter back in as hexadecimal output before the source.
-- Note: v0.9.4 was never released into the public.
-
-#### v0.9.3:
-- Updated for Swift 2.0

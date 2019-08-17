@@ -1,9 +1,9 @@
 // =====================================================================================================================
 //
-//  File:       Public.swift
+//  File:       Logger.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.4.0
+//  Version:    2.0.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -21,25 +21,27 @@
 //
 //  I also ask you to please leave this header with the source code.
 //
-//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
-//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//  Like you, I need to make a living:
 //
-//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - You can send payment (you choose the amount) via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
-//
-//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
-//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
 //
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
 //
-//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
-//
-//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
-//  For commercial use the suggested price is the price of 1 good meal, say $20.
-//
-//  You are however encouraged to pay more ;-)
-//
 //  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
+//
+// =====================================================================================================================
+// PLEASE let me know about bugs, improvements and feature requests. (rien@balancingrock.nl)
+// =====================================================================================================================
+//
+// History
+//
+// 2.0.0 - New header
+//       - Added defaultTypeString
+// 1.4.0 - Made message parameter implicit
+// 1.3.0 - Replaced ASL with OSLog
+//         Added defaults for Source parameters.
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 //
@@ -52,15 +54,6 @@
 // The static instance (singleton) is a meta-logger. That is, it collects a number of other loggers and offers some
 // common operations. Especially the threshold level settings in the included targets should be done through the level
 // operations provided in the meta logger. Otherwise unexpected side effects may occur for the optimised
-//
-// =====================================================================================================================
-//
-// History:
-//
-// 1.4.0 - Made message parameter implicit
-// 1.3.0 - Replaced ASL with OSLog
-//         Added defaults for Source parameters.
-// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -160,6 +153,13 @@ public final class Logger {
 
     static public let singleton = Logger()
 
+    
+    /// When the type string is empty, this string will be used to create the complete log message.
+    ///
+    /// If this string is left empty, the type information will be omitted.
+    
+    static public let defaultTypeString: String = "noType"
+    
 
     /// The base class for the high performance loggers
 
@@ -180,7 +180,7 @@ public final class Logger {
                 target.log(message, at: level, from: source, with: now)
             }
         }
-        public func log(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+        public func log(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
             let source = Source(id: id, file: file, type: type, function: function, line: line)
             let now = Date()
             for target in targets {
@@ -380,7 +380,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
 
-    public func atLevel(_ level: Level, message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atLevel(_ level: Level, message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atLevel(level, message: message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -410,7 +410,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
 
-    public func atDebug(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atDebug(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atDebug(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
 
@@ -440,7 +440,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atInfo(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atInfo(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atInfo(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -470,7 +470,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atNotice(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atNotice(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atNotice(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -500,7 +500,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atWarning(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atWarning(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atWarning(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -530,7 +530,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atError(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atError(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atError(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -560,7 +560,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atCritical(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atCritical(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atCritical(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -590,7 +590,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atAlert(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atAlert(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atAlert(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     
@@ -620,7 +620,7 @@ public final class Logger {
     ///   - line: The line number in the file from which the call is made, should follow the conventions of #line, which is also the default value. In general there should be no need to specify this value, the default value should suffice.
     ///   - to: The targets to record to (Default = allTargets).
     
-    public func atEmergency(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = "noType", file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
+    public func atEmergency(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
         atEmergency(message, from: Source(id: id, file: file, type: type, function: function, line: line), to: targets)
     }
     

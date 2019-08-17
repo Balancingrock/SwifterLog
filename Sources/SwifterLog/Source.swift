@@ -3,7 +3,7 @@
 //  File:       Source.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.7.0
+//  Version:    2.0.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -21,31 +21,23 @@
 //
 //  I also ask you to please leave this header with the source code.
 //
-//  I strongly believe that voluntarism is the way for societies to function optimally. So you can pay whatever you
-//  think our code is worth to you.
+//  Like you, I need to make a living:
 //
-//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - You can send payment (you choose the amount) via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
 //
-//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
-//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
-//
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
-//
-//  (It is always a good idea to visit the website to ensure that you actually pay me and not some imposter)
 //
 //  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
 //
 // =====================================================================================================================
-//
-// Purpose:
-//
-// This struct represents the full source specifier for a log entry.
-//
+// PLEASE let me know about bugs, improvements and feature requests. (rien@balancingrock.nl)
 // =====================================================================================================================
 //
-// History:
+// History
 //
+// 2.0.0 - New header
+//       - Added default for type parameter, allow type parameter to be empty
 // 1.7.0 - Migration to Swift 5
 // 1.3.0 - Added default initialisation
 //         Removed optionality from all members.
@@ -69,7 +61,7 @@ public struct Source: Hashable {
     public let line: Int
     
     
-    public init(id: Int = -1, file: String = #file, type: String = "noType", function: String = #function, line: Int = #line) {
+    public init(id: Int = -1, file: String = #file, type: String = Logger.defaultTypeString, function: String = #function, line: Int = #line) {
         self.id = id
         self.file = file
         self.type = type
@@ -112,7 +104,12 @@ extension Source: VJsonConvertible {
 extension Source: CustomStringConvertible {
     
     public var description: String {
-        let strs: [String] = [file, type, function, line.description]
+        let strs: [String]
+        if type.isEmpty {
+            strs = [file, function, line.description]
+        } else {
+            strs = [file, type, function, line.description]
+        }
         let str = strs.joined(separator: ".")
         return "\(id), \(str)"
     }

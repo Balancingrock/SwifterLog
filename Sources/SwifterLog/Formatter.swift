@@ -3,12 +3,11 @@
 //  File:       Formatter.swift
 //  Project:    SwifterLog
 //
-//  Version:    1.3.0
+//  Version:    2.0.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
-//  Blog:       http://swiftrien.blogspot.com
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
 //  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
@@ -22,42 +21,25 @@
 //
 //  I also ask you to please leave this header with the source code.
 //
-//  I strongly believe that voluntarism is the way for societies to function optimally. Thus I have choosen to leave it
-//  up to you to determine the price for this code. You pay me whatever you think this code is worth to you.
+//  Like you, I need to make a living:
 //
-//   - You can send payment via paypal to: sales@balancingrock.nl
+//   - You can send payment (you choose the amount) via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
 //
-//  I prefer the above two, but if these options don't suit you, you can also send me a gift from my amazon.co.uk
-//  wishlist: http://www.amazon.co.uk/gp/registry/wishlist/34GNMPZKAQ0OO/ref=cm_sw_em_r_wsl_cE3Tub013CKN6_wb
-//
 //  If you like to pay in another way, please contact me at rien@balancingrock.nl
-//
-//  (It is always a good idea to visit the website/blog/google to ensure that you actually pay me and not some imposter)
-//
-//  For private and non-profit use the suggested price is the price of 1 good cup of coffee, say $4.
-//  For commercial use the suggested price is the price of 1 good meal, say $20.
-//
-//  You are however encouraged to pay more ;-)
 //
 //  Prices/Quotes for support, modifications or enhancements can be obtained from: rien@balancingrock.nl
 //
 // =====================================================================================================================
-//
-// Purpose:
-//
-// A formatter defines the layout of a log entry. It is (should be) able to transform in both directions in order to
-// support all future toolsets. I.e. it should be able to convert an entry to string and a string to an entry.
-//
-// Formatters can be customized, a default formatter is provided.
-//
-//
+// PLEASE let me know about bugs, improvements and feature requests. (rien@balancingrock.nl)
 // =====================================================================================================================
 //
-// History:
+// History
 //
+// 2.0.0 - New header
+//       - Allowed empty type identifier
 // 1.3.0 - Changed message from Any to CustomStringConvertible
-// 1.1.0 -  Initial release in preperation for v2.0.0
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -114,9 +96,17 @@ public struct SfFormatter: Formatter {
 
         let str: String
         if let m = entry.message {
-            str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr), \(m.description)"
+            if typeStr.isEmpty {
+                str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(functionStr).\(lineStr), \(m.description)"
+            } else {
+                str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr), \(m.description)"
+            }
         } else {
-            str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr)"
+            if typeStr.isEmpty {
+                str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(functionStr).\(lineStr)"
+            } else {
+                str = "\(timeStr), \(levelStr): \(idStr), \(fileStr).\(typeStr).\(functionStr).\(lineStr)"
+            }
         }
 
         return str
@@ -164,11 +154,19 @@ public struct SfFormatter: Formatter {
         id = li
         
         let srcStrs = strs[2].components(separatedBy: ".")
-        guard srcStrs.count == 4 else { return nil }
-        file = srcStrs[0]
-        type = srcStrs[1]
-        function = srcStrs[2]
-        line = Int(srcStrs[3]) ?? 0
+        if srcStrs.count == 4 {
+            file = srcStrs[0]
+            type = srcStrs[1]
+            function = srcStrs[2]
+            line = Int(srcStrs[3]) ?? 0
+        } else if srcStrs.count == 3 {
+            file = srcStrs[0]
+            type = ""
+            function = srcStrs[1]
+            line = Int(srcStrs[2]) ?? 0
+        } else {
+            return nil
+        }
         
         if strs.count == 4 {
             message = strs[3]

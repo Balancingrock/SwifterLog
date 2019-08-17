@@ -6,7 +6,7 @@ module: SwifterLog
 hide_documentation_coverage: true
 xcodebuild_arguments: [-target, SwifterLog]
 github_url: https://github.com/Balancingrock/SwifterLog
-output: ~/Documents/Websites/sf/projects/swifterlog/reference
+output: ~/Documents/Websites/swiftfire.nl/projects/swifterlog/reference
 clean: true
 theme: fullwidth
 readme: README.md

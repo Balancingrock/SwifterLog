@@ -4,7 +4,7 @@
 
 The framework defines a singleton called `singleton`. This variable can be used to access all logging functions. For ease of use, it is recommened to create a global variable from this:
 
-    let log = SwifterLog.singleton
+    let log = Logger.singleton
 
 Before using the logging functions, first setup the log level thresholds for the targets. In code this is done as follows:
 
@@ -22,17 +22,22 @@ After the threshold levels are set, use the log as follows:
     
 Or use the optional loggers:
     
-    SwifterLog.atDebug?.log("Kilroy was here")
+    Logger.atDebug?.log("Kilroy was here")
 
-The optional logger are not as readable, but offer performance advantages when levels are disabled.
+We like to use a typealias to abbreviate this:
+
+    typealias Log = Logger
+    Log.atDebug?.log("The answer is 42")
+    
+The optional loggers are not as readable, but offer performance advantages when levels are disabled.
 
 There are other optional parameters that can be usefull:
 
     log.atDebug("Kilroy was here", id: 16, type: "MyType")
 
-The `id` parameter can be used to identify an object, thread, socket etc. Its default value is -1. Hence -1 should not be used for any other purpose.
+The `id` parameter can be used to identify an object, thread, socket etc. Its default value is -1. Hence -1 should not be used for any other purpose. An id can be used to tie log entries together, i.e. all logentires with the same `id` could be read in-sequence to know what happened on a specific thread, socket etc. 
 
-The `type` parameter can be used to identify the type for which the entry was made. Its default value is _noType_.
+The `type` parameter can be used to identify the type for which the entry was made. Its default value is _noType_ but this can be changed in the static parameter defaultTypeString. Setting the defaultTypeString to `""` (empty string) means that the type parameter will be ignored in the log string.
 
 Note that all log entries will be accompanied by a Source specifier that identifies the file, function and line number of where the log entry was made.
 
@@ -40,12 +45,12 @@ The message parameter is defined as `CustomStringConvertible`. It uses the `desc
 
 ## Performance problem & solution
 
-While it is perfectly possible (and the only option before 0.9.18) to use a single point of contact for all logging functions, there is a performance hit for this simplicity.
+While it is perfectly possible to use a single point of contact for all logging functions, there is a performance hit for this simplicity.
 
 Consider the following:
 
     import SwifterLog
-    typealias Log = SwifterLog
+    typealias Log = Logger
     let log = Log.singleton
 
     log.stdoutPrintAtAndAboveLevel = .info
