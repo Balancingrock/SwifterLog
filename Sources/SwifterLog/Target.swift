@@ -3,7 +3,7 @@
 //  File:       Target.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 // 1.6.0 - Fixed level inversion error
 // 1.4.0 - Made message parameter implicit
@@ -52,6 +53,8 @@
 
 import Foundation
 
+
+/// The target for log entries. This class is intended as superclass for actual log entrie receipients.
 
 public class Target {
     

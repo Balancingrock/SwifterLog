@@ -3,14 +3,14 @@
 //  File:       Logger.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2019 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 //       - Added defaultTypeString
 // 1.4.0 - Made message parameter implicit
@@ -59,6 +60,10 @@
 
 import Foundation
 
+
+/// The main class tha implements the logging functions.
+///
+/// Only a single instance can be creted which is available as a static singleton.
 
 public final class Logger {
 
@@ -174,12 +179,34 @@ public final class Logger {
         internal static let atCritical = OptionalLogger(Level.critical)
         internal static let atAlert = OptionalLogger(Level.alert)
         internal static let atEmergency = OptionalLogger(Level.emergency)
+        
+        
+        /// The operation to log a message using the optional (high performance) loggers
+        ///
+        /// - Parameters:
+        ///   - message: The message to log
+        ///   - from: The source for the entry
+        ///   - to: The targets that must receive the log entry.
+        
         public func log(_ message: CustomStringConvertible? = nil, from source: Source, to targets: Array<Target> = allTargets) {
             let now = Date()
             for target in targets {
                 target.log(message, at: level, from: source, with: now)
             }
         }
+        
+        
+        /// The operation to log a message using the optional (high performance) loggers
+        ///
+        /// - Parameters:
+        ///   - message: The message to log
+        ///   - id: The ID for the log entry
+        ///   - type: The type for the logging entry
+        ///   - file: The file from which the log entry was made
+        ///   - function: The function from which the log entry was made
+        ///   - line: The line in the file from which the log entry was made
+        ///   - to: The targets that must receive the log entry
+        
         public func log(_ message: CustomStringConvertible? = nil, id: Int = -1, type: String = Logger.defaultTypeString, file: String = #file, function: String = #function, line: Int = #line, to targets: Array<Target> = allTargets) {
             let source = Source(id: id, file: file, type: type, function: function, line: line)
             let now = Date()

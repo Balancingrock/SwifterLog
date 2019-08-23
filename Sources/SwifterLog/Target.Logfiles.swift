@@ -3,14 +3,14 @@
 //  File:       Target.Logfiles.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017..2019 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 // 1.1.2 - Migration to Swift 4, minor changes.
 // 1.1.0 - Initial release in preperation for v2.0.0
@@ -52,6 +53,9 @@
 
 import Foundation
 
+
+/// A logfile as destination for log entires.
+
 public class Logfiles: Target {
     
     
@@ -59,6 +63,8 @@ public class Logfiles: Target {
     
     private var queue: DispatchQueue = DispatchQueue(label: "SwifterLog.Target.Logfiles", qos: .background, attributes: DispatchQueue.Attributes(), autoreleaseFrequency: .inherit, target: nil)
 
+    
+    /// Writes a message (string) to the end of a logfile with a <cr><lf> at the end.
     
     public override func write(_ message: String) {
         
@@ -83,6 +89,9 @@ public class Logfiles: Target {
         }
     }
 
+    
+    /// Closes a logfile.
+    
     public override func close() {
         logfile?.closeFile()
     }

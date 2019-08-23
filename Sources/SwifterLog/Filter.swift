@@ -3,7 +3,7 @@
 //  File:       Filter.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 // 1.3.0 - Definition of Entry was changed.
 // 1.1.0 - Initial release in preperation for v2.0.0
@@ -44,6 +45,8 @@
 
 import Foundation
 
+
+/// A filter must implement the methods in this protocol.
 
 public protocol Filter {
     

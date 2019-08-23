@@ -3,7 +3,7 @@
 //  File:       Source.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 //       - Added default for type parameter, allow type parameter to be empty
 // 1.7.0 - Migration to Swift 5
@@ -52,14 +53,35 @@ import VJson
 
 /// This struct represents the full source specifier for a log entry.
 
-public struct Source: Hashable {
-        
+public struct Source {
+    
+    
+    /// The ID of a source. Can be used to differentiate instances of a type, or threads or sockets.
+    
     public let id: Int
+    
+    
+    /// The file in which a logentry was made
+    
     public let file: String
+    
+    
+    /// The type of a log entry, can be used if multiple types are present in a single file. Especially usefull in combination with filters.
+    
     public let type: String
+    
+    
+    /// The function that created the log entry.
+    
     public let function: String
+    
+    
+    /// The line nuber in a file that created the log entry.
+    
     public let line: Int
     
+    
+    /// Create s a new Source structure
     
     public init(id: Int = -1, file: String = #file, type: String = Logger.defaultTypeString, function: String = #function, line: Int = #line) {
         self.id = id
@@ -68,6 +90,13 @@ public struct Source: Hashable {
         self.function = function
         self.line = line
     }
+}
+
+
+extension Source: Hashable {
+    
+    
+    /// Implements the Hashable protocol
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -78,8 +107,12 @@ public struct Source: Hashable {
     }
 }
 
+
 extension Source: VJsonConvertible {
 
+    
+    /// Returns the content of self as a JSON hierarchy.
+    
     public var json: VJson {
         let j = VJson()
         j["Id"] &= id
@@ -90,6 +123,9 @@ extension Source: VJsonConvertible {
         return j
     }
 
+    
+    /// Creates a source from a JSON hierarchy.
+    
     public init?(json: VJson?) {
         guard let json = json else { return nil }
         guard let jid = (json|"Id")?.intValue else { return nil }
@@ -101,7 +137,11 @@ extension Source: VJsonConvertible {
     }
 }
 
+
 extension Source: CustomStringConvertible {
+    
+    
+    /// Implements the protocol CustomStringConvertible
     
     public var description: String {
         let strs: [String]
@@ -115,7 +155,11 @@ extension Source: CustomStringConvertible {
     }
 }
 
+
 extension Source: Equatable {
+    
+    
+    /// Implements the equation protocol
     
     public static func == (lhs: Source, rhs: Source) -> Bool {
         if lhs.hashValue != rhs.hashValue { return false }

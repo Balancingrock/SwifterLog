@@ -3,7 +3,7 @@
 //  File:       Extensions.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 // 1.7.0 - Migration to Swift 5
 // 1.1.0 - Initial release in preperation for v2.0.0
@@ -60,6 +61,10 @@ public protocol ReflectedStringConvertible: CustomStringConvertible {}
 /// The default extension for this protocol allows classes to be printed like struct's.
 
 public extension ReflectedStringConvertible {
+    
+    
+    /// The actual description of an objects internals
+    
     var description: String {
         let mirror = Mirror(reflecting: self)
         var result = "\(mirror.subjectType)("

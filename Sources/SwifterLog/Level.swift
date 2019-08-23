@@ -3,7 +3,7 @@
 //  File:       Level.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,9 +36,10 @@
 //
 // History
 //
+// 2.0.1 - Documentation updated
 // 2.0.0 - New header
-// 1.3.0 -  Replaced ASL levels with OSLogType
-// 1.1.0 -  Initial release in preperation for v2.0.0
+// 1.3.0 - Replaced ASL levels with OSLogType
+// 1.1.0 - Initial release in preperation for v2.0.0
 //
 // =====================================================================================================================
 
@@ -47,11 +48,71 @@ import VJson
 import os
 
 
-// The log level at which log entries can be written.
+/// The log level at which log entries can be written.
 
 public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     
-    case debug, info, notice, warning, error, critical, alert, emergency, none
+    /// The DEBUG level
+    ///
+    /// Use this level for information that is only relevant during coding for the developper.
+    
+    case debug
+    
+    
+    /// The INFO level
+    ///
+    /// Use this level for information that is relevant during coding but should remain available even when the debugging level is disabled.
+    
+    case info
+    
+    
+    /// The NOTICE level
+    ///
+    /// Use this level to record information that might help you helping a user that experiences problems with the product.
+    
+    case notice
+    
+    
+    /// The WARNING level
+    ///
+    /// Use this level to record information that might help a user to solve a problem or help with understanding the product's behaviour.
+
+    case warning
+    
+    
+    /// The ERROR level
+    ///
+    /// Use this level to record information that explains why something was wrong and the product (possibly) failed to perform as expected. However future performance of the product should be unaffected.
+    
+    case error
+    
+    
+    /// The CRITICAL level
+    ///
+    /// Use this level to record information that explains why future performance of the product will be affected (unless corrective action is taken).
+    
+    case critical
+    
+    
+    /// The ALERT level
+    ///
+    /// Use this level to alert the end-user to possible security violations.
+    
+    case alert
+    
+    
+    /// The EMERGENCY level
+    ///
+    /// Use this level as a last ditch effort to record some information that might explain why the application crashed.
+    
+    case emergency
+    
+    
+    /// Use this to avoid all logging.
+    ///
+    /// This level can be usefull when writing code that logs at dynamic loglevels.
+    
+    case none
     
     
     /// The numerical value for this loglevel.

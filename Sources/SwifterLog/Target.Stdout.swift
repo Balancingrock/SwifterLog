@@ -3,7 +3,7 @@
 //  File:       Target.Stdout.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Documentation update
 // 2.0.0 - New header
 // 1.6.0 - Undid 1.5.0
 // 1.5.0 - Introduced option to suppress time information.
@@ -52,7 +53,12 @@
 import Foundation
 
 
+/// The STDout target for log entries.
+
 public class Stdout: Target {
+    
+    
+    /// Writes a log entry to the console.
     
     open override func process(_ entry: Entry) {
         
@@ -67,6 +73,9 @@ public class Stdout: Target {
         write(loginfo)
     }
 
+    
+    /// Writes a string to the console
+    
     public override func write(_ string: String) {
         print(string)
     }    

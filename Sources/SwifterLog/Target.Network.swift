@@ -3,14 +3,14 @@
 //  File:       Target.Network.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.0.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017..2019 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.0.1 - Document update
 // 2.0.0 - New header
 // 1.1.0 - Initial release in preperation for v2.0.0
 //
@@ -129,6 +130,8 @@ public struct LogLine: CustomStringConvertible {
     }
 }
 
+
+/// A network target for log entries.
 
 public class Network: Target {
     

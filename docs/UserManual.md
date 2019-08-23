@@ -194,7 +194,7 @@ SwiftLog uses the following levels:
 - Debug (lowest level)
 - Info
 - Notice
-- Warning
+- <span>Warning</span>
 - Error
 - Critical
 - Alert
