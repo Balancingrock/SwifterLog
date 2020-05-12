@@ -11,8 +11,8 @@ let package = Package(
         .library(name: "SwifterLog", targets: ["SwifterLog"])
     ],
     dependencies: [
-        .package(url: "https://github.com/Balancingrock/VJson", from: "1.0.0"),
-        .package(url: "https://github.com/Balancingrock/SwifterSockets", from: "1.0.0")
+        .package(url: "../VJson", from: "1.2.0"),
+        .package(url: "../SwifterSockets", from: "1.1.0")
     ],
     targets: [
         .target(

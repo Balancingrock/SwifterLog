@@ -39,6 +39,10 @@ The User manual on [Swiftfire.nl](http://swiftfire.nl/projects/swifterlog/refere
 
 No new features planned. Updates are made on an ad-hoc basis as needed to support Swiftfire development.
 
+#### 2.1.0
+
+- Updated for changes in SwifterSockets: using Swift.Result instead of BRUtils.Result. 
+
 #### 2.0.1
 
 - Documentation updates

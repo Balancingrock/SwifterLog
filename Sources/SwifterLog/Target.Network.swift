@@ -215,9 +215,9 @@ public class Network: Target {
         
         switch result {
             
-        case let .error(msg):
+        case let .failure(msg):
             
-            Logger.OptionalLogger.atNotice.log("Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
+            Logger.OptionalLogger.atNotice.log("Could not open connection to network target. Address = \(ipAddress), port = \(port), message = \(msg.localizedDescription)", from: Source(file: #file, function: #function, line: #line), to: Logger.allTargetsExceptNetwork)
             
             
         case let .success(num):
