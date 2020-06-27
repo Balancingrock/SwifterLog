@@ -3,14 +3,14 @@
 //  File:       Level.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.1
+//  Version:    2.1.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2020 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.1.1 - Linux compatibility
 // 2.0.1 - Documentation updated
 // 2.0.0 - New header
 // 1.3.0 - Replaced ASL levels with OSLogType
@@ -45,7 +46,9 @@
 
 import Foundation
 import VJson
+#if os(macOS) || os(iOS) || os(tvOS)
 import os
+#endif
 
 
 /// The log level at which log entries can be written.
@@ -132,6 +135,8 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     }
     
     
+    #if os(macOS) || os(iOS) || os(tvOS)
+    
     /// The OSLogTYpe for this loglevel.
     
     public var osLogType: OSLogType {
@@ -147,7 +152,27 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
         case .none:         fatalError("osLogType should never be used on Level enum")
         }
     }
+    
+    #endif
+    
+    #if os(Linux)
+    
+    public var linuxPriority: Int32 {
+        switch self {
+        case .debug:        return 7
+        case .info:         return 6
+        case .notice:       return 5
+        case .warning:      return 4
+        case .error:        return 3
+        case .critical:     return 2
+        case .alert:        return 1
+        case .emergency:    return 0
+        case .none:         fatalError("linuxPriority should never be used on Level enum")
+        }
+    }
 
+    #endif
+    
     
     /// The binary pattern for this loglevel
     

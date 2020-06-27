@@ -3,7 +3,7 @@
 //  File:       Target.Logfiles.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.1
+//  Version:    2.2.0
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.2.0 - Added option to allow multiple instances of the same app to create each its own logfiles
 // 2.0.1 - Documentation update
 // 2.0.0 - New header
 // 1.1.2 - Migration to Swift 4, minor changes.
@@ -113,7 +114,7 @@ public class Logfiles: Target {
     
     /// The path for the directory in which the next logfile will be created.
     ///
-    /// Note that the application must have write access to this directory and the rights to create this directory (sandbox!). If this variable is nil, the logfiles will be written to /Library/Application Support/[Application Name]/Logfiles.
+    /// Note that the application must have write access to this directory and the rights to create this directory (sandbox!). If this variable is nil, the logfiles will be written to (Application Support)/(Application Name)/Logfiles/(Number)
     ///
     /// Do not use '~' signs in the path, expand them first if there are tildes in it.
     
@@ -138,7 +139,7 @@ public class Logfiles: Target {
     lazy private var logfile: FileHandle? = { self.createLogfile() }()
     
     
-    // We use the /Library/Application Support/<<<application>>>/Logfiles directory if no logfile directory is specified
+    // We use the (Application Support)/(Application Name)/Logfiles/(Number) directory if no logfile directory is specified
     
     lazy private var applicationSupportLogfileDirectory: String? = {
         
@@ -154,8 +155,27 @@ public class Logfiles: Target {
                     create: true).path
             
             let appName = ProcessInfo.processInfo.processName
-            let dirUrl = URL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).appendingPathComponent(appName)
-            return dirUrl.appendingPathComponent("Logfiles").path
+            var dirUrl = URL(fileURLWithPath: applicationSupportDirectory, isDirectory: true).appendingPathComponent(appName).appendingPathComponent("Logfiles")
+
+            var highNum = 0
+            var isDir: ObjCBool = false
+            if fileManager.fileExists(atPath: dirUrl.path, isDirectory: &isDir) && isDir.boolValue {
+                if let dirs = try? fileManager.contentsOfDirectory(atPath: dirUrl.path) {
+                    for path in dirs {
+                        if fileManager.fileExists(atPath: path, isDirectory: &isDir) && isDir.boolValue {
+                            let name = (path as NSString).lastPathComponent
+                            if let num = Int(name), String(num) == name {
+                                if num > highNum {
+                                    highNum = num
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            dirUrl.appendPathComponent(String(highNum), isDirectory: true)
+            
+            return dirUrl.path
             
         } catch let error as NSError {
             

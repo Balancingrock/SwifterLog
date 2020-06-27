@@ -3,14 +3,14 @@
 //  File:       Target.OSLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.0.0
+//  Version:    2.1.1
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
 //  Website:    http://swiftfire.nl/projects/swifterlog/swifterlog.html
 //  Git:        https://github.com/Balancingrock/SwifterLog
 //
-//  Copyright:  (c) 2017-2018 Marinus van der Lugt, All rights reserved.
+//  Copyright:  (c) 2017-2020 Marinus van der Lugt, All rights reserved.
 //
 //  License:    Use or redistribute this code any way you like with the following two provision:
 //
@@ -36,6 +36,7 @@
 //
 // History
 //
+// 2.1.1 - Linux compatibility
 // 2.0.0 - New header
 // 1.5.0 - Added OSLog levels filtering
 // 1.3.0 - Removed CAsl, renamed to OSLog
@@ -50,7 +51,12 @@
 // =====================================================================================================================
 
 import Foundation
+#if os(macOS) || os(iOS) || os(tvOS)
 import os
+#endif
+#if os(Linux)
+import Glibc
+#endif
 
 
 /// An interface to write log entries to the OS Log.
@@ -106,6 +112,18 @@ public class OSLog: Target {
         
         // Create the entry in the OS Log
         
-        os_log("%@", type: entry.level.osLogType, (str as NSString))
+        #if os(macOS) || os(iOS) || os(tvOS)
+        
+            os_log("%@", type: entry.level.osLogType, (str as NSString))
+        
+        #endif
+        
+        #if os(Linux)
+        
+            withVaList([str.cString(using: .utf8) as! CVarArg]) {
+                vsyslog(entry.level.linuxPriority, "%s", $0)
+            }
+        
+        #endif
     }
 }

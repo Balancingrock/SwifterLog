@@ -34,10 +34,20 @@ The User manual on [Swiftfire.nl](http://swiftfire.nl/projects/swifterlog/refere
 - Included high performance non-evaluation destinations to allow debug logging calls to remain in shipping code
 - Compiles using SPM (Swift Package Manager)
 - Filtering is possible
+- Supports macOS and Linux
+- Keeps logfiles seperate if multiple instances of the same app are executing in parallel.
 
 # Version History
 
 No new features planned. Updates are made on an ad-hoc basis as needed to support Swiftfire development.
+
+#### 2.2.0
+
+- Added capability to run multiple instances of an app in parallel and still keep the logfiles sperate.
+
+#### 2.1.1
+
+- Linux compatibility
 
 #### 2.1.0
 
