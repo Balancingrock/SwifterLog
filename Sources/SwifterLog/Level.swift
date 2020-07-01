@@ -139,6 +139,7 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     
     /// The OSLogTYpe for this loglevel.
     
+    @available(OSX 10.12, *)
     public var osLogType: OSLogType {
         switch self {
         case .debug:        return OSLogType.debug

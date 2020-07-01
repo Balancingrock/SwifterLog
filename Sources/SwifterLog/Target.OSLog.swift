@@ -114,7 +114,9 @@ public class OSLog: Target {
         
         #if os(macOS) || os(iOS) || os(tvOS)
         
+        if #available(macOS 10.12, *) {
             os_log("%@", type: entry.level.osLogType, (str as NSString))
+        }
         
         #endif
         

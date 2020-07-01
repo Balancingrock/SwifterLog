@@ -41,6 +41,10 @@ The User manual on [Swiftfire.nl](http://swiftfire.nl/projects/swifterlog/refere
 
 No new features planned. Updates are made on an ad-hoc basis as needed to support Swiftfire development.
 
+#### 2.2.1
+
+- Rewrote dependency on >= macOS 12
+
 #### 2.2.0
 
 - Added capability to run multiple instances of an app in parallel and still keep the logfiles sperate.

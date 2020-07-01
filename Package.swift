@@ -4,9 +4,6 @@ import PackageDescription
 
 let package = Package(
     name: "SwifterLog",
-    platforms: [
-        .macOS(.v10_12)
-    ],
     products: [
         .library(name: "SwifterLog", targets: ["SwifterLog"])
     ],
