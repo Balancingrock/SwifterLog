@@ -3,7 +3,7 @@
 //  File:       Level.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.2.2
+//  Version:    2.2.3
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -29,6 +29,7 @@
 //
 // History
 //
+// 2.2.3 - Added iOS 10 availability test for OSLog
 // 2.2.2 - Updated LICENSE
 // 2.1.1 - Linux compatibility
 // 2.0.1 - Documentation updated
@@ -137,6 +138,7 @@ public enum Level: Comparable, CustomStringConvertible, VJsonSerializable {
     /// The OSLogTYpe for this loglevel.
     
     @available(OSX 10.12, *)
+    @available(iOS 10, *)
     public var osLogType: OSLogType {
         switch self {
         case .debug:        return OSLogType.debug

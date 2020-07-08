@@ -3,7 +3,7 @@
 //  File:       Target.OSLog.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.2.2
+//  Version:    2.2.3
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -29,6 +29,7 @@
 //
 // History
 //
+// 2.2.3 - Added iOS 10 availability test for OSLog
 // 2.2.2 - Updated LICENSE
 // 2.1.1 - Linux compatibility
 // 2.0.0 - New header
@@ -122,7 +123,9 @@ public class OSLog: Target {
         
         #if os(iOS) || os(tvOS)
         
-            os_log("%@", type: entry.level.osLogType, (str as NSString))
+            if #available(iOS 10, *) {
+                os_log("%@", type: entry.level.osLogType, (str as NSString))
+            }
         
         #endif
 
