@@ -16,27 +16,17 @@ Then perform a SPM build.
 
     $ swift build
 
-## As a modular framework
+## Adding to an Xcode project
 
-To install SwifterLog type the following:
+In the Xcode project using the navigator panel select the target SwifterLog should be added to.
 
-    $ git clone https://github.com/Balancingrock/SwifterLog
+Then select the `General` tab and click the `+` sign of the `Frameworks, Libraries, and Embedded Content` section.
 
-Then create the Xcode project
+In the dropdown window select `Add Other...` and choose `Add Package Dependency...`.
 
-    $ swift package generate-xcodeproj
+In the new dropdown window type `https://github.com/Balancingrock/SwifterLog.git` and click `Next`, `Next` and `Finish`.
 
-Open the Xcode project just created.
-
-Select the frameworks in Xcode, navigate to the `Build Settings` subsection `Packaging` and set the `Defines Module` option to `yes`
-
-Build the project.
-
-This creates a modular framework (in products).
-
-Use the frameworks in other projects by including all of them in the Xcode project under the target `General` settings, subsection `Embedded Binaries`.
-
-Then use "import SwifterLog" in the source code to expose the API.
+Now use `import SwifterLog` in each source file where you need its capabilities.
 
 ## Optional removal of Ascii, BRUtils, VJson and SwifterSockets dependency
 
