@@ -1,6 +1,7 @@
 # Installation
 
 ## As an SPM package
+
 To install SwifterLog type the following:
 
     $ git clone https://github.com/Balancingrock/SwifterLog

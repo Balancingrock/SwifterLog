@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwifterLog",
+    platforms: [.macOS(.v10_12), .iOS(.v8)],
     products: [
         .library(name: "SwifterLog", targets: ["SwifterLog"])
     ],
@@ -16,5 +17,6 @@ let package = Package(
             name: "SwifterLog",
             dependencies: ["VJson", "SwifterSockets"]
         )
-    ]
+    ],
+    swiftLanguageVersions: [.v4, .v4_2, .v5]
 )

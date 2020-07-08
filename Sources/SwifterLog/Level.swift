@@ -3,7 +3,7 @@
 //  File:       Level.swift
 //  Project:    SwifterLog
 //
-//  Version:    2.1.1
+//  Version:    2.2.2
 //
 //  Author:     Marinus van der Lugt
 //  Company:    http://balancingrock.nl
@@ -12,16 +12,9 @@
 //
 //  Copyright:  (c) 2017-2020 Marinus van der Lugt, All rights reserved.
 //
-//  License:    Use or redistribute this code any way you like with the following two provision:
+//  License:    MIT, see LICENSE file
 //
-//  1) You ACCEPT this source code AS IS without any guarantees that it will work as intended. Any liability from its
-//  use is YOURS.
-//
-//  2) You WILL NOT seek damages from the author or balancingrock.nl.
-//
-//  I also ask you to please leave this header with the source code.
-//
-//  Like you, I need to make a living:
+//  And because I need to make a living:
 //
 //   - You can send payment (you choose the amount) via paypal to: sales@balancingrock.nl
 //   - Or wire bitcoins to: 1GacSREBxPy1yskLMc9de2nofNv2SNdwqH
@@ -36,6 +29,7 @@
 //
 // History
 //
+// 2.2.2 - Updated LICENSE
 // 2.1.1 - Linux compatibility
 // 2.0.1 - Documentation updated
 // 2.0.0 - New header
@@ -46,8 +40,11 @@
 
 import Foundation
 import VJson
+
 #if os(macOS) || os(iOS) || os(tvOS)
-import os
+
+    import os
+
 #endif
 
 

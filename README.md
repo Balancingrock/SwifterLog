@@ -15,20 +15,20 @@ The User manual on [Swiftfire.nl](http://swiftfire.nl/projects/swifterlog/refere
 # Features
 
 - 5 different logging targets:
-	1. The OS Log facility
-	2. A file
-	3. STDOUT (println)
-	4. A network destination
-	5. A list of callback objects from the Application itself.
+    1. The OS Log facility (from macOS 10.12)
+    2. A file
+    3. STDOUT (println)
+    4. A network destination
+    5. A list of callback objects from the Application itself.
 - 8 log levels:
-	1. Debug
-	2. Info
-	3. Notice
-	4. <span>Warning</span>
-	5. Error
-	6. Critical
-	7. Alert
-	8. Emergency
+    1. Debug
+    2. Info
+    3. Notice
+    4. <span>Warning</span>
+    5. Error
+    6. Critical
+    7. Alert
+    8. Emergency
 - Each logging target can have its own cut-off level for the information that is logged.
 - The file target can be configured to store the log info in a predefined number of files of a predefined maximum size. When the maximum number of files is exceeded, the oldest file will automatically be removed.
 - Included high performance non-evaluation destinations to allow debug logging calls to remain in shipping code
@@ -40,6 +40,10 @@ The User manual on [Swiftfire.nl](http://swiftfire.nl/projects/swifterlog/refere
 # Version History
 
 No new features planned. Updates are made on an ad-hoc basis as needed to support Swiftfire development.
+
+#### 2.2.2
+
+- Added swift version, platform and a LICENSE file
 
 #### 2.2.1
 
